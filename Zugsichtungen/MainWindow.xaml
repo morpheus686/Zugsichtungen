@@ -7,10 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:vm="clr-namespace:Zugsichtungen.ViewModel">
+        xmlns:dialogView="clr-namespace:Zugsichtungen.Views.DialogViews"
+        xmlns:vm="clr-namespace:Zugsichtungen.ViewModel"
+        xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModel.DialogViewModel">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type dialogViewModel:AddSichtungDialogViewModel}">
+            <dialogView:AddSichtungDialogView />
+        </DataTemplate>
+    </Window.Resources>
     <materialDesign:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                                       Identifier="DialogHost"
                                       x:Name="DialogHost">
@@ -26,10 +33,22 @@
                       DockPanel.Dock="Top"
                       ClipToBounds="False"
                       materialDesign:ElevationAssist.Elevation="Dp4" >
-                <TextBlock Text="Zugsichtungen" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Zugsichtungen" 
                    Margin="10"
                    FontSize="25"
                    FontWeight="Bold"/>
+                    <Button Grid.Column="1"
+                            Style="{StaticResource MaterialDesignIconButton}" 
+                            Content="{materialDesign:PackIcon Kind=Add}"
+                            ToolTip="Sichtung hinzufügen"
+                            Foreground="White"
+                            Command="{Binding AddSichtungCommand, Mode=OneTime}"/>
+                </Grid>
             </materialDesign:ColorZone>
             <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
                   Grid.Row="1"

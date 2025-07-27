@@ -24,7 +24,7 @@ namespace Zugsichtungen.Converter
                 return date;
             }
 
-            return null;
+            return String.Empty;
         }
     }
 }

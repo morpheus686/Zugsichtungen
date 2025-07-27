@@ -19,6 +19,8 @@ public partial class ZugbeobachtungenContext : DbContext
 
     public virtual DbSet<Fahrzeuge> Fahrzeuges { get; set; }
 
+    public virtual DbSet<Fahrzeugliste> Fahrzeuglistes { get; set; }
+
     public virtual DbSet<Hersteller> Herstellers { get; set; }
 
     public virtual DbSet<Kontexte> Kontextes { get; set; }
@@ -29,7 +31,7 @@ public partial class ZugbeobachtungenContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("Data Source=zugbeobachtungen.db");
+        => optionsBuilder.UseSqlite("Data Source=./zugbeobachtungen.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +57,13 @@ public partial class ZugbeobachtungenContext : DbContext
             entity.Property(e => e.Nummer).HasColumnName("nummer");
 
             entity.HasOne(d => d.Baureihe).WithMany(p => p.Fahrzeuges).HasForeignKey(d => d.BaureiheId);
+        });
+
+        modelBuilder.Entity<Fahrzeugliste>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Fahrzeugliste");
         });
 
         modelBuilder.Entity<Hersteller>(entity =>
