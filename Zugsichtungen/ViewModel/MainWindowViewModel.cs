@@ -1,16 +1,16 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using Zugsichtungen.Models;
+using Zugsichtungen.Services;
 using Zugsichtungen.ViewModel.DialogViewModel;
 
 namespace Zugsichtungen.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : LoadableViewModel
     {
-        private readonly ZugbeobachtungenContext context;
-        private ObservableCollection<SichtungItemViewModel> sichtungenList;
-        private readonly DialogHostManager dialogHostManager;
+        private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
+        private readonly IDialogService dialogService;
+        private readonly IDataService dataService;
         private bool isBusy = false;
 
         public bool IsBusy
@@ -33,13 +33,13 @@ namespace Zugsichtungen.ViewModel
 
         public AsyncCommand AddSichtungCommand { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IDialogService dialogService, IDataService dataService)
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
-
             this.sichtungenList = new ObservableCollection<SichtungItemViewModel>();
-            this.context = new ZugbeobachtungenContext();
-            this.dialogHostManager = new DialogHostManager();
+
+            this.dialogService = dialogService;
+            this.dataService = dataService;
         }
 
         private bool CanExecuteAddSichtung(object? parameter) => !this.isBusy;
@@ -47,26 +47,17 @@ namespace Zugsichtungen.ViewModel
         private async Task ExecuteAddSichtung()
         {
             IsBusy = true;
-            var addSichtungDialogViewModel = new AddSichtungDialogViewModel();
-            var result = await this.dialogHostManager.ShowDialog(addSichtungDialogViewModel);
+            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(this.dataService);
+            var result = await this.dialogService.ShowDialog(addSichtungDialogViewModel);
             IsBusy = false;
         }
 
-        public void Initialize()
+        protected async override Task InitializeInternalAsync()
         {
-            var sichtungen = this.context.Sichtungens
-                .Include(e => e.Fahrzeug)
-                .ThenInclude(e => e.Baureihe)
-                .Include(e => e.Kontext)
-                .OrderBy(e => e.Datum);
+            var sichtungen = await this.dataService.GetSichtungenAsync();
 
             foreach (var item in sichtungen)
             {
-                if (item == null)
-                {
-                    continue;
-                }
-
                 Sichtungsliste.Add(new SichtungItemViewModel(item));
             }
         }

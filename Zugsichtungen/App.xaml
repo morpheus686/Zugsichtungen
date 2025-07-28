@@ -3,11 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converter="clr-namespace:Zugsichtungen.Converter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>        
-        <ResourceDictionary>   
+             xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModel.DialogViewModel"
+             xmlns:dialogView="clr-namespace:Zugsichtungen.Views.DialogViews">
+    <Application.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type dialogViewModel:AddSichtungDialogViewModel}">
+                <dialogView:AddSichtungDialogView />
+            </DataTemplate>
+
             <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
-            
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ObsoleteBrushes.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
@@ -20,7 +25,5 @@
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
     </Application.Resources>
 </Application>

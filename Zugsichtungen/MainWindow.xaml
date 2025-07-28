@@ -10,14 +10,6 @@
         xmlns:dialogView="clr-namespace:Zugsichtungen.Views.DialogViews"
         xmlns:vm="clr-namespace:Zugsichtungen.ViewModel"
         xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModel.DialogViewModel">
-    <Window.DataContext>
-        <vm:MainWindowViewModel />
-    </Window.DataContext>
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type dialogViewModel:AddSichtungDialogViewModel}">
-            <dialogView:AddSichtungDialogView />
-        </DataTemplate>
-    </Window.Resources>
     <materialDesign:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                                       Identifier="DialogHost"
                                       x:Name="DialogHost">

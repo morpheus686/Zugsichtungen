@@ -1,6 +1,9 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using Zugsichtungen.Models;
+using Zugsichtungen.Services;
+using Zugsichtungen.ViewModel;
+using Zugsichtungen.ViewModel.DialogViewModel;
 
 namespace Zugsichtungen
 {
@@ -9,6 +12,38 @@ namespace Zugsichtungen
     /// </summary>
     public partial class App : Application
     {
+        public new static App Current => (App)Application.Current;
+        public IServiceProvider Services { get; private set; } = default!;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+
+            Services = services.BuildServiceProvider();
+
+            var mainWindow = Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
+
+        private static void ConfigureServices(ServiceCollection services)
+        {
+            services.AddDbContext<ZugbeobachtungenContext>();
+            services.AddScoped<IDataService, EfDataService>();
+
+            services.AddSingleton<MainWindow>();
+            services.AddTransient<MainWindowViewModel>();
+
+            services.AddSingleton<IDialogService, DialogService>();
+            services.AddTransient<AddSichtungDialogViewModel>();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+        }
     }
 
 }

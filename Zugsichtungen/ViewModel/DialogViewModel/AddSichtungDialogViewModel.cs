@@ -1,15 +1,18 @@
 ﻿using System.ComponentModel;
+using Zugsichtungen.Services;
 
 namespace Zugsichtungen.ViewModel.DialogViewModel
 {
     public class AddSichtungDialogViewModel : LoadableViewModel, IDataErrorInfo
     {
-        public AddSichtungDialogViewModel()
+        public AddSichtungDialogViewModel(IDataService dataService)
         {
             SelectedDate = DateTime.Now;
+            this.dataService = dataService;
         }
 
         private DateTime selectedDate;
+        private readonly IDataService dataService;
 
         public DateTime SelectedDate
         {
