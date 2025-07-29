@@ -12,6 +12,7 @@
             </DataTemplate>
 
             <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
+            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ObsoleteBrushes.xaml" />

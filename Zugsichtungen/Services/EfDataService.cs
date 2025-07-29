@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using Zugsichtungen.Models;
 
 namespace Zugsichtungen.Services
@@ -12,15 +13,33 @@ namespace Zugsichtungen.Services
             this.context = context;
         }
 
-        public Task<List<Sichtungen>> GetSichtungenAsync()
+        public async Task SaveChangesAsync()
         {
-            var sichtungen = this.context.Sichtungens
-                .Include(e => e.Fahrzeug)
-                .ThenInclude(e => e.Baureihe)
-                .Include(e => e.Kontext)
-                .OrderBy(e => e.Datum);
+            var affected = await this.context.SaveChangesAsync();
+            Debug.WriteLine(affected);
+        }
 
+        public Task<List<Fahrzeugliste>> GetAllFahrzeugeAsync()
+        {
+            var fahrzeuge = this.context.Fahrzeuglistes;
+            return fahrzeuge.ToListAsync();
+        }
+
+        public Task<List<Sichtungsview>> GetSichtungenAsync()
+        {
+            var sichtungen = this.context.Sichtungsviews;
             return sichtungen.ToListAsync();
+        }
+
+        public Task<List<Kontexte>> GetKontextesAsync()
+        {
+            var kontexte = this.context.Kontextes;
+            return kontexte.ToListAsync();
+        }
+
+        public async Task AddSichtungAsync(Sichtungen newSichtung)
+        {
+            await this.context.Sichtungens.AddAsync(newSichtung);
         }
     }
 }

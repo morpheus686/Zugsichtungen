@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Zugsichtungen.ViewModel;
 
-namespace Zugsichtungen
+namespace Zugsichtungen.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

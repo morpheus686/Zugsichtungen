@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using Zugsichtungen.Models;
 using Zugsichtungen.Services;
@@ -30,8 +32,21 @@ namespace Zugsichtungen
 
         private static void ConfigureServices(ServiceCollection services)
         {
-            services.AddDbContext<ZugbeobachtungenContext>();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+            services.AddSingleton<IConfiguration>(configuration);
+
+            services.AddDbContext<ZugbeobachtungenContext>(optionsAction =>
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                optionsAction.UseSqlite(connectionString);
+            });
+
             services.AddScoped<IDataService, EfDataService>();
+            services.AddScoped<ISichtungService, SichtungService>();
 
             services.AddSingleton<MainWindow>();
             services.AddTransient<MainWindowViewModel>();

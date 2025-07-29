@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using Zugsichtungen.Models;
 using Zugsichtungen.Services;
 
 namespace Zugsichtungen.ViewModel.DialogViewModel
@@ -9,39 +11,94 @@ namespace Zugsichtungen.ViewModel.DialogViewModel
         {
             SelectedDate = DateTime.Now;
             this.dataService = dataService;
+            this.VehicleList = [];
+            this.ContextList = [];
         }
 
         private DateTime selectedDate;
         private readonly IDataService dataService;
 
+        public Fahrzeugliste SelectedFahrzeug { get; set; } = null!;
+        public Kontexte SelectedKontext { get; set; } = null!;
+
         public DateTime SelectedDate
         {
             get { return selectedDate; }
-            set { 
+            set 
+            { 
                 selectedDate = value;
                 RaisePropertyChanged(nameof(selectedDate));
             }
         }
 
+        public ObservableCollection<Fahrzeugliste> VehicleList { get; private set; }
+        public ObservableCollection<Kontexte> ContextList { get; private set; }
+
+        public string Note { get; set; } = string.Empty;
+        public string Place { get; set; } = string.Empty;
 
         public string this[string columnName]
         {
             get 
             {
-                if (columnName == nameof(SelectedDate))
+                if (columnName == nameof(Place))
                 {
-
+                    if (string.IsNullOrWhiteSpace(this.Place))
+                    {                        
+                        this.PlaceIsInvalid = true;
+                        RaisePropertyChanged(nameof(HasErrors));
+                        return "Der Ort darf nicht leer sein!";
+                    }
+                    else
+                    {
+                        this.PlaceIsInvalid = false;
+                        RaisePropertyChanged(nameof(HasErrors));
+                    }
                 }
 
                 return string.Empty; 
             }
         }
 
-        public string Error => null;
+        public string Error => String.Empty;
 
-        protected override Task InitializeInternalAsync()
+        public bool PlaceIsInvalid { get; private set; }
+        public bool HasErrors => this.PlaceIsInvalid;
+
+        protected override async Task InitializeInternalAsync()
         {
-            return base.InitializeInternalAsync();
+            await LoadAndSelectFirstAsync(
+                this.dataService.GetAllFahrzeugeAsync,
+                this.VehicleList,
+                item => this.SelectedFahrzeug = item,
+                nameof(SelectedFahrzeug));
+
+            await LoadAndSelectFirstAsync(
+                this.dataService.GetKontextesAsync,
+                this.ContextList,
+                item => this.SelectedKontext = item,
+                nameof(SelectedKontext));
+        }
+
+        private async Task LoadAndSelectFirstAsync<T>(
+            Func<Task<List<T>>> loadFunc,
+            ObservableCollection<T> targetCollection,
+            Action<T> setSelectedItem,
+            string selectedPropertyName)
+        {
+            var items = await loadFunc();
+            targetCollection.Clear();
+
+            foreach (var item in items)
+            {
+                targetCollection.Add(item);
+            }
+
+            if (targetCollection.Any())
+            {
+                setSelectedItem(targetCollection.First());
+                RaisePropertyChanged(selectedPropertyName);
+            }
         }
     }
 }
