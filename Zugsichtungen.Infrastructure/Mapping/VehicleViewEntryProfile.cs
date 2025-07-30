@@ -4,11 +4,11 @@ using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Infrastructure.Mapping
 {
-    public class SightingViewEntryProfile : Profile
+    public class VehicleViewEntryProfile : Profile
     {
-        public SightingViewEntryProfile()
+        public VehicleViewEntryProfile()
         {
-            CreateMap<SightingViewEntryDto, SightingViewEntry>();
+            CreateMap<VehicleViewEntryDto, VehicleViewEntry>();
         }
     }
 }

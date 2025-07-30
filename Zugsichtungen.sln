@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Domain", "Zugsichtungen.Domain\Zugsichtungen.Domain.csproj", "{7B9B21B2-33FE-494C-BAA0-C3D0C5378D19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.UI", "Zugsichtungen.UI\Zugsichtungen.UI.csproj", "{D9497546-A526-434A-870A-490EFB80E7E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{7B9B21B2-33FE-494C-BAA0-C3D0C5378D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B9B21B2-33FE-494C-BAA0-C3D0C5378D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B9B21B2-33FE-494C-BAA0-C3D0C5378D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9497546-A526-434A-870A-490EFB80E7E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9497546-A526-434A-870A-490EFB80E7E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9497546-A526-434A-870A-490EFB80E7E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9497546-A526-434A-870A-490EFB80E7E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

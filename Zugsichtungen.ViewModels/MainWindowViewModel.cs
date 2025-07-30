@@ -12,20 +12,18 @@ namespace Zugsichtungen.ViewModels
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
         private readonly IDialogService dialogService;
         private readonly ISichtungService sichtungService;
-        private readonly IDataService dataService;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
 
         public AsyncCommand AddSichtungCommand { get; }
 
-        public MainWindowViewModel(IDialogService dialogService, ISichtungService sichtungService, IDataService dataService)
+        public MainWindowViewModel(IDialogService dialogService, ISichtungService sichtungService)
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             this.sichtungenList = [];
 
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
-            this.dataService = dataService;
         }
 
         private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy;
@@ -33,7 +31,7 @@ namespace Zugsichtungen.ViewModels
         private async Task ExecuteAddSichtung()
         {
             IsBusy = true;
-            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(this.dataService);
+            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(sichtungService);
             var result = await this.dialogService.ShowDialog(addSichtungDialogViewModel);
 
             if (result == null)

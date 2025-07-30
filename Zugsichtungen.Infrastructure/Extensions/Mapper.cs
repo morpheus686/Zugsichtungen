@@ -1,7 +1,7 @@
 ﻿using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Infrastructure.Models;
 
-namespace Zugsichtungen.Extensions
+namespace Zugsichtungen.Infrastructure.Extensions
 {
     public static class Mapper
     {

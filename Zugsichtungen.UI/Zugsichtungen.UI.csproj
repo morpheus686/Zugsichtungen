@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Foundation\Zugsichtungen.Foundation.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Styles\Zugsichtungen.Styles.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.UI.Controls\Zugsichtungen.UI.Controls.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.ViewModels\Zugsichtungen.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\DialogViews\AddSichtungDialogView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

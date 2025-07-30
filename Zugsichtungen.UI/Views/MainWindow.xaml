@@ -1,0 +1,63 @@
+﻿<Window x:Class="Zugsichtungen.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Zugsichtungen.UI.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews"
+        xmlns:converter="clr-namespace:Zugsichtungen.Foundation.Converter;assembly=Zugsichtungen.Foundation"
+        xmlns:vm="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
+        xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels">
+    <Window.Resources>
+        <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
+    </Window.Resources>
+    <materialDesign:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+                                      Identifier="DialogHost"
+                                      x:Name="DialogHost">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <materialDesign:ColorZone Grid.Row="0" 
+                      Padding="0"
+                      Mode="PrimaryMid"
+                      DockPanel.Dock="Top"
+                      ClipToBounds="False"
+                      materialDesign:ElevationAssist.Elevation="Dp4" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Zugsichtungen" 
+                   Margin="10"
+                   FontSize="25"
+                   FontWeight="Bold"/>
+                    <Button Grid.Column="1"
+                            Style="{StaticResource MaterialDesignIconButton}" 
+                            Content="{materialDesign:PackIcon Kind=Add}"
+                            ToolTip="Sichtung hinzufügen"
+                            Foreground="White"
+                            Command="{Binding AddSichtungCommand, Mode=OneTime}"/>
+                </Grid>
+            </materialDesign:ColorZone>
+            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
+                  Grid.Row="1"
+                  Margin="10">
+                <DataGrid.Columns>
+                    <!--<DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=OneWay}" IsReadOnly="True"/>-->
+                    <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Thema" Binding="{Binding Context, Mode=OneWay}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Bemerkung" Binding="{Binding Note, Mode=OneWay}" IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>

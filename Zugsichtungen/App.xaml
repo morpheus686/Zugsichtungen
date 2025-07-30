@@ -4,26 +4,15 @@
              xmlns:converter="clr-namespace:Zugsichtungen.Foundation.Converter;assembly=Zugsichtungen.Foundation"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
-             xmlns:dialogView="clr-namespace:Zugsichtungen.Views.DialogViews">
+             xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews;assembly=Zugsichtungen.UI">
     <Application.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type dialogViewModel:AddSichtungDialogViewModel}">
                 <dialogView:AddSichtungDialogView />
-            </DataTemplate>
-
-            <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
-            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            </DataTemplate>            
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ObsoleteBrushes.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Zugsichtungen.Styles;component/Themes/Generic.xaml" />
-
-                <materialDesign:BundledTheme BaseTheme="Inherit"
-                         PrimaryColor="Red"
-                         SecondaryColor="Blue" 
-                         ColorAdjustment="{materialDesign:ColorAdjustment}"/>
-
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

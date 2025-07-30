@@ -3,25 +3,26 @@ using System.ComponentModel;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Marker;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class AddSichtungDialogViewModel : DialogViewModelBase, IDataErrorInfo, IDialogViewModel
     {
-        public AddSichtungDialogViewModel(IDataService dataService)
+        public AddSichtungDialogViewModel(ISichtungService sichtungService)
         {
             SelectedDate = DateTime.Now;
-            this.dataService = dataService;
+            this.sichtungService = sichtungService;
             this.VehicleList = [];
             this.ContextList = [];
         }
 
         private DateTime selectedDate;
-        private readonly IDataService dataService;
+        private readonly ISichtungService sichtungService;
 
-        public VehicleViewEntryDto SelectedFahrzeug { get; set; } = null!;
-        public ContextDto SelectedKontext { get; set; } = null!;
+        public VehicleViewEntry SelectedFahrzeug { get; set; } = null!;
+        public Context SelectedKontext { get; set; } = null!;
 
         public DateTime SelectedDate
         {
@@ -33,8 +34,8 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
-        public ObservableCollection<VehicleViewEntryDto> VehicleList { get; private set; }
-        public ObservableCollection<ContextDto> ContextList { get; private set; }
+        public ObservableCollection<VehicleViewEntry> VehicleList { get; private set; }
+        public ObservableCollection<Context> ContextList { get; private set; }
 
         public string Note { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
@@ -70,13 +71,13 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         protected override async Task InitializeInternalAsync()
         {
             await LoadAndSelectFirstAsync(
-                this.dataService.GetAllFahrzeugeAsync,
+                this.sichtungService.GetAllVehicleViewEntriesAsync,
                 this.VehicleList,
                 item => this.SelectedFahrzeug = item,
                 nameof(SelectedFahrzeug));
 
             await LoadAndSelectFirstAsync(
-                this.dataService.GetKontextesAsync,
+                this.sichtungService.GetAllContextesAsync,
                 this.ContextList,
                 item => this.SelectedKontext = item,
                 nameof(SelectedKontext));

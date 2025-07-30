@@ -6,5 +6,8 @@ namespace Zugsichtungen.Abstractions.Services
     {
         Task AddSichtungAsync(DateOnly date, int? vehicleId, int? kontextId, string place, string? note);
         Task<List<SightingViewEntry>> GetAllSightingsAsync();
+
+        Task<List<Context>> GetAllContextesAsync();
+        Task<List<VehicleViewEntry>> GetAllVehicleViewEntriesAsync();
     }
 }

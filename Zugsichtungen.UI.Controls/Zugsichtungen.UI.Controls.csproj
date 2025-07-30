@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Foundation\Zugsichtungen.Foundation.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.ViewModels\Zugsichtungen.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

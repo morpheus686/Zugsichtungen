@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Foundation\Zugsichtungen.Foundation.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" />
   </ItemGroup>
 
 </Project>

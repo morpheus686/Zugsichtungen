@@ -3,7 +3,7 @@ using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 
-namespace Zugsichtungen.Services
+namespace Zugsichtungen.Infrastructure.Services
 {
     public class SichtungService(IDataService dataService, IMapper mapper) : ISichtungService
     {
@@ -30,6 +30,32 @@ namespace Zugsichtungen.Services
             foreach (var item in sightingList)
             {
                 pocoList.Add(mapper.Map<SightingViewEntry>(item));
+            }
+
+            return pocoList;
+        }
+
+        public async Task<List<Context>> GetAllContextesAsync()
+        {
+            var contextList = await dataService.GetKontextesAsync();
+            var pocoList = new List<Context>();
+
+            foreach (var item in contextList)
+            {
+                pocoList.Add(mapper.Map<Context>(item));
+            }
+
+            return pocoList;
+        }
+
+        public async Task<List<VehicleViewEntry>> GetAllVehicleViewEntriesAsync()
+        {
+            var vehicleList = await dataService.GetAllFahrzeugeAsync();
+            var pocoList = new List<VehicleViewEntry>();
+
+            foreach (var item in vehicleList)
+            {
+                pocoList.Add(mapper.Map<VehicleViewEntry>(item));
             }
 
             return pocoList;

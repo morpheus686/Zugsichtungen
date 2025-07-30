@@ -4,11 +4,11 @@ using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Infrastructure.Mapping
 {
-    public class SightingViewEntryProfile : Profile
+    public class ContextProfile : Profile
     {
-        public SightingViewEntryProfile()
+        public ContextProfile()
         {
-            CreateMap<SightingViewEntryDto, SightingViewEntry>();
+            CreateMap<ContextDto, Context>().ReverseMap();
         }
     }
 }

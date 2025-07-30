@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Extensions;
+using Zugsichtungen.Infrastructure.Extensions;
 using Zugsichtungen.Infrastructure.Models;
 
-namespace Zugsichtungen.Services
+namespace Zugsichtungen.Infrastructure.Services
 {
     public class EfDataService : IDataService
     {

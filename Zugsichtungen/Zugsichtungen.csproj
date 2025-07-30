@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Views\**" />
+    <Page Remove="Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="9.0.0" />
     <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="MahApps.Metro.IconPacks.MaterialDesign" Version="6.0.0" />
@@ -32,6 +39,7 @@
     <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" />
     <ProjectReference Include="..\Zugsichtungen.UI.Controls\Zugsichtungen.UI.Controls.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.UI\Zugsichtungen.UI.csproj" />
     <ProjectReference Include="..\Zugsichtungen.ViewModels\Zugsichtungen.ViewModels.csproj" />
 	<ProjectReference Include="..\Zugsichtungen.Styles\Zugsichtungen.Styles.csproj" />
   </ItemGroup>

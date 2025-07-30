@@ -7,10 +7,11 @@ using System.Windows;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Mapping;
 using Zugsichtungen.Infrastructure.Models;
+using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Services;
+using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.DialogViewModels;
-using Zugsichtungen.Views;
 
 namespace Zugsichtungen
 {
@@ -59,6 +60,8 @@ namespace Zugsichtungen
             {
                 cfg.AddProfile<SightingProfile>();
                 cfg.AddProfile<SightingViewEntryProfile>();
+                cfg.AddProfile<VehicleViewEntryProfile>();
+                cfg.AddProfile<ContextProfile>();
 
             }, loggerFactory);
 
