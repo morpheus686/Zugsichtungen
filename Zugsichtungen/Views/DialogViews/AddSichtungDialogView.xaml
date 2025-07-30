@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Zugsichtungen.Views.DialogViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:components="clr-namespace:Zugsichtungen.Components"
+             xmlns:components="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
+                       xmlns:enumerations="clr-namespace:Zugsichtungen.Foundation.Enumerations;assembly=Zugsichtungen.Foundation"
                        DialogViewType="YesNo"
                        Header="Sichtung hinzufügen"
              mc:Ignorable="d" 
@@ -100,7 +101,7 @@
                 Width="100"
                 HorizontalAlignment="Right"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                CommandParameter="{x:Static components:DialogResult.Yes}"
+                CommandParameter="{x:Static enumerations:DialogResult.Yes}"
                 Margin="0,0,5,0"
                 IsEnabled="{Binding HasErrors, Converter={StaticResource InverseBooleanConverter}}"/>
 
@@ -109,7 +110,7 @@
                 Width="100"
                 HorizontalAlignment="Right"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                CommandParameter="{x:Static components:DialogResult.Abort}"
+                CommandParameter="{x:Static enumerations:DialogResult.Abort}"
                 Style="{StaticResource MaterialDesignFlatSecondaryButton}"
                 Margin="5,0,0,0"
                 IsCancel="True"/>

@@ -1,7 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Zugsichtungen.Abstractions.Marker;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.ViewModel;
 
 namespace Zugsichtungen.Services
 {

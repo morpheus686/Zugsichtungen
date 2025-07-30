@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Zugsichtungen.ViewModel;
+using Zugsichtungen.ViewModels;
 
 namespace Zugsichtungen.Views
 {

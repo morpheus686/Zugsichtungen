@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Windows;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Models;
+using Zugsichtungen.Infrastructure.Mapping;
+using Zugsichtungen.Infrastructure.Models;
 using Zugsichtungen.Services;
-using Zugsichtungen.ViewModel;
-using Zugsichtungen.ViewModel.DialogViewModel;
+using Zugsichtungen.ViewModels;
+using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.Views;
 
 namespace Zugsichtungen
@@ -46,6 +49,21 @@ namespace Zugsichtungen
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsAction.UseSqlite(connectionString);
             });
+
+            var loggerFactory = LoggerFactory.Create(logging =>
+            {
+                logging.AddConsole();
+            });
+
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<SightingProfile>();
+                cfg.AddProfile<SightingViewEntryProfile>();
+
+            }, loggerFactory);
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddScoped<IDataService, EfDataService>();
             services.AddScoped<ISichtungService, SichtungService>();

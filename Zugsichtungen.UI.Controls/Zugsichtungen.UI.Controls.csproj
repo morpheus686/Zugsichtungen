@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+	  <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" />
+    <ProjectReference Include="..\Foundation\Zugsichtungen.Foundation.csproj" />
   </ItemGroup>
 
 </Project>

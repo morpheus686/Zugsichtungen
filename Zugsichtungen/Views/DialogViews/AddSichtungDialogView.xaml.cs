@@ -1,4 +1,4 @@
-﻿using Zugsichtungen.Components;
+﻿using Zugsichtungen.UI.Controls.CustomControls;
 
 namespace Zugsichtungen.Views.DialogViews
 {

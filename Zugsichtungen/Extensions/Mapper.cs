@@ -1,13 +1,13 @@
 ﻿using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Models;
+using Zugsichtungen.Infrastructure.Models;
 
 namespace Zugsichtungen.Extensions
 {
     public static class Mapper
     {
-        public static SightingViewEntry ToDto(this Sichtungsview entity)
+        public static SightingViewEntryDto ToDto(this Sichtungsview entity)
         {
-            return new SightingViewEntry
+            return new SightingViewEntryDto
             {
                 Id = entity.Id,
                 VehicleNumber = entity.Loknummer,
@@ -17,25 +17,25 @@ namespace Zugsichtungen.Extensions
             };
         }
 
-        public static VehicleViewEntry ToDto(this Fahrzeugliste entity)
+        public static VehicleViewEntryDto ToDto(this Fahrzeugliste entity)
         {
-            return new VehicleViewEntry
+            return new VehicleViewEntryDto
             {
                 Id = entity.Id,
                 Vehicle = entity.Fahrzeug
             };
         }
 
-        public static Context ToDto(this Kontexte entity)
+        public static ContextDto ToDto(this Kontexte entity)
         {
-            return new Context
+            return new ContextDto
             {
                 Id = entity.Id,
                 Name = entity.Name
             };
         }
 
-        public static Sichtungen FromDto(this Sighting dto)
+        public static Sichtungen FromDto(this SightingDto dto)
         {
             return new Sichtungen
             {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Extensions;
-using Zugsichtungen.Models;
+using Zugsichtungen.Infrastructure.Models;
 
 namespace Zugsichtungen.Services
 {
@@ -22,25 +22,25 @@ namespace Zugsichtungen.Services
             Debug.WriteLine(affected);
         }
 
-        public async Task<List<VehicleViewEntry>> GetAllFahrzeugeAsync()
+        public async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
         {
             var fahrzeuge = await this.context.Fahrzeuglistes.ToListAsync();
             return [.. fahrzeuge.Select(x => x.ToDto())];
         }
 
-        public async Task<List<SightingViewEntry>> GetSichtungenAsync()
+        public async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
         {
             var sichtungen = await this.context.Sichtungsviews.ToListAsync();
             return [.. sichtungen.Select(x => x.ToDto())];
         }
 
-        public async Task<List<Context>> GetKontextesAsync()
+        public async Task<List<ContextDto>> GetKontextesAsync()
         {
             var kontexte = await this.context.Kontextes.ToListAsync();
             return [.. kontexte.Select(x => x.ToDto())];
         }
 
-        public async Task AddSichtungAsync(Sighting newSichtung)
+        public async Task AddSichtungAsync(SightingDto newSichtung)
         {
             await this.context.Sichtungens.AddAsync(newSichtung.FromDto());
         }

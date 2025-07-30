@@ -8,8 +8,8 @@
         Title="MainWindow" Height="450" Width="800"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dialogView="clr-namespace:Zugsichtungen.Views.DialogViews"
-        xmlns:vm="clr-namespace:Zugsichtungen.ViewModel"
-        xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModel.DialogViewModel">
+        xmlns:vm="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
+        xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels">
     <materialDesign:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                                       Identifier="DialogHost"
                                       x:Name="DialogHost">

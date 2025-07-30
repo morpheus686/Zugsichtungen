@@ -4,10 +4,10 @@ namespace Zugsichtungen.Abstractions.Services
 {
     public interface IDataService
     {
-        Task<List<SightingViewEntry>> GetSichtungenAsync();
-        Task<List<VehicleViewEntry>> GetAllFahrzeugeAsync();
-        Task<List<Context>> GetKontextesAsync();
-        Task AddSichtungAsync(Sighting newSichtung);
+        Task<List<SightingViewEntryDto>> GetSichtungenAsync();
+        Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync();
+        Task<List<ContextDto>> GetKontextesAsync();
+        Task AddSichtungAsync(SightingDto newSichtung);
         Task SaveChangesAsync();
     }
 }
