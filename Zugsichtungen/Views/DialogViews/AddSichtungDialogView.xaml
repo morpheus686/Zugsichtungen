@@ -62,7 +62,7 @@
                       FontSize="16"
                       Width="100"
                       ItemsSource="{Binding VehicleList, Mode=OneTime}"
-                      DisplayMemberPath="Fahrzeug"
+                      DisplayMemberPath="Vehicle"
                       SelectedItem="{Binding SelectedFahrzeug, Mode=TwoWay}"/>
             <TextBlock Text="Thema"
                        Grid.Row="1"

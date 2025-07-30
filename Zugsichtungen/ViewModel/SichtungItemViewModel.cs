@@ -1,21 +1,21 @@
-﻿using Zugsichtungen.Models;
+﻿using Zugsichtungen.Abstractions.DTO;
 
 namespace Zugsichtungen.ViewModel
 {
     public class SichtungItemViewModel : ViewModelBase
     {
-        private readonly Sichtungsview sichtung;
+        private readonly SightingViewEntry sichtung;
 
         public int? Id => sichtung.Id;
-        public DateOnly? Date => sichtung.Datum;
-        public string? Number => this.sichtung.Loknummer;
-        public string? Location => this.sichtung.Ort;
-        public string? Context => this.sichtung.Thema;
-        public string? Note => this.sichtung.Bemerkung;
+        public DateOnly? Date => sichtung.Date;
+        public string? Number => this.sichtung.VehicleNumber;
+        public string? Location => this.sichtung.Location;
+        public string? Context => this.sichtung.Context;
+        public string? Note => this.sichtung.Note;
 
-        public SichtungItemViewModel(Sichtungsview sichtung)
+        public SichtungItemViewModel(SightingViewEntry sighting)
         {
-            this.sichtung = sichtung;
+            this.sichtung = sighting;
         }
     }
 }

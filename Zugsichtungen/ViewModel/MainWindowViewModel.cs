@@ -1,7 +1,7 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System.Collections.ObjectModel;
+using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Components;
-using Zugsichtungen.Services;
 using Zugsichtungen.ViewModel.DialogViewModel;
 
 namespace Zugsichtungen.ViewModel

@@ -1,4 +1,4 @@
-﻿namespace Zugsichtungen.Services
+﻿namespace Zugsichtungen.Abstractions.Services
 {
     public interface ISichtungService
     {

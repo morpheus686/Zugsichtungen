@@ -1,4 +1,5 @@
-﻿using Zugsichtungen.Models;
+﻿using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Services;
 
 namespace Zugsichtungen.Services
 {
@@ -11,18 +12,18 @@ namespace Zugsichtungen.Services
             this.dataService = dataService;
         }
 
-        public async Task AddSichtung(DateOnly date, int? vehicleId, int? kontextId, string place, string note)
+        public async Task AddSichtung(DateOnly date, int? vehicleId, int? kontextId, string place, string? note)
         {
-            var newSichtung = new Sichtungen
+            var newSighting = new Sighting
             {
-                FahrzeugId = vehicleId,
-                KontextId = kontextId,
-                Ort = place,
-                Datum = date,
-                Bemerkung = note
+                VehicleId = vehicleId,
+                ContextId = kontextId,
+                Location = place,
+                Date = date,
+                Note = note
             };
 
-            await this.dataService.AddSichtungAsync(newSichtung);
+            await this.dataService.AddSichtungAsync(newSighting);
             await this.dataService.SaveChangesAsync();            
         }
     }

@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Extensions;
 using Zugsichtungen.Models;
 
 namespace Zugsichtungen.Services
@@ -19,27 +22,27 @@ namespace Zugsichtungen.Services
             Debug.WriteLine(affected);
         }
 
-        public Task<List<Fahrzeugliste>> GetAllFahrzeugeAsync()
+        public async Task<List<VehicleViewEntry>> GetAllFahrzeugeAsync()
         {
-            var fahrzeuge = this.context.Fahrzeuglistes;
-            return fahrzeuge.ToListAsync();
+            var fahrzeuge = await this.context.Fahrzeuglistes.ToListAsync();
+            return [.. fahrzeuge.Select(x => x.ToDto())];
         }
 
-        public Task<List<Sichtungsview>> GetSichtungenAsync()
+        public async Task<List<SightingViewEntry>> GetSichtungenAsync()
         {
-            var sichtungen = this.context.Sichtungsviews;
-            return sichtungen.ToListAsync();
+            var sichtungen = await this.context.Sichtungsviews.ToListAsync();
+            return [.. sichtungen.Select(x => x.ToDto())];
         }
 
-        public Task<List<Kontexte>> GetKontextesAsync()
+        public async Task<List<Context>> GetKontextesAsync()
         {
-            var kontexte = this.context.Kontextes;
-            return kontexte.ToListAsync();
+            var kontexte = await this.context.Kontextes.ToListAsync();
+            return [.. kontexte.Select(x => x.ToDto())];
         }
 
-        public async Task AddSichtungAsync(Sichtungen newSichtung)
+        public async Task AddSichtungAsync(Sighting newSichtung)
         {
-            await this.context.Sichtungens.AddAsync(newSichtung);
+            await this.context.Sichtungens.AddAsync(newSichtung.FromDto());
         }
     }
 }

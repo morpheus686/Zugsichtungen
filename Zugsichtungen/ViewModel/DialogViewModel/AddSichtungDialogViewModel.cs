@@ -1,11 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Marker;
+using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Models;
-using Zugsichtungen.Services;
 
 namespace Zugsichtungen.ViewModel.DialogViewModel
 {
-    public class AddSichtungDialogViewModel : LoadableViewModel, IDataErrorInfo
+    public class AddSichtungDialogViewModel : LoadableViewModel, IDataErrorInfo, IDialogViewModel
     {
         public AddSichtungDialogViewModel(IDataService dataService)
         {
@@ -18,8 +20,8 @@ namespace Zugsichtungen.ViewModel.DialogViewModel
         private DateTime selectedDate;
         private readonly IDataService dataService;
 
-        public Fahrzeugliste SelectedFahrzeug { get; set; } = null!;
-        public Kontexte SelectedKontext { get; set; } = null!;
+        public VehicleViewEntry SelectedFahrzeug { get; set; } = null!;
+        public Context SelectedKontext { get; set; } = null!;
 
         public DateTime SelectedDate
         {
@@ -31,8 +33,8 @@ namespace Zugsichtungen.ViewModel.DialogViewModel
             }
         }
 
-        public ObservableCollection<Fahrzeugliste> VehicleList { get; private set; }
-        public ObservableCollection<Kontexte> ContextList { get; private set; }
+        public ObservableCollection<VehicleViewEntry> VehicleList { get; private set; }
+        public ObservableCollection<Context> ContextList { get; private set; }
 
         public string Note { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
