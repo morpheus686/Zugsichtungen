@@ -1,5 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Zugsichtungen.Abstractions.Marker;
+using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 
 namespace Zugsichtungen.Services
@@ -8,8 +8,9 @@ namespace Zugsichtungen.Services
     {
         private const string DialogIdentifier = "DialogHost";
 
-        public Task<object?> ShowDialog(IDialogViewModel viewModel)
+        public Task<object?> ShowDialog(ILoadable viewModel)
         {
+            viewModel.Initialize();
             return DialogHost.Show(viewModel, DialogIdentifier);
         }
     }

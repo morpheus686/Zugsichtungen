@@ -9,7 +9,7 @@
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type dialogViewModel:AddSichtungDialogViewModel}">
                 <dialogView:AddSichtungDialogView />
-            </DataTemplate>            
+            </DataTemplate>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Zugsichtungen.Styles;component/Themes/Generic.xaml" />

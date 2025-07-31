@@ -1,9 +1,9 @@
-﻿using Zugsichtungen.Abstractions.Marker;
+﻿using Zugsichtungen.Abstractions.Interfaces;
 
 namespace Zugsichtungen.Abstractions.Services
 {
     public interface IDialogService
     {
-        Task<object?> ShowDialog(IDialogViewModel viewModel);
+        Task<object?> ShowDialog(ILoadable viewModel);
     }
 }

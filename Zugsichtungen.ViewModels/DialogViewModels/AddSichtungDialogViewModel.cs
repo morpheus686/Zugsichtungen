@@ -1,14 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Abstractions.Marker;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
-    public class AddSichtungDialogViewModel : DialogViewModelBase, IDataErrorInfo, IDialogViewModel
+    public class AddSichtungDialogViewModel : DialogViewModelBase, IDataErrorInfo
     {
         public AddSichtungDialogViewModel(ISichtungService sichtungService)
         {

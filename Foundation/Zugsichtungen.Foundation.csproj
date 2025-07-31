@@ -8,6 +8,6 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" />
+	  <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
 	</ItemGroup>
 </Project>

@@ -1,6 +1,8 @@
-﻿namespace Zugsichtungen.Foundation.ViewModel
+﻿using Zugsichtungen.Abstractions.Interfaces;
+
+namespace Zugsichtungen.Foundation.ViewModel
 {
-    public abstract class LoadableViewModel : ViewModelBase
+    public abstract class LoadableViewModel : ViewModelBase, ILoadable
     {
         public Task Initialize()
         {

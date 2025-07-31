@@ -7,42 +7,35 @@ using Zugsichtungen.Infrastructure.Models;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
-    public class EfDataService : IDataService
+    public class EfDataService(ZugbeobachtungenContext context) : IDataService
     {
-        private readonly ZugbeobachtungenContext context;
-
-        public EfDataService(ZugbeobachtungenContext context)
-        {
-            this.context = context;
-        }
-
         public async Task SaveChangesAsync()
         {
-            var affected = await this.context.SaveChangesAsync();
-            Debug.WriteLine(affected);
+            var affected = await context.SaveChangesAsync();
+            Debug.WriteLine("Affected rows: " + affected);
         }
 
         public async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
         {
-            var fahrzeuge = await this.context.Fahrzeuglistes.ToListAsync();
+            var fahrzeuge = await context.Fahrzeuglistes.ToListAsync();
             return [.. fahrzeuge.Select(x => x.ToDto())];
         }
 
         public async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
         {
-            var sichtungen = await this.context.Sichtungsviews.ToListAsync();
+            var sichtungen = await context.Sichtungsviews.ToListAsync();
             return [.. sichtungen.Select(x => x.ToDto())];
         }
 
         public async Task<List<ContextDto>> GetKontextesAsync()
         {
-            var kontexte = await this.context.Kontextes.ToListAsync();
+            var kontexte = await context.Kontextes.ToListAsync();
             return [.. kontexte.Select(x => x.ToDto())];
         }
 
         public async Task AddSichtungAsync(SightingDto newSichtung)
         {
-            await this.context.Sichtungens.AddAsync(newSichtung.FromDto());
+            await context.Sichtungens.AddAsync(newSichtung.FromDto());
         }
     }
 }
