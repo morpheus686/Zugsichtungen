@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Foundation\Zugsichtungen.Foundation.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" />
   </ItemGroup>

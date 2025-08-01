@@ -1,54 +1,44 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
-using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.SqlServerModels;
+using Zugsichtungen.Foundation.Mapping;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
-    public class SqlServerDataService(TrainspottingContext context, IMapper mapper) : IDataService
+    public class SqlServerDataService : DataServiceBase
     {
-        public async Task SaveChangesAsync()
+        private readonly TrainspottingContext context;
+        private readonly IMapper mapper;
+
+        public SqlServerDataService(TrainspottingContext context, IMapper mapper) : base(context) 
         {
-            var affected = await context.SaveChangesAsync();
-            Debug.WriteLine("Affected rows: " + affected);
+            this.context = context;
+            this.mapper = mapper;
         }
 
-        public async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
+        public override async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
         {
             var vehicleList = await context.Vehiclelists.ToListAsync();
-            return [.. vehicleList.Select(mapper.Map<VehicleViewEntryDto>)];
+            return mapper.MapList<Vehiclelist, VehicleViewEntryDto>(vehicleList);
         }
 
-        public async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
+        public override async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
         {
             var sichtungen = await context.SightingLists.ToListAsync();
             return [.. sichtungen.Select(ToDto)];
         }
 
-        public async Task<List<ContextDto>> GetKontextesAsync()
+        public override async Task<List<ContextDto>> GetKontextesAsync()
         {
-            var kontexte = await context.Contexts.ToListAsync();
-            return [.. kontexte.Select(mapper.Map<ContextDto>)];
+            var contextList = await context.Contexts.ToListAsync();
+            return mapper.MapList<Context, ContextDto>(contextList);
         }
 
-        public async Task AddSichtungAsync(SightingDto newSichtung)
+        public override async Task AddSichtungAsync(SightingDto newSichtung)
         {
-            await context.Sightings.AddAsync(FromDto(newSichtung));
-        }
-
-        private static Sighting FromDto(SightingDto dto)
-        {
-            return new Sighting
-            {
-                ContextId = dto.ContextId,
-                VehicleId = dto.VehicleId,
-                Location = dto.Location,
-                Date = dto.Date,
-                Comment = dto.Note
-            };
+            await context.Sightings.AddAsync(mapper.MapSingle<SightingDto, Sighting>(newSichtung));
         }
 
         private static SightingViewEntryDto ToDto(SightingList entity)
@@ -63,7 +53,7 @@ namespace Zugsichtungen.Infrastructure.Services
             };
         }
 
-        public async Task UpdateContext(ContextDto dto, UpdateMode updateMode)
+        public override async Task UpdateContext(ContextDto dto, UpdateMode updateMode)
         {
             switch (updateMode)
             {
