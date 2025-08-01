@@ -8,7 +8,16 @@ namespace Zugsichtungen.Infrastructure.Mapping
     {
         public ContextProfile()
         {
-            CreateMap<ContextDto, Context>().ReverseMap();
+            CreateMap<ContextDto, Context>()
+                .ReverseMap();
+
+            CreateMap<ContextDto, Models.Kontexte>()
+                .ReverseMap()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<ContextDto, SqlServerModels.Context>()
+                .ReverseMap()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Description));
         }
     }
 }

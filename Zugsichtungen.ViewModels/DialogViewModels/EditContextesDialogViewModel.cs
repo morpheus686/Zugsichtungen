@@ -5,11 +5,11 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class EditContextesDialogViewModel : DialogViewModelBase
     {
-        private readonly ISichtungService sichtungService;
+        private readonly ISightingService sichtungService;
 
         public override bool HasErrors => false;
 
-        public EditContextesDialogViewModel(ISichtungService sichtungService)
+        public EditContextesDialogViewModel(ISightingService sichtungService)
         {
             this.sichtungService = sichtungService;
         }

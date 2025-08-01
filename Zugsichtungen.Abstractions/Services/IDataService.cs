@@ -1,4 +1,5 @@
 ﻿using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Enumerations.Database;
 
 namespace Zugsichtungen.Abstractions.Services
 {
@@ -9,5 +10,6 @@ namespace Zugsichtungen.Abstractions.Services
         Task<List<ContextDto>> GetKontextesAsync();
         Task AddSichtungAsync(SightingDto newSichtung);
         Task SaveChangesAsync();
+        Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
     }
 }

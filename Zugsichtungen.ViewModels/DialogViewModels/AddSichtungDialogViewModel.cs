@@ -8,7 +8,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class AddSichtungDialogViewModel : DialogViewModelBase, IDataErrorInfo
     {
-        public AddSichtungDialogViewModel(ISichtungService sichtungService)
+        public AddSichtungDialogViewModel(ISightingService sichtungService)
         {
             SelectedDate = DateTime.Now;
             this.sichtungService = sichtungService;
@@ -17,7 +17,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         }
 
         private DateTime selectedDate;
-        private readonly ISichtungService sichtungService;
+        private readonly ISightingService sichtungService;
 
         public VehicleViewEntry SelectedFahrzeug { get; set; } = null!;
         public Context SelectedKontext { get; set; } = null!;

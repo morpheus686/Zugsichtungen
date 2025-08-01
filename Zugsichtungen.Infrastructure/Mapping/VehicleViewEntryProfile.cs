@@ -9,6 +9,12 @@ namespace Zugsichtungen.Infrastructure.Mapping
         public VehicleViewEntryProfile()
         {
             CreateMap<VehicleViewEntryDto, VehicleViewEntry>();
+
+            CreateMap<Models.Fahrzeugliste, VehicleViewEntryDto>()
+                .ForMember(dest => dest.Vehicle, opt => opt.MapFrom(src => src.Fahrzeug));
+
+            CreateMap<SqlServerModels.Vehiclelist, VehicleViewEntryDto>()
+                .ForMember(dest => dest.Vehicle, opt => opt.MapFrom(src => src.VehicleDesignation));
         }
     }
 }

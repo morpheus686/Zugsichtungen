@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Models;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
-    public class SQLiteDataService(ZugbeobachtungenContext context) : IDataService
+    public class SQLiteDataService(ZugbeobachtungenContext context, IMapper mapper) : IDataService
     {
         public async Task SaveChangesAsync()
         {
@@ -17,7 +19,7 @@ namespace Zugsichtungen.Infrastructure.Services
         public async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
         {
             var fahrzeuge = await context.Fahrzeuglistes.ToListAsync();
-            return [.. fahrzeuge.Select(ToDto)];
+            return [.. fahrzeuge.Select(mapper.Map<VehicleViewEntryDto>)];
         }
 
         public async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
@@ -29,7 +31,7 @@ namespace Zugsichtungen.Infrastructure.Services
         public async Task<List<ContextDto>> GetKontextesAsync()
         {
             var kontexte = await context.Kontextes.ToListAsync();
-            return [.. kontexte.Select(ToDto)];
+            return [.. kontexte.Select(mapper.Map<ContextDto>)];
         }
 
         public async Task AddSichtungAsync(SightingDto newSichtung)
@@ -49,24 +51,6 @@ namespace Zugsichtungen.Infrastructure.Services
             };
         }
 
-        private static VehicleViewEntryDto ToDto(Fahrzeugliste entity)
-        {
-            return new VehicleViewEntryDto
-            {
-                Id = entity.Id,
-                Vehicle = entity.Fahrzeug
-            };
-        }
-
-        private static ContextDto ToDto(Kontexte entity)
-        {
-            return new ContextDto
-            {
-                Id = entity.Id,
-                Name = entity.Name
-            };
-        }
-
         private static Sichtungen FromDto(SightingDto dto)
         {
             return new Sichtungen
@@ -77,6 +61,11 @@ namespace Zugsichtungen.Infrastructure.Services
                 Datum = dto.Date,
                 Bemerkung = dto.Note
             };
+        }
+
+        public Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

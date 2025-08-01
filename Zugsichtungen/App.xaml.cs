@@ -71,9 +71,9 @@ namespace Zugsichtungen
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            //services.AddScoped<IDataService, SQLiteDataService>();
-            services.AddScoped<IDataService, SqlServerDataService>();
-            services.AddScoped<ISichtungService, SichtungService>();
+            services.AddScoped<IDataService, SQLiteDataService>();
+            //services.AddScoped<IDataService, SqlServerDataService>();
+            services.AddScoped<ISightingService, SightingService>();
 
             services.AddSingleton<MainWindow>();
             services.AddTransient<MainWindowViewModel>();

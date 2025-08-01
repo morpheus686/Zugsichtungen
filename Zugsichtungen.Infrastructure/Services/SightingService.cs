@@ -5,7 +5,7 @@ using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
-    public class SichtungService(IDataService dataService, IMapper mapper) : ISichtungService
+    public class SightingService(IDataService dataService, IMapper mapper) : ISightingService
     {
         public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note)
         {

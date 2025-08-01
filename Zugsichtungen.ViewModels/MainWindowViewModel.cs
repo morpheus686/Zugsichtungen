@@ -11,14 +11,14 @@ namespace Zugsichtungen.ViewModels
     {
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
         private readonly IDialogService dialogService;
-        private readonly ISichtungService sichtungService;
+        private readonly ISightingService sichtungService;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
 
         public AsyncCommand AddSichtungCommand { get; }
         public AsyncCommand EditContextesCommand { get; }
 
-        public MainWindowViewModel(IDialogService dialogService, ISichtungService sichtungService)
+        public MainWindowViewModel(IDialogService dialogService, ISightingService sichtungService)
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
