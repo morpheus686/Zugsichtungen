@@ -2,7 +2,7 @@
 {
     public class VehicleViewEntry
     {
-        public int? Id { get; set; }
-        public string? Vehicle { get; set; }
+        public int Id { get; set; }
+        public string Vehicle { get; set; } = string.Empty;
     }
 }

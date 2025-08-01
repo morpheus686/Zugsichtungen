@@ -8,6 +8,7 @@ using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Mapping;
 using Zugsichtungen.Infrastructure.Models;
 using Zugsichtungen.Infrastructure.Services;
+using Zugsichtungen.Infrastructure.SqlServerModels;
 using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
@@ -51,6 +52,8 @@ namespace Zugsichtungen
                 optionsAction.UseSqlite(connectionString);
             });
 
+            services.AddDbContext<TrainspottingContext>();
+
             var loggerFactory = LoggerFactory.Create(logging =>
             {
                 logging.AddConsole();
@@ -68,7 +71,8 @@ namespace Zugsichtungen
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IDataService, EfDataService>();
+            //services.AddScoped<IDataService, SQLiteDataService>();
+            services.AddScoped<IDataService, SqlServerDataService>();
             services.AddScoped<ISichtungService, SichtungService>();
 
             services.AddSingleton<MainWindow>();
@@ -83,5 +87,4 @@ namespace Zugsichtungen
             base.OnExit(e);
         }
     }
-
 }

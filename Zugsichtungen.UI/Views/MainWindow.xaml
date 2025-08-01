@@ -33,6 +33,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Zugsichtungen" 
                    Margin="10"
@@ -43,7 +44,17 @@
                             Content="{materialDesign:PackIcon Kind=Add}"
                             ToolTip="Sichtung hinzufügen"
                             Foreground="White"
-                            Command="{Binding AddSichtungCommand, Mode=OneTime}"/>
+                            Command="{Binding AddSichtungCommand, Mode=OneTime}"
+                            Width="50"/>
+                    <materialDesign:PopupBox Grid.Column="2"
+                                             Width="50"
+                                             HorizontalContentAlignment="Center"
+                                             Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical">
+                            <Button Content="Themen verwalten" 
+                                    Command="{Binding EditContextesCommand, Mode=OneTime}"/>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
                 </Grid>
             </materialDesign:ColorZone>
             <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"

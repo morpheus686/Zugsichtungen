@@ -16,14 +16,24 @@ namespace Zugsichtungen.ViewModels
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
 
         public AsyncCommand AddSichtungCommand { get; }
+        public AsyncCommand EditContextesCommand { get; }
 
         public MainWindowViewModel(IDialogService dialogService, ISichtungService sichtungService)
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
+            EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
+
             this.sichtungenList = [];
 
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
+        }
+
+        private bool CanExecuteEditContextes(object? arg) => !this.IsBusy;
+
+        private async Task ExecuteEditContextes()
+        {
+            await Task.CompletedTask;
         }
 
         private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy;

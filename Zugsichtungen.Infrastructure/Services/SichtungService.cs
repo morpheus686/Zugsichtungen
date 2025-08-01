@@ -7,7 +7,7 @@ namespace Zugsichtungen.Infrastructure.Services
 {
     public class SichtungService(IDataService dataService, IMapper mapper) : ISichtungService
     {
-        public async Task AddSichtungAsync(DateOnly date, int? vehicleId, int? kontextId, string place, string? note)
+        public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note)
         {
             var newSighting = new SightingDto
             {
@@ -18,8 +18,14 @@ namespace Zugsichtungen.Infrastructure.Services
                 Note = note
             };
 
-            await dataService.AddSichtungAsync(newSighting);
-            await dataService.SaveChangesAsync();            
+            await this.AddSichtungAsync(newSighting);         
+        }
+
+
+        public async Task AddSichtungAsync(SightingDto sightingDto)
+        {
+            await dataService.AddSichtungAsync(sightingDto);
+            await dataService.SaveChangesAsync();
         }
 
         public async Task<List<SightingViewEntry>> GetAllSightingsAsync()
@@ -59,6 +65,11 @@ namespace Zugsichtungen.Infrastructure.Services
             }
 
             return pocoList;
+        }
+
+        public Task UpdateContextes(List<Context> contextes)
+        {
+            throw new NotImplementedException();
         }
     }
 }
