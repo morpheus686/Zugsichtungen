@@ -1,1 +1,2 @@
-﻿dotnet ef dbcontext scaffold "Data Source=zugbeobachtungen.db" Microsoft.EntityFrameworkCore.Sqlite --project Zugsichtungen --force -o Models --no-onconfiguring
+﻿dotnet ef dbcontext scaffold "Data Source=zugbeobachtungen.db" Microsoft.EntityFrameworkCore.Sqlite --project Zugsichtungen.Infrastructure.SQLite --force -o Models --no-onconfiguring
+dotnet ef dbcontext scaffold "Data Source=Christopher-PC\\SQLEXPRESS01;Initial Catalog=Trainspotting;Integrated Security=True;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SQLServer --project Zugsichtungen.Infrastructure.SQLServer --force -o Models --no-onconfiguring

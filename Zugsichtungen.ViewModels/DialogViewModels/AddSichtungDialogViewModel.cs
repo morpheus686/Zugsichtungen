@@ -62,7 +62,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         }
 
         public string Error => String.Empty;
-
         public bool PlaceIsInvalid { get; private set; }
         public override bool HasErrors => this.PlaceIsInvalid;
 

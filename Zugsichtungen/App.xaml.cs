@@ -1,14 +1,14 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Windows;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Infrastructure.Mapping;
-using Zugsichtungen.Infrastructure.Models;
 using Zugsichtungen.Infrastructure.Services;
-using Zugsichtungen.Infrastructure.SqlServerModels;
+using Zugsichtungen.Infrastructure.SQLite.Models;
+using Zugsichtungen.Infrastructure.SQLite.Services;
+using Zugsichtungen.Infrastructure.SQLServer.Models;
+using Zugsichtungen.Infrastructure.SQLServer.Services;
 using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
@@ -46,33 +46,43 @@ namespace Zugsichtungen
 
             services.AddSingleton<IConfiguration>(configuration);
 
-            services.AddDbContext<ZugbeobachtungenContext>(optionsAction =>
+            switch (configuration["DatabaseProvider"])
             {
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-                optionsAction.UseSqlite(connectionString);
-            });
+                case "SQLite":
+                    services.AddDbContext<ZugbeobachtungenContext>(options =>
+                    {
+                        var connectionString = configuration.GetConnectionString("SQLiteConnection");
+                        options.UseSqlite(connectionString);
+                    });
 
-            services.AddDbContext<TrainspottingContext>();
+                    services.AddScoped<IDataService, SQLiteDataService>();
+                    break;
+                case "SQLServer":
+                    services.AddDbContext<TrainspottingContext>(options =>
+                    {
+                        var connectionString = configuration.GetConnectionString("SQLServerConnection");
+                        options.UseSqlServer(connectionString);
+                    });
 
-            var loggerFactory = LoggerFactory.Create(logging =>
+                    services.AddScoped<IDataService, SqlServerDataService>();
+                    break;
+                default:
+                    throw new ApplicationException("Keine gültige Datenbank konfiguriert!");
+            }
+
+            services.AddLogging(logging =>
             {
                 logging.AddConsole();
             });
 
-            var mapperConfig = new MapperConfiguration(cfg =>
+            var provider = services.BuildServiceProvider();
+
+            services.AddAutoMapper(config =>
             {
-                cfg.AddProfile<SightingProfile>();
-                cfg.AddProfile<SightingViewEntryProfile>();
-                cfg.AddProfile<VehicleViewEntryProfile>();
-                cfg.AddProfile<ContextProfile>();
+                config.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
+                config.ConstructServicesUsing(provider.GetService);
+            });
 
-            }, loggerFactory);
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
-            services.AddScoped<IDataService, SQLiteDataService>();
-            //services.AddScoped<IDataService, SqlServerDataService>();
             services.AddScoped<ISightingService, SightingService>();
 
             services.AddSingleton<MainWindow>();
@@ -80,11 +90,6 @@ namespace Zugsichtungen
 
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<AddSichtungDialogViewModel>();
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Zugsichtungen.Infrastructure.Services
         }
 
 
-        public async Task AddSichtungAsync(SightingDto sightingDto)
+        private async Task AddSichtungAsync(SightingDto sightingDto)
         {
             await dataService.AddSichtungAsync(sightingDto);
             await dataService.SaveChangesAsync();

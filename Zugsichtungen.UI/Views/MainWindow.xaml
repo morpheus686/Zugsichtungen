@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews"
-        xmlns:converter="clr-namespace:Zugsichtungen.Foundation.Converter;assembly=Zugsichtungen.Foundation"
+        xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
         xmlns:vm="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
         xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels">
     <Window.Resources>
