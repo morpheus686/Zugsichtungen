@@ -22,7 +22,7 @@ namespace Zugsichtungen
     public partial class App : Application
     {
         public new static App Current => (App)Application.Current;
-        public IServiceProvider Services { get; private set; } = default!;
+        public IServiceProvider ServiceProvider { get; private set; } = default!;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -31,9 +31,9 @@ namespace Zugsichtungen
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            Services = services.BuildServiceProvider();
+            ServiceProvider = services.BuildServiceProvider();
 
-            var mainWindow = Services.GetRequiredService<MainWindow>();
+            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }
 
@@ -73,15 +73,11 @@ namespace Zugsichtungen
             services.AddLogging(logging =>
             {
                 logging.AddConsole();
+                logging.AddDebug();
+                logging.SetMinimumLevel(LogLevel.Information);
             });
 
-            var provider = services.BuildServiceProvider();
-
-            services.AddAutoMapper(config =>
-            {
-                config.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
-                config.ConstructServicesUsing(provider.GetService);
-            });
+            services.AddAutoMapper(config => config.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
 
             services.AddScoped<ISightingService, SightingService>();
 

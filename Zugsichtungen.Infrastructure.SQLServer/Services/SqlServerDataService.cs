@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Foundation.Mapping;
@@ -12,34 +13,41 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
     {
         private readonly TrainspottingContext context;
         private readonly IMapper mapper;
+        private readonly ILogger<SqlServerDataService> logger;
 
-        public SqlServerDataService(TrainspottingContext context, IMapper mapper) : base(context) 
+        public SqlServerDataService(TrainspottingContext context, IMapper mapper, ILogger<SqlServerDataService> logger) : base(context) 
         {
             this.context = context;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         public override async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
         {
+            this.logger.LogInformation("Rufe alle Triebfahrzeuge aus der Datenbank ab.");
             var vehicleList = await context.Vehiclelists.ToListAsync();
             return mapper.MapList<Vehiclelist, VehicleViewEntryDto>(vehicleList);
         }
 
         public override async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
         {
+            this.logger.LogInformation("Rufe alle Sichtungen aus der Datenbank ab.");
             var sichtungen = await context.SightingLists.ToListAsync();
             return mapper.MapList<SightingList, SightingViewEntryDto>(sichtungen);
         }
 
         public override async Task<List<ContextDto>> GetKontextesAsync()
         {
+            this.logger.LogInformation("Rufe alle Themen aus der Datenbank ab.");
             var contextList = await context.Contexts.ToListAsync();
             return mapper.MapList<Context, ContextDto>(contextList);
         }
 
         public override async Task AddSichtungAsync(SightingDto newSichtung)
         {
-            await context.Sightings.AddAsync(mapper.MapSingle<SightingDto, Sighting>(newSichtung));
+            this.logger.LogInformation("Füge neue Sichtung zur Datenbank hinzu.");
+            var newEntity = await context.Sightings.AddAsync(mapper.MapSingle<SightingDto, Sighting>(newSichtung));
+            this.logger.LogInformation("Neue Sichtung angelegt.");
         }
 
         public override async Task UpdateContext(ContextDto dto, UpdateMode updateMode)
