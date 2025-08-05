@@ -94,7 +94,6 @@
 
         </Grid>
 
-
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">

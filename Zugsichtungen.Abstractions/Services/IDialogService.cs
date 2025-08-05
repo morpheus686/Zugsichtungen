@@ -4,6 +4,7 @@ namespace Zugsichtungen.Abstractions.Services
 {
     public interface IDialogService
     {
-        Task<object?> ShowDialog(ILoadable viewModel);
+        Task<object?> ShowDialogAsync(ILoadable viewModel);
+        Task ShowIndeterminateDialogAsync(Func<Action<string>, object?, Task> progressTask, object? parameter = null);
     }
 }

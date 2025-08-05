@@ -4,10 +4,14 @@ namespace Zugsichtungen.Foundation.ViewModel
 {
     public abstract class LoadableViewModel : ViewModelBase, ILoadable
     {
-        public Task Initialize()
+        public bool IsInitializing { get; private set; } = true;
+
+        public async Task Initialize()
         {
             InitializeInternal();
-            return InitializeInternalAsync();
+            await InitializeInternalAsync();
+            this.IsInitializing = false;
+            RaisePropertyChanged(nameof(IsInitializing));
         }
 
         protected virtual void InitializeInternal()

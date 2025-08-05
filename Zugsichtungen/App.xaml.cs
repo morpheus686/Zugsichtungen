@@ -82,7 +82,7 @@ namespace Zugsichtungen
             services.AddScoped<ISightingService, SightingService>();
 
             services.AddSingleton<MainWindow>();
-            services.AddTransient<MainWindowViewModel>();
+            services.AddSingleton<MainWindowViewModel>();
 
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<AddSichtungDialogViewModel>();

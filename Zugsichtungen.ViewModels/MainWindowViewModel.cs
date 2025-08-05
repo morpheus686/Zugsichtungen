@@ -14,7 +14,6 @@ namespace Zugsichtungen.ViewModels
         private readonly ISightingService sichtungService;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
-
         public AsyncCommand AddSichtungCommand { get; }
         public AsyncCommand EditContextesCommand { get; }
 
@@ -24,9 +23,13 @@ namespace Zugsichtungen.ViewModels
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
 
             this.sichtungenList = [];
-
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
+        }
+
+        protected override Task InitializeInternalAsync()
+        {
+            return UpdateSichtungen();
         }
 
         private bool CanExecuteEditContextes(object? arg) => !this.IsBusy;
@@ -42,7 +45,7 @@ namespace Zugsichtungen.ViewModels
         {
             IsBusy = true;
             var addSichtungDialogViewModel = new AddSichtungDialogViewModel(sichtungService);
-            var result = await this.dialogService.ShowDialog(addSichtungDialogViewModel);
+            var result = await this.dialogService.ShowDialogAsync(addSichtungDialogViewModel);
 
             if (result == null)
             {
@@ -51,21 +54,23 @@ namespace Zugsichtungen.ViewModels
 
             if ((DialogResult)result == DialogResult.Yes)
             {
-                await this.sichtungService.AddSichtungAsync(DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
-                    addSichtungDialogViewModel.SelectedFahrzeug.Id,
-                    addSichtungDialogViewModel.SelectedKontext.Id,
-                    addSichtungDialogViewModel.Place,
-                    addSichtungDialogViewModel.Note);
+                await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
+                {
+                    updateMessage("Neue Sichtung wird gespeichert.");
 
-                await this.UpdateSichtungen();
+                    await this.sichtungService.AddSichtungAsync(DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
+                        addSichtungDialogViewModel.SelectedFahrzeug.Id,
+                        addSichtungDialogViewModel.SelectedKontext.Id,
+                        addSichtungDialogViewModel.Place,
+                        addSichtungDialogViewModel.Note);
+
+                    await this.UpdateSichtungen();
+                    updateMessage("Sichtung gespeichert.");
+                    await Task.Delay(2000);
+                });
             }
 
             IsBusy = false;
-        }
-
-        protected override Task InitializeInternalAsync()
-        {
-            return UpdateSichtungen();
         }
 
         private async Task UpdateSichtungen()
