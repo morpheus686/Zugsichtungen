@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
@@ -8,16 +10,22 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class AddSichtungDialogViewModel : DialogViewModelBase, IDataErrorInfo
     {
-        public AddSichtungDialogViewModel(ISightingService sichtungService)
+        public AddSichtungDialogViewModel(ISightingService sichtungService, IDialogService dialogService)
         {
             SelectedDate = DateTime.Now;
             this.sichtungService = sichtungService;
+            this.dialogService = dialogService;
             this.VehicleList = [];
             this.ContextList = [];
+
+            this.AddImageCommand = new RelayCommand(ExececuteAddImageCommand);
+            this.RemoveImageCommand = new RelayCommand(ExecuteRemoveImageCommand);
         }
 
         private DateTime selectedDate;
+        private string? imagePath = null;
         private readonly ISightingService sichtungService;
+        private readonly IDialogService dialogService;
 
         public VehicleViewEntry SelectedFahrzeug { get; set; } = null!;
         public Context SelectedKontext { get; set; } = null!;
@@ -37,6 +45,20 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 
         public string Note { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
+        public string? ImagePath
+        {
+            get => imagePath;
+            private set
+            {
+                if (imagePath != value)
+                {
+                    imagePath = value;
+                    RaisePropertyChanged(nameof(imagePath));
+                }                
+            }
+        }
+        public ICommand AddImageCommand { get; }
+        public ICommand RemoveImageCommand { get; }
 
         public string this[string columnName]
         {
@@ -99,6 +121,23 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 setSelectedItem(targetCollection.First());
                 RaisePropertyChanged(selectedPropertyName);
             }
+        }
+
+        private void ExececuteAddImageCommand()
+        {
+            var result = this.dialogService.ShowOpenFileDialog();
+
+            if (result == null)
+            {
+                return;
+            }
+
+            this.ImagePath = result;
+        }
+
+        private void ExecuteRemoveImageCommand()
+        {
+            this.ImagePath = null;
         }
     }
 }

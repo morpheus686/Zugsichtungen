@@ -10,11 +10,11 @@
                        DialogViewType="YesNo"
                        Header="Sichtung hinzufügen"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000">
     <components:DialogView.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </components:DialogView.Resources>
-    <Grid Margin="10" Name="DialogGrid">
+    <Grid Margin="10" Name="DialogGrid" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -26,8 +26,10 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
@@ -83,15 +85,63 @@
             <TextBlock Text="Bemerkung"
                        Grid.Row="2"
                        Grid.Column="0" 
+                       Grid.ColumnSpan="3"
                        FontSize="20"
                        Margin="10"/>
             <TextBox Grid.Row="2" 
                         Grid.Column="1"
-                     Grid.ColumnSpan="4"
+                     Grid.ColumnSpan="3"
                         Margin="10"
                      FontSize="16"
                      Text="{Binding Note, Mode=TwoWay}"/>
-
+            <Image Grid.Row="0"
+                   Grid.Column="4"
+                   Grid.RowSpan="4"
+                   Width="300"
+                   Height="200"
+                   Source="{Binding ImagePath}"/>
+            <Button Content="{materialDesign:PackIcon Kind=Edit}" 
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    Grid.RowSpan="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Command="{Binding AddImageCommand, Mode=OneTime}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}" >
+                        <Setter Property="Visibility" Value="Hidden" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ImagePath}" Value="{x:Null}" >
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ImagePath}" Value="" >
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="{materialDesign:PackIcon Kind=Delete}" 
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    Grid.RowSpan="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Command="{Binding RemoveImageCommand, Mode=OneTime}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}" >
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ImagePath}" Value="{x:Null}" >
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ImagePath}" Value="" >
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
 
         <StackPanel Grid.Row="2"

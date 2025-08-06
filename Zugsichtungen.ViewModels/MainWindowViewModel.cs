@@ -44,7 +44,7 @@ namespace Zugsichtungen.ViewModels
         private async Task ExecuteAddSichtung()
         {
             IsBusy = true;
-            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(sichtungService);
+            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(sichtungService, dialogService);
             var result = await this.dialogService.ShowDialogAsync(addSichtungDialogViewModel);
 
             if (result == null)
@@ -62,7 +62,8 @@ namespace Zugsichtungen.ViewModels
                         addSichtungDialogViewModel.SelectedFahrzeug.Id,
                         addSichtungDialogViewModel.SelectedKontext.Id,
                         addSichtungDialogViewModel.Place,
-                        addSichtungDialogViewModel.Note);
+                        addSichtungDialogViewModel.Note,
+                        addSichtungDialogViewModel.ImagePath);
 
                     await this.UpdateSichtungen();
                     updateMessage("Sichtung gespeichert.");

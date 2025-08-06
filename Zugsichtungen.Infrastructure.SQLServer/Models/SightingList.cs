@@ -16,4 +16,6 @@ public partial class SightingList
     public string? Description { get; set; }
 
     public string? Comment { get; set; }
+
+    public byte[]? Image { get; set; }
 }

@@ -8,4 +8,6 @@ public partial class Vehiclelist
     public int Id { get; set; }
 
     public string VehicleDesignation { get; set; } = null!;
+
+    public int SeriesId { get; set; }
 }

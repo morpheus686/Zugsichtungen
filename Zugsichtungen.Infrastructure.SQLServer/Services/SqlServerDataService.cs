@@ -15,7 +15,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         private readonly IMapper mapper;
         private readonly ILogger<SqlServerDataService> logger;
 
-        public SqlServerDataService(TrainspottingContext context, IMapper mapper, ILogger<SqlServerDataService> logger) : base(context) 
+        public SqlServerDataService(TrainspottingContext context, IMapper mapper, ILogger<SqlServerDataService> logger) : base(context)
         {
             this.context = context;
             this.mapper = mapper;

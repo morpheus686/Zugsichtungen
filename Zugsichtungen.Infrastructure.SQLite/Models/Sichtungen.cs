@@ -17,6 +17,8 @@ public partial class Sichtungen
 
     public string? Bemerkung { get; set; }
 
+    public byte[]? Bild { get; set; }
+
     public virtual Fahrzeuge? Fahrzeug { get; set; }
 
     public virtual Kontexte? Kontext { get; set; }

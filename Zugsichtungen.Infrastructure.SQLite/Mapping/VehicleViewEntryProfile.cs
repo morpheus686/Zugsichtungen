@@ -9,7 +9,8 @@ namespace Zugsichtungen.Infrastructure.SQLite.Mapping
         public VehicleViewEntryProfile()
         {
             CreateMap<Fahrzeugliste, VehicleViewEntryDto>()
-                .ForMember(dest => dest.Vehicle, opt => opt.MapFrom(src => src.Fahrzeug));
+                .ForMember(dest => dest.Vehicle, opt => opt.MapFrom(src => src.Fahrzeug))
+                .ForMember(dest => dest.SeriesId, opt => opt.MapFrom(src => src.BaureiheId));
         }
     }
 }

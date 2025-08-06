@@ -7,18 +7,27 @@ namespace Zugsichtungen.Infrastructure.Services
 {
     public class SightingService(IDataService dataService, IMapper mapper) : ISightingService
     {
-        public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note)
+        public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note, string? filePath)
         {
+
+
             var newSighting = new SightingDto
             {
                 VehicleId = vehicleId,
                 ContextId = kontextId,
                 Location = place,
                 Date = date,
-                Note = note
+                Note = note,
+                Image = null
             };
 
-            await this.AddSichtungAsync(newSighting);         
+            if (filePath != null)
+            {
+                byte[] fileContent = await File.ReadAllBytesAsync(filePath);
+                newSighting.Image = fileContent;
+            }
+
+            await this.AddSichtungAsync(newSighting);
         }
 
 

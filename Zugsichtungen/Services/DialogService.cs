@@ -35,5 +35,27 @@ namespace Zugsichtungen.Services
                 await showDialogTask;
             }
         }
+
+        public string? ShowOpenFileDialog(string filter = "Alle Dateien (*.*)|*.*")
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = filter,
+                Multiselect = false
+            };
+
+            return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
+        }
+
+        public string[] ShowOpenFilesDialog(string filter = "Alle Dateien (*.*)|*.*")
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = filter,
+                Multiselect = true
+            };
+
+            return openFileDialog.ShowDialog() == true ? openFileDialog.FileNames : Array.Empty<string>();
+        }
     }
 }

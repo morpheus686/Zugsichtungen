@@ -114,6 +114,7 @@ public partial class TrainspottingContext : DbContext
                 .HasNoKey()
                 .ToView("Vehiclelist");
 
+            entity.Property(e => e.SeriesId).HasColumnName("Series_Id");
             entity.Property(e => e.VehicleDesignation).HasMaxLength(21);
         });
 

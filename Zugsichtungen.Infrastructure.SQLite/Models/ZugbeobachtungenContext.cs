@@ -58,6 +58,8 @@ public partial class ZugbeobachtungenContext : DbContext
             entity
                 .HasNoKey()
                 .ToView("Fahrzeugliste");
+
+            entity.Property(e => e.BaureiheId).HasColumnName("BaureiheID");
         });
 
         modelBuilder.Entity<Hersteller>(entity =>
@@ -94,6 +96,7 @@ public partial class ZugbeobachtungenContext : DbContext
             entity.ToTable("Sichtungen");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Bild).HasColumnName("bild");
             entity.Property(e => e.Datum).HasColumnName("datum");
             entity.Property(e => e.FahrzeugId).HasColumnName("fahrzeug_id");
             entity.Property(e => e.KontextId).HasColumnName("kontext_id");

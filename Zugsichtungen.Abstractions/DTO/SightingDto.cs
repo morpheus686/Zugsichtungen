@@ -13,5 +13,7 @@
         public int ContextId { get; set; }
 
         public string? Note { get; set; }
+
+        public byte[]? Image { get; set; }
     }
 }

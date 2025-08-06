@@ -6,5 +6,7 @@ namespace Zugsichtungen.Abstractions.Services
     {
         Task<object?> ShowDialogAsync(ILoadable viewModel);
         Task ShowIndeterminateDialogAsync(Func<Action<string>, object?, Task> progressTask, object? parameter = null);
+        string? ShowOpenFileDialog(string filter = "Alle Dateien (*.*)|*.*");
+        string[] ShowOpenFilesDialog(string filter = "Alle Dateien (*.*)|*.*");
     }
 }
