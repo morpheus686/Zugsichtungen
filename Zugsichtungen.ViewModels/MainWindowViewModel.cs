@@ -1,5 +1,6 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
@@ -13,18 +14,33 @@ namespace Zugsichtungen.ViewModels
         private readonly IDialogService dialogService;
         private readonly ISightingService sichtungService;
 
-        public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
-        public AsyncCommand AddSichtungCommand { get; }
-        public AsyncCommand EditContextesCommand { get; }
+        public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList; 
+        public SichtungItemViewModel? SelectedItem { get; set; }
+
+        public ICommand AddSichtungCommand { get; }
+        public ICommand EditContextesCommand { get; }
+        public ICommand ShowSightingDetailsCommand { get; }
+
 
         public MainWindowViewModel(IDialogService dialogService, ISightingService sichtungService)
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
+            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);
 
             this.sichtungenList = [];
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
+        }
+
+        private bool CanExecuteShowSightingsDetails(object? arg) => this.SelectedItem != null && !this.IsBusy;
+
+        private async Task ExecuteShowSightingDetails()
+        {
+            IsBusy = true;
+            var showDetailsViewModel = new ShowSightingDetailsDialogViewModel();
+            await this.dialogService.ShowDialogAsync(showDetailsViewModel);
+            IsBusy = false;
         }
 
         protected override Task InitializeInternalAsync()

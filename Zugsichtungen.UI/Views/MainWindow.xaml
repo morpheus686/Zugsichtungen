@@ -10,7 +10,8 @@
         xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews"
         xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
         xmlns:vm="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
-        xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels">
+        xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
+        Style="{StaticResource MaterialDesignWindow}">
     <Window.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
     </Window.Resources>
@@ -58,8 +59,14 @@
                 </Grid>
             </materialDesign:ColorZone>
             <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
-                  Grid.Row="1"
-                  Margin="10">
+                      SelectedItem="{Binding SelectedItem}" 
+                      Grid.Row="1"
+                      Margin="10">
+                <DataGrid.InputBindings>
+                    <MouseBinding
+                            MouseAction="LeftDoubleClick"
+                            Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=OneWay}" IsReadOnly="True"/>-->
                     <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>

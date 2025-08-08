@@ -1,0 +1,32 @@
+﻿<components:DialogView x:Class="Zugsichtungen.UI.Views.DialogViews.ShowSightingDetailsDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zugsichtungen.UI.Views.DialogViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:components="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
+                       Style="{StaticResource DialogViewStyle}"
+                       DialogViewType="Close"
+                       Header="Details">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Row="0"
+               Grid.Column="2"
+               Grid.RowSpan="3"
+               Width="600"
+               Height="400" />
+    </Grid>
+</components:DialogView>

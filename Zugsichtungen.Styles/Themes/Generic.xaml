@@ -4,15 +4,8 @@
                     xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Zugsichtungen.Styles;component/Styles/DialogViewStyle.xaml" />
-
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ObsoleteBrushes.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-
-        <materialDesign:BundledTheme BaseTheme="Inherit"
-                         PrimaryColor="Red"
-                         SecondaryColor="Blue" 
-                         ColorAdjustment="{materialDesign:ColorAdjustment}"/>
+        <ResourceDictionary Source="/Zugsichtungen.Styles;component/Styles/MaterialDesignSettings.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="{x:Type controls:DialogView}" BasedOn="{StaticResource DialogViewStyle}" />
+    <Style TargetType="{x:Type controls:DialogView}" />
 </ResourceDictionary>

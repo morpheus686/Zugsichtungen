@@ -1,4 +1,5 @@
-﻿using Zugsichtungen.UI.Controls.CustomControls;
+﻿using System.Diagnostics;
+using Zugsichtungen.UI.Controls.CustomControls;
 
 namespace Zugsichtungen.UI.Views.DialogViews
 {
@@ -10,6 +11,7 @@ namespace Zugsichtungen.UI.Views.DialogViews
         public AddSichtungDialogView()
         {
             InitializeComponent();
+            Debug.WriteLine($"Header: {Header}");
         }
     }
 }

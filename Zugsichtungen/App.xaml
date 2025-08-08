@@ -4,9 +4,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
              xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews;assembly=Zugsichtungen.UI"
+             xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
              xmlns:applicationDialogViews="clr-namespace:Zugsichtungen.DialogViews">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Zugsichtungen.Styles;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>   
+            
             <DataTemplate DataType="{x:Type dialogViewModel:AddSichtungDialogViewModel}">
                 <dialogView:AddSichtungDialogView />
             </DataTemplate>
@@ -15,9 +20,9 @@
                 <applicationDialogViews:IndeterminateDialogView />
             </DataTemplate>
 
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Zugsichtungen.Styles;component/Themes/Generic.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type dialogViewModel:ShowSightingDetailsDialogViewModel}">
+                <dialogView:ShowSightingDetailsDialogView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

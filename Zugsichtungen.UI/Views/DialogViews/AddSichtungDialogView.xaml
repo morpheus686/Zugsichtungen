@@ -1,19 +1,20 @@
-﻿<components:DialogView x:Class="Zugsichtungen.UI.Views.DialogViews.AddSichtungDialogView"
+﻿<controls:DialogView x:Class="Zugsichtungen.UI.Views.DialogViews.AddSichtungDialogView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                        xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:components="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
+             xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
                        xmlns:enumerations="clr-namespace:Zugsichtungen.Foundation.Enumerations;assembly=Zugsichtungen.Foundation"
-                       DialogViewType="YesNo"
-                       Header="Sichtung hinzufügen"
+                       DialogViewType="None"
+                       Header="Sichtung Hinzufügen"
+                     Style="{StaticResource DialogViewStyle}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">
-    <components:DialogView.Resources>
+    <controls:DialogView.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-    </components:DialogView.Resources>
+    </controls:DialogView.Resources>
     <Grid Margin="10" Name="DialogGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -168,4 +169,4 @@
                 IsCancel="True"/>
         </StackPanel>
     </Grid>
-</components:DialogView>
+</controls:DialogView>
