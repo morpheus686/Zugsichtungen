@@ -43,11 +43,17 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return mapper.MapList<Context, ContextDto>(contextList);
         }
 
-        public override async Task AddSichtungAsync(SightingDto newSichtung)
+        public override async Task AddSichtungAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
         {
             this.logger.LogInformation("Füge neue Sichtung zur Datenbank hinzu.");
             var newEntity = await context.Sightings.AddAsync(mapper.MapSingle<SightingDto, Sighting>(newSichtung));
             this.logger.LogInformation("Neue Sichtung angelegt.");
+
+            if (sightingPictureDto != null)
+            {
+                var sightingPictureEntity = await context.SightingPictures.AddAsync(mapper.Map<SightingPictureDto, SightingPicture>(sightingPictureDto));
+                sightingPictureEntity.Entity.Sighting = newEntity.Entity;
+            }
         }
 
         public override async Task UpdateContext(ContextDto dto, UpdateMode updateMode)

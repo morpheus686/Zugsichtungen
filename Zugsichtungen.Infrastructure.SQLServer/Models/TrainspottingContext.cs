@@ -23,6 +23,8 @@ public partial class TrainspottingContext : DbContext
 
     public virtual DbSet<SightingList> SightingLists { get; set; }
 
+    public virtual DbSet<SightingPicture> SightingPictures { get; set; }
+
     public virtual DbSet<Vehicle> Vehicles { get; set; }
 
     public virtual DbSet<Vehiclelist> Vehiclelists { get; set; }
@@ -94,7 +96,19 @@ public partial class TrainspottingContext : DbContext
 
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.Location).HasMaxLength(100);
-            entity.Property(e => e.VehicleNumber).HasMaxLength(21);
+            entity.Property(e => e.VehicleNumber).HasMaxLength(32);
+        });
+
+        modelBuilder.Entity<SightingPicture>(entity =>
+        {
+            entity.ToTable("SightingPicture");
+
+            entity.Property(e => e.Filename).HasMaxLength(200);
+
+            entity.HasOne(d => d.Sighting).WithMany(p => p.SightingPictures)
+                .HasForeignKey(d => d.SightingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SightingPicture_Sighting");
         });
 
         modelBuilder.Entity<Vehicle>(entity =>

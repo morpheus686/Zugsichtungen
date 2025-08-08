@@ -9,13 +9,11 @@ public partial class SightingList
 
     public DateOnly SightingDate { get; set; }
 
-    public string VehicleNumber { get; set; } = null!;
+    public string? VehicleNumber { get; set; }
 
     public string Location { get; set; } = null!;
 
     public string? Description { get; set; }
 
     public string? Comment { get; set; }
-
-    public byte[]? Image { get; set; }
 }

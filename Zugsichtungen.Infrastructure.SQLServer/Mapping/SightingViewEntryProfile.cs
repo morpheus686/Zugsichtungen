@@ -13,8 +13,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Mapping
                 .ForMember(dest => dest.Context, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.SightingDate))
-                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Comment))
-                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image));
+                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Comment));
 
         }
     }

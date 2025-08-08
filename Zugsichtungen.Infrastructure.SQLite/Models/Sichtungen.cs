@@ -17,9 +17,9 @@ public partial class Sichtungen
 
     public string? Bemerkung { get; set; }
 
-    public byte[]? Bild { get; set; }
-
     public virtual Fahrzeuge? Fahrzeug { get; set; }
 
     public virtual Kontexte? Kontext { get; set; }
+
+    public virtual ICollection<SichtungBild> SichtungBilds { get; set; } = new List<SichtungBild>();
 }

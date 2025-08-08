@@ -23,6 +23,8 @@ public partial class ZugbeobachtungenContext : DbContext
 
     public virtual DbSet<Modelle> Modelles { get; set; }
 
+    public virtual DbSet<SichtungBild> SichtungBilds { get; set; }
+
     public virtual DbSet<Sichtungen> Sichtungens { get; set; }
 
     public virtual DbSet<Sichtungsview> Sichtungsviews { get; set; }
@@ -91,12 +93,20 @@ public partial class ZugbeobachtungenContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
+        modelBuilder.Entity<SichtungBild>(entity =>
+        {
+            entity.ToTable("SichtungBild");
+
+            entity.HasOne(d => d.Sichtung).WithMany(p => p.SichtungBilds)
+                .HasForeignKey(d => d.SichtungId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         modelBuilder.Entity<Sichtungen>(entity =>
         {
             entity.ToTable("Sichtungen");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Bild).HasColumnName("bild");
             entity.Property(e => e.Datum).HasColumnName("datum");
             entity.Property(e => e.FahrzeugId).HasColumnName("fahrzeug_id");
             entity.Property(e => e.KontextId).HasColumnName("kontext_id");

@@ -8,7 +8,7 @@ namespace Zugsichtungen.Infrastructure.Services
 {
     public abstract class DataServiceBase(DbContext context) : IDataService
     {
-        public abstract Task AddSichtungAsync(SightingDto newSichtung);
+        public abstract Task AddSichtungAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto);
         public abstract Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync();
         public abstract Task<List<ContextDto>> GetKontextesAsync();
         public abstract Task<List<SightingViewEntryDto>> GetSichtungenAsync();

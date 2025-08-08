@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Foundation.Mapping;
@@ -12,11 +13,13 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
     {
         private readonly ZugbeobachtungenContext context;
         private readonly IMapper mapper;
+        private readonly ILogger<SQLiteDataService> logger;
 
-        public SQLiteDataService(ZugbeobachtungenContext context, IMapper mapper) : base(context)
+        public SQLiteDataService(ZugbeobachtungenContext context, IMapper mapper, ILogger<SQLiteDataService> logger) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         public override async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
@@ -37,9 +40,17 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return mapper.MapList<Kontexte, ContextDto>(kontexte);
         }
 
-        public override async Task AddSichtungAsync(SightingDto newSichtung)
+        public override async Task AddSichtungAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
         {
-            await context.Sichtungens.AddAsync(mapper.MapSingle<SightingDto, Sichtungen>(newSichtung));
+            this.logger.LogInformation("Füge neue Sichtung zur Datenbank hinzu.");
+            var newEntity = await context.Sichtungens.AddAsync(mapper.MapSingle<SightingDto, Sichtungen>(newSichtung));
+            this.logger.LogInformation("Neue Sichtung angelegt.");
+
+            if (sightingPictureDto != null)
+            {
+                var sightingPictureEntity = await context.SichtungBilds.AddAsync(mapper.Map<SightingPictureDto, SichtungBild>(sightingPictureDto));
+                sightingPictureEntity.Entity.Sichtung = newEntity.Entity;
+            }
         }
 
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)

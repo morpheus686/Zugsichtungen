@@ -14,7 +14,7 @@
                                                       NotNullValue="Visible" />
     </components:DialogView.Resources>
     <StackPanel Orientation="Vertical">
-        <ProgressBar Width="50" Height="50" Margin="16"
+        <ProgressBar Width="50" Height="50" Margin="16"                     
                      Style="{StaticResource MaterialDesignCircularProgressBar}"
                      IsIndeterminate="True" />
         <TextBlock MaxWidth="300"

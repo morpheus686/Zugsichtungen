@@ -17,9 +17,9 @@ public partial class Sighting
 
     public string? Comment { get; set; }
 
-    public byte[]? Image { get; set; }
-
     public virtual Context Context { get; set; } = null!;
+
+    public virtual ICollection<SightingPicture> SightingPictures { get; set; } = new List<SightingPicture>();
 
     public virtual Vehicle Vehicle { get; set; } = null!;
 }

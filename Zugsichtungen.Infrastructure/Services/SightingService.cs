@@ -17,23 +17,26 @@ namespace Zugsichtungen.Infrastructure.Services
                 ContextId = kontextId,
                 Location = place,
                 Date = date,
-                Note = note,
-                Image = null
+                Note = note
             };
+
+            SightingPictureDto? sightingPictureDto = null;
 
             if (filePath != null)
             {
-                byte[] fileContent = await File.ReadAllBytesAsync(filePath);
-                newSighting.Image = fileContent;
+                sightingPictureDto = new SightingPictureDto();
+                sightingPictureDto.Filename = new FileInfo(filePath).Name;
+                sightingPictureDto.Image = await File.ReadAllBytesAsync(filePath);
+                               
             }
-
-            await this.AddSichtungAsync(newSighting);
+            
+            await this.AddSichtungAsync(newSighting, sightingPictureDto); 
         }
 
 
-        private async Task AddSichtungAsync(SightingDto sightingDto)
+        private async Task AddSichtungAsync(SightingDto sightingDto, SightingPictureDto? sightingPictureDto)
         {
-            await dataService.AddSichtungAsync(sightingDto);
+            await dataService.AddSichtungAsync(sightingDto, sightingPictureDto);
             await dataService.SaveChangesAsync();
         }
 

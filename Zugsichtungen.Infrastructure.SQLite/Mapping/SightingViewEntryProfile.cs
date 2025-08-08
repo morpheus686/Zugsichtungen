@@ -13,8 +13,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Mapping
                 .ForMember(dest => dest.Context, opt => opt.MapFrom(src => src.Thema))
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Ort))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Datum))
-                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Bemerkung))
-                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Bild));
+                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Bemerkung));
 
         }
     }
