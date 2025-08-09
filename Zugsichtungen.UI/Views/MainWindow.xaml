@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Zugsichtungen.UI.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        WindowState="Maximized"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews"
         xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
@@ -26,64 +27,92 @@
             Identifier="DialogHost"
             x:Name="DialogHost"
             Panel.ZIndex="1">
+            <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <materialDesign:DrawerHost.LeftDrawerContent >
+                    <DockPanel Width="300">
+                        <ToggleButton
+                            Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                            DockPanel.Dock="Top"
+                            HorizontalAlignment="Right"
+                            Margin="16"
+                            IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
+                                         Content="Sichtungen"/>
+                            <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
+                                         Content="Galerie"/>
+                        </StackPanel>
+                    </DockPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
 
-                <materialDesign:ColorZone Grid.Row="0"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <materialDesign:ColorZone Grid.Row="0"
                                           Padding="0"
                                           Mode="PrimaryMid"
                                           ClipToBounds="False"
                                           materialDesign:ElevationAssist.Elevation="Dp4">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Zugsichtungen" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton x:Name="MenuToggleButton"
+                                      Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      IsChecked="False"
+                                      AutomationProperties.Name="HamburgerToggleButton"
+                                      HorizontalAlignment="Left"
+                                      Margin="16" />
+                            <TextBlock Text="Zugsichtungen" 
                                    Margin="10"
                                    FontSize="25"
-                                   FontWeight="Bold"/>
-                        <Button Grid.Column="1"
+                                   FontWeight="Bold"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+                            <Button Grid.Column="2"
                                 Style="{StaticResource MaterialDesignIconButton}" 
                                 Content="{materialDesign:PackIcon Kind=Add}"
                                 ToolTip="Sichtung hinzufügen"
                                 Foreground="White"
                                 Command="{Binding AddSichtungCommand, Mode=OneTime}"
                                 Width="50"/>
-                        <materialDesign:PopupBox Grid.Column="2"
+                            <materialDesign:PopupBox Grid.Column="2"
                                                  Width="50"
                                                  HorizontalContentAlignment="Center"
                                                  Visibility="Collapsed">
-                            <StackPanel Orientation="Vertical">
-                                <Button Content="Themen verwalten" 
+                                <StackPanel Orientation="Vertical">
+                                    <Button Content="Themen verwalten" 
                                         Command="{Binding EditContextesCommand, Mode=OneTime}"/>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                    </Grid>
-                </materialDesign:ColorZone>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+                    </materialDesign:ColorZone>
 
-                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
+                    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
                           SelectedItem="{Binding SelectedItem}" 
                           Grid.Row="1"
                           Margin="10">
-                    <DataGrid.InputBindings>
-                        <MouseBinding MouseAction="LeftDoubleClick"
+                        <DataGrid.InputBindings>
+                            <MouseBinding MouseAction="LeftDoubleClick"
                                       Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
-                    </DataGrid.InputBindings>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Thema" Binding="{Binding Context, Mode=OneWay}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Bemerkung" Binding="{Binding Note, Mode=OneWay}" IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+                        </DataGrid.InputBindings>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Thema" Binding="{Binding Context, Mode=OneWay}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Bemerkung" Binding="{Binding Note, Mode=OneWay}" IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </materialDesign:DrawerHost>
         </materialDesign:DialogHost>
 
         <!-- Progress-DialogHost immer oben -->
