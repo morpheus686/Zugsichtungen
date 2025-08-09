@@ -1,4 +1,5 @@
-﻿using Zugsichtungen.Foundation.ViewModel;
+﻿using System.Globalization;
+using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.Enumerations;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
@@ -21,7 +22,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         public string Message
         {
             get => _message;
-            set
+            private set
             {
                 _message = value;
                 RaisePropertyChanged();
@@ -31,7 +32,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         public IndeterminateState WorkingState
         {
             get => workingState;
-            set 
+            private set 
             {
                 if (this.workingState != value)
                 {
@@ -41,5 +42,10 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
+        public void SetNewMessage(string message, IndeterminateState newIndeterminateState)
+        {
+            this.Message = message;
+            this.WorkingState = newIndeterminateState;
+        }
     }
 }

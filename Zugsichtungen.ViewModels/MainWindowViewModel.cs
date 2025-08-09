@@ -5,6 +5,7 @@ using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.DialogViewModels;
+using Zugsichtungen.ViewModels.Enumerations;
 
 namespace Zugsichtungen.ViewModels
 {
@@ -72,7 +73,7 @@ namespace Zugsichtungen.ViewModels
             {
                 await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
                 {
-                    updateMessage("Neue Sichtung wird gespeichert.");
+                    updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
 
                     await this.sichtungService.AddSichtungAsync(DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
                         addSichtungDialogViewModel.SelectedFahrzeug.Id,
@@ -81,8 +82,8 @@ namespace Zugsichtungen.ViewModels
                         addSichtungDialogViewModel.Note,
                         addSichtungDialogViewModel.ImagePath);
 
+                    updateMessage("Sichtung gespeichert.", IndeterminateState.Success);
                     await this.UpdateSichtungen();
-                    updateMessage("Sichtung gespeichert.");
                     await Task.Delay(2000);
                 });
             }

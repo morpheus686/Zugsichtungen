@@ -2,12 +2,14 @@
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ViewModels.DialogViewModels;
+using Zugsichtungen.ViewModels.Enumerations;
 
 namespace Zugsichtungen.Services
 {
     public class DialogService : IDialogService
     {
         private const string DialogIdentifier = "DialogHost";
+        private const string ProgressDialogIdentifier = "ProgressDialogHost";
 
         public Task<object?> ShowDialogAsync(ILoadable viewModel)
         {
@@ -15,14 +17,14 @@ namespace Zugsichtungen.Services
             return DialogHost.Show(viewModel, DialogIdentifier);
         }
 
-        public async Task ShowIndeterminateDialogAsync(Func<Action<string>, object?, Task> progressTask, object? parameter = null)
+        public async Task ShowIndeterminateDialogAsync(Func<Action<string, IndeterminateState>, object?, Task> progressTask, object? parameter = null)
         {
             var viewModel = new IndeterminateDialogViewModel();
-            var showDialogTask = DialogHost.Show(viewModel, DialogIdentifier);
+            var showDialogTask = DialogHost.Show(viewModel, ProgressDialogIdentifier);
 
-            void updateMessage(string newMessage)
+            void updateMessage(string newMessage, IndeterminateState indeterminateState)
             {
-                viewModel.Message = newMessage;
+                viewModel.SetNewMessage(newMessage, indeterminateState);
             }
 
             try
@@ -31,7 +33,7 @@ namespace Zugsichtungen.Services
             }
             finally
             {
-                DialogHost.Close(DialogIdentifier, viewModel);
+                DialogHost.Close(ProgressDialogIdentifier, viewModel);
                 await showDialogTask;
             }
         }
@@ -55,7 +57,7 @@ namespace Zugsichtungen.Services
                 Multiselect = true
             };
 
-            return openFileDialog.ShowDialog() == true ? openFileDialog.FileNames : Array.Empty<string>();
+            return openFileDialog.ShowDialog() == true ? openFileDialog.FileNames : [];
         }
     }
 }

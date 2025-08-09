@@ -7,7 +7,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"
-    xmlns:components="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls">
+    xmlns:components="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
+                       xmlns:enumerations="clr-namespace:Zugsichtungen.ViewModels.Enumerations;assembly=Zugsichtungen.Abstractions">
     <components:DialogView.Resources>
         <materialDesign:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter"
                                                       NullValue="Collapsed"
@@ -15,8 +16,41 @@
     </components:DialogView.Resources>
     <StackPanel Orientation="Vertical">
         <ProgressBar Width="50" Height="50" Margin="16"                     
-                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                     IsIndeterminate="True" />
+                     IsIndeterminate="True" 
+                     x:Name="CircularProgressBar">
+            <ProgressBar.Style>
+                <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WorkingState}" Value="{x:Static enumerations:IndeterminateState.Working}" >
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
+        <Canvas Width="50" Height="50" Margin="16"
+                x:Name="SuccessCanvas">
+            <Canvas.Style>
+                <Style TargetType="{x:Type Canvas}" >
+                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WorkingState}" Value="{x:Static enumerations:IndeterminateState.Success}" >
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Canvas.Style>
+            <Ellipse Fill="Green" Width="50" Height="50"/>
+            <Label Width="50" Height="50"
+                Content="{materialDesign:PackIcon Kind=Success, Size=40}"
+                Foreground="White"
+                HorizontalContentAlignment="Center"
+                VerticalAlignment="Center"/>
+        </Canvas>
+
         <TextBlock MaxWidth="300"
                    Text="{Binding Message, Mode=OneWay}"
                    x:Name="MessageTextBlock"

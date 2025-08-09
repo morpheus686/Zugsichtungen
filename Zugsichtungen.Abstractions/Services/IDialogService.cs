@@ -1,11 +1,12 @@
 ﻿using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.ViewModels.Enumerations;
 
 namespace Zugsichtungen.Abstractions.Services
 {
     public interface IDialogService
     {
         Task<object?> ShowDialogAsync(ILoadable viewModel);
-        Task ShowIndeterminateDialogAsync(Func<Action<string>, object?, Task> progressTask, object? parameter = null);
+        Task ShowIndeterminateDialogAsync(Func<Action<string, IndeterminateState>, object?, Task> progressTask, object? parameter = null);
         string? ShowOpenFileDialog(string filter = "Alle Dateien (*.*)|*.*");
         string[] ShowOpenFilesDialog(string filter = "Alle Dateien (*.*)|*.*");
     }
