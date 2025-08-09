@@ -64,7 +64,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             throw new NotImplementedException();
         }
 
-        public override Task<SightingPictureDto?> GetSightingPictureById(int sightingId)
+        public override Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId)
         {
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }

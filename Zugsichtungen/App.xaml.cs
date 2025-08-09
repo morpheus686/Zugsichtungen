@@ -16,6 +16,7 @@ using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.DialogViewModels;
+using Zugsichtungen.ViewModels.TabViewModels;
 
 namespace Zugsichtungen
 {
@@ -97,6 +98,8 @@ namespace Zugsichtungen
 
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<SightingOverviewTabViewModel>();
+            services.AddSingleton<GalleryTabViewModel>();
 
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<AddSichtungDialogViewModel>();

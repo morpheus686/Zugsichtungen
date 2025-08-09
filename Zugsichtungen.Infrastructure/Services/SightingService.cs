@@ -85,7 +85,7 @@ namespace Zugsichtungen.Infrastructure.Services
 
         public async Task<SightingPicture?> GetSightingPictureByIdAsync(int id)
         {
-            var dto = await dataService.GetSightingPictureById(id);
+            var dto = await dataService.GetSightingPictureBySightingIdAsync(id);
 
             if (dto == null)
             {

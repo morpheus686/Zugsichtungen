@@ -4,6 +4,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
              xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews;assembly=Zugsichtungen.UI"
+             xmlns:tabViewModel="clr-namespace:Zugsichtungen.ViewModels.TabViewModels;assembly=Zugsichtungen.ViewModels"
+             xmlns:tabView="clr-namespace:Zugsichtungen.UI.Views.TabViews;assembly=Zugsichtungen.UI"
              xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
              xmlns:applicationDialogViews="clr-namespace:Zugsichtungen.DialogViews">
     <Application.Resources>
@@ -22,6 +24,14 @@
 
             <DataTemplate DataType="{x:Type dialogViewModel:ShowSightingDetailsDialogViewModel}">
                 <dialogView:ShowSightingDetailsDialogView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type tabViewModel:SightingOverviewTabViewModel}" >
+                <tabView:SightingOverviewTabView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type tabViewModel:GalleryTabViewModel}" >
+                <tabView:GalleryTabView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

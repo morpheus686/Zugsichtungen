@@ -1,111 +1,50 @@
-﻿using AsyncAwaitBestPractices.MVVM;
-using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
-using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
-using Zugsichtungen.ViewModels.DialogViewModels;
-using Zugsichtungen.ViewModels.Enumerations;
+using Zugsichtungen.ViewModels.TabViewModels;
 
 namespace Zugsichtungen.ViewModels
 {
     public class MainWindowViewModel : LoadableViewModel
     {
-        private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
-        private readonly IDialogService dialogService;
-        private readonly ISightingService sichtungService;
+        private TabViewModelBase selectedTab;
 
-        public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList; 
         public SichtungItemViewModel? SelectedItem { get; set; }
 
-        public ICommand AddSichtungCommand { get; }
-        public ICommand EditContextesCommand { get; }
-        public ICommand ShowSightingDetailsCommand { get; }
+        public SightingOverviewTabViewModel SightingOverviewTabViewModel { get; }
+        public GalleryTabViewModel GalleryTabViewModel { get; }
+        public ICommand SelectTabCommand { get; }
 
-
-        public MainWindowViewModel(IDialogService dialogService, ISightingService sichtungService)
+        public TabViewModelBase SelectedTab
         {
-            AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
-            EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
-            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);
-
-            this.sichtungenList = [];
-            this.dialogService = dialogService;
-            this.sichtungService = sichtungService;
+            get => selectedTab;
+            private set
+            {
+                selectedTab = value;
+                RaisePropertyChanged(nameof(SelectedTab));
+            }
         }
 
-        private bool CanExecuteShowSightingsDetails(object? arg) => this.SelectedItem != null && !this.IsBusy;
-
-        private async Task ExecuteShowSightingDetails()
+        public MainWindowViewModel(SightingOverviewTabViewModel sightingOverviewTabViewModel, GalleryTabViewModel galleryTabViewModel)
         {
-            IsBusy = true;
+            this.SelectTabCommand = new RelayCommand<TabViewModelBase>(ExecuteSelectTabCommand);
 
-            if (this.SelectedItem != null)
-            {
-                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(sichtungService, this.SelectedItem.Sichtung, this.dialogService);
-                await this.dialogService.ShowDialogAsync(showDetailsViewModel);
+            this.GalleryTabViewModel = galleryTabViewModel;
+            this.SightingOverviewTabViewModel = sightingOverviewTabViewModel;
+            this.selectedTab = SightingOverviewTabViewModel;            
+        }
+
+        private void ExecuteSelectTabCommand(TabViewModelBase? tabViewModel)
+        {
+            if (tabViewModel != null) 
+            {    
+                this.SelectedTab = tabViewModel;
             }
-
-
-            IsBusy = false;
         }
 
         protected override Task InitializeInternalAsync()
         {
-            return UpdateSichtungen();
-        }
-
-        private bool CanExecuteEditContextes(object? arg) => !this.IsBusy;
-
-        private async Task ExecuteEditContextes()
-        {
-            await Task.CompletedTask;
-        }
-
-        private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy;
-
-        private async Task ExecuteAddSichtung()
-        {
-            IsBusy = true;
-            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(sichtungService, dialogService);
-            var result = await this.dialogService.ShowDialogAsync(addSichtungDialogViewModel);
-
-            if (result == null)
-            {
-                throw new InvalidOperationException("Dialog konnte kein gültiges Ergebnis zurückliefern!");
-            }
-
-            if ((DialogResult)result == DialogResult.Yes)
-            {
-                await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
-                {
-                    updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
-
-                    await this.sichtungService.AddSichtungAsync(DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
-                        addSichtungDialogViewModel.SelectedFahrzeug.Id,
-                        addSichtungDialogViewModel.SelectedKontext.Id,
-                        addSichtungDialogViewModel.Place,
-                        addSichtungDialogViewModel.Note,
-                        addSichtungDialogViewModel.ImagePath);
-
-                    updateMessage("Sichtung gespeichert.", IndeterminateState.Success);
-                    await this.UpdateSichtungen();
-                    await Task.Delay(2000);
-                });
-            }
-
-            IsBusy = false;
-        }
-
-        private async Task UpdateSichtungen()
-        {
-            this.Sichtungsliste.Clear();
-            var sichtungen = await this.sichtungService.GetAllSightingsAsync();
-
-            foreach (var item in sichtungen)
-            {
-                Sichtungsliste.Add(new SichtungItemViewModel(item));
-            }
+            return this.selectedTab.Initialize();
         }
     }
 }

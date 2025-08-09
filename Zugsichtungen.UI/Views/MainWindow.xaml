@@ -18,10 +18,11 @@
 
     <Window.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
+        <converter:ReferenceEqualityConverter x:Key="ReferenceEqualityConverter" />
+        <converter:ReferenceEqualityMultiConverter x:Key="ReferenceEqualityMultiConverter" />
     </Window.Resources>
 
     <Grid>
-        <!-- Haupt-DialogHost -->
         <materialDesign:DialogHost
             Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
             Identifier="DialogHost"
@@ -39,9 +40,31 @@
 
                         <StackPanel Orientation="Vertical">
                             <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
-                                         Content="Sichtungen"/>
+                                         Content="Sichtungen"
+                                         Command="{Binding SelectTabCommand, Mode=OneTime}"
+                                         CommandParameter="{Binding SightingOverviewTabViewModel}"
+                                          Margin="10, 0"
+FontSize="22">
+                                <RadioButton.IsChecked>
+                                    <MultiBinding Mode="OneWay" Converter="{StaticResource ReferenceEqualityMultiConverter}">
+                                        <Binding Path="SelectedTab" />
+                                        <Binding Path="SightingOverviewTabViewModel" />
+                                    </MultiBinding>
+                                </RadioButton.IsChecked>
+                            </RadioButton>
                             <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
-                                         Content="Galerie"/>
+                                         Content="Galerie"
+                                         Command="{Binding SelectTabCommand, Mode=OneTime}"
+                                         CommandParameter="{Binding GalleryTabViewModel}"
+                                          Margin="10, 0"
+FontSize="22">
+                                <RadioButton.IsChecked>
+                                    <MultiBinding Mode="OneWay" Converter="{StaticResource ReferenceEqualityMultiConverter}">
+                                        <Binding Path="SelectedTab" />
+                                        <Binding Path="GalleryTabViewModel" />
+                                    </MultiBinding>
+                                </RadioButton.IsChecked>
+                            </RadioButton>
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
@@ -76,13 +99,6 @@
                                    FontWeight="Bold"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                            <Button Grid.Column="2"
-                                Style="{StaticResource MaterialDesignIconButton}" 
-                                Content="{materialDesign:PackIcon Kind=Add}"
-                                ToolTip="Sichtung hinzufügen"
-                                Foreground="White"
-                                Command="{Binding AddSichtungCommand, Mode=OneTime}"
-                                Width="50"/>
                             <materialDesign:PopupBox Grid.Column="2"
                                                  Width="50"
                                                  HorizontalContentAlignment="Center"
@@ -95,27 +111,12 @@
                         </Grid>
                     </materialDesign:ColorZone>
 
-                    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
-                          SelectedItem="{Binding SelectedItem}" 
-                          Grid.Row="1"
-                          Margin="10">
-                        <DataGrid.InputBindings>
-                            <MouseBinding MouseAction="LeftDoubleClick"
-                                      Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
-                        </DataGrid.InputBindings>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Thema" Binding="{Binding Context, Mode=OneWay}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Bemerkung" Binding="{Binding Note, Mode=OneWay}" IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <ContentControl Grid.Row="1"
+                                    Content="{Binding SelectedTab, Mode=OneWay}" />
                 </Grid>
             </materialDesign:DrawerHost>
         </materialDesign:DialogHost>
 
-        <!-- Progress-DialogHost immer oben -->
         <materialDesign:DialogHost
             Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
             Identifier="ProgressDialogHost"
