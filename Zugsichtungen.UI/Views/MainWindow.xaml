@@ -18,7 +18,6 @@
 
     <Window.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
-        <converter:ReferenceEqualityConverter x:Key="ReferenceEqualityConverter" />
         <converter:ReferenceEqualityMultiConverter x:Key="ReferenceEqualityMultiConverter" />
     </Window.Resources>
 

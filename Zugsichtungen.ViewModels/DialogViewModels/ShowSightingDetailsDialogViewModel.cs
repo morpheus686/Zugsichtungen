@@ -4,7 +4,7 @@ using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
-    public class ShowSightingDetailsDialogViewModel : LoadableViewModel
+    public class ShowSightingDetailsDialogViewModel : DialogViewModelBase
     {
         private readonly ISightingService sightingService;
         private readonly SightingViewEntry sighting;
@@ -21,12 +21,15 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
+        public override bool HasErrors => false;
 
         public ShowSightingDetailsDialogViewModel(ISightingService sightingService, SightingViewEntry sichtung, IDialogService dialogService)
         {
             this.sightingService = sightingService;
             this.sighting = sichtung;
             this.dialogService = dialogService;
+
+            this.Title = "Sichtungsdetails";
         }
 
         protected override async Task InitializeInternalAsync()

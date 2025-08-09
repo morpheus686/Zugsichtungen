@@ -11,7 +11,7 @@
                        xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
                        Style="{StaticResource DialogViewStyle}"
                        DialogViewType="Close"
-                       Header="{Binding Header}">
+                       Header="{Binding Title, Mode=OneWay}">
     <components:DialogView.Resources>
         <converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
     </components:DialogView.Resources>
