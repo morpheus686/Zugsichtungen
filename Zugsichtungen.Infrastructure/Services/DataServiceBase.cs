@@ -13,11 +13,13 @@ namespace Zugsichtungen.Infrastructure.Services
         public abstract Task<List<ContextDto>> GetKontextesAsync();
         public abstract Task<List<SightingViewEntryDto>> GetSichtungenAsync();
         public abstract Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
-
+        public abstract Task<SightingPictureDto?> GetSightingPictureById(int sightingId);
         public async Task SaveChangesAsync()
         {
             var affected = await context.SaveChangesAsync();
             Debug.WriteLine("Affected rows: " + affected);
         }
+
+
     }
 }

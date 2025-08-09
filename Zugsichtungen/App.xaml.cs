@@ -7,6 +7,7 @@ using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Infrastructure.SQLite.Models;
+using Zugsichtungen.Infrastructure.SQLite.Repositories;
 using Zugsichtungen.Infrastructure.SQLite.Services;
 using Zugsichtungen.Infrastructure.SQLServer.Models;
 using Zugsichtungen.Infrastructure.SQLServer.Repositories;
@@ -51,26 +52,32 @@ namespace Zugsichtungen
             switch (configuration["DatabaseProvider"])
             {
                 case "SQLite":
+                    var sqliteConnectionString = configuration.GetConnectionString("SQLiteConnection");
+
                     services.AddDbContext<ZugbeobachtungenContext>(options =>
                     {
-                        var connectionString = configuration.GetConnectionString("SQLiteConnection");
-                        options.UseSqlite(connectionString);
+
+                        options.UseSqlite(sqliteConnectionString);
                     });
 
                     services.AddScoped<IDataService, SQLiteDataService>();
+                    services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
+                    {
+                        return new SQLiteImageRepository(sqliteConnectionString);
+                    });
                     break;
                 case "SQLServer":
-                    var connectionString = configuration.GetConnectionString("SQLServerConnection");
+                    var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
 
                     services.AddDbContext<TrainspottingContext>(options =>
                     {
-                        options.UseSqlServer(connectionString);
+                        options.UseSqlServer(sqlServerConnectionString);
                     });
 
                     services.AddScoped<IDataService, SqlServerDataService>();
                     services.AddScoped<IImageRepository, SQLServerImageRepository>(sp =>
                     {
-                        return new SQLServerImageRepository(connectionString);
+                        return new SQLServerImageRepository(sqlServerConnectionString);
                     });
                     break;
                 default:

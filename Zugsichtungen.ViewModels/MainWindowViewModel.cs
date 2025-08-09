@@ -39,8 +39,14 @@ namespace Zugsichtungen.ViewModels
         private async Task ExecuteShowSightingDetails()
         {
             IsBusy = true;
-            var showDetailsViewModel = new ShowSightingDetailsDialogViewModel();
-            await this.dialogService.ShowDialogAsync(showDetailsViewModel);
+
+            if (this.SelectedItem != null)
+            {
+                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(sichtungService, this.SelectedItem.Sichtung, this.dialogService);
+                await this.dialogService.ShowDialogAsync(showDetailsViewModel);
+            }
+
+
             IsBusy = false;
         }
 

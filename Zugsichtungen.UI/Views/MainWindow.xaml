@@ -11,30 +11,33 @@
         xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
         xmlns:vm="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
         xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
-            Background="{StaticResource MaterialDesignPaper}"
+        Background="{StaticResource MaterialDesignPaper}"
         FontFamily="{StaticResource MaterialDesignFont}"
         Style="{StaticResource MaterialDesignWindow}">
+
     <Window.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
     </Window.Resources>
-    <materialDesign:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
-                               Identifier="ProgressDialogHost"
-                               x:Name="ProgressDialogHost">   
-        <materialDesign:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
-                                          Identifier="DialogHost"
-                                          x:Name="DialogHost">
+
+    <Grid>
+        <!-- Haupt-DialogHost -->
+        <materialDesign:DialogHost
+            Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            Identifier="DialogHost"
+            x:Name="DialogHost"
+            Panel.ZIndex="1">
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <materialDesign:ColorZone Grid.Row="0" 
-                          Padding="0"
-                          Mode="PrimaryMid"
-                          DockPanel.Dock="Top"
-                          ClipToBounds="False"
-                          materialDesign:ElevationAssist.Elevation="Dp4" >
+                <materialDesign:ColorZone Grid.Row="0"
+                                          Padding="0"
+                                          Mode="PrimaryMid"
+                                          ClipToBounds="False"
+                                          materialDesign:ElevationAssist.Elevation="Dp4">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -42,9 +45,9 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Zugsichtungen" 
-                       Margin="10"
-                       FontSize="25"
-                       FontWeight="Bold"/>
+                                   Margin="10"
+                                   FontSize="25"
+                                   FontWeight="Bold"/>
                         <Button Grid.Column="1"
                                 Style="{StaticResource MaterialDesignIconButton}" 
                                 Content="{materialDesign:PackIcon Kind=Add}"
@@ -63,17 +66,16 @@
                         </materialDesign:PopupBox>
                     </Grid>
                 </materialDesign:ColorZone>
+
                 <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
                           SelectedItem="{Binding SelectedItem}" 
                           Grid.Row="1"
                           Margin="10">
                     <DataGrid.InputBindings>
-                        <MouseBinding
-                                MouseAction="LeftDoubleClick"
-                                Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
+                        <MouseBinding MouseAction="LeftDoubleClick"
+                                      Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
                     </DataGrid.InputBindings>
                     <DataGrid.Columns>
-                        <!--<DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=OneWay}" IsReadOnly="True"/>-->
                         <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
@@ -83,5 +85,12 @@
                 </DataGrid>
             </Grid>
         </materialDesign:DialogHost>
-    </materialDesign:DialogHost>
+
+        <!-- Progress-DialogHost immer oben -->
+        <materialDesign:DialogHost
+            Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            Identifier="ProgressDialogHost"
+            x:Name="ProgressDialogHost"
+            Panel.ZIndex="2"/>
+    </Grid>
 </Window>

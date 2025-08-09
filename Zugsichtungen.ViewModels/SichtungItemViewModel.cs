@@ -5,18 +5,18 @@ namespace Zugsichtungen.ViewModels
 {
     public class SichtungItemViewModel : ViewModelBase
     {
-        private readonly SightingViewEntry sichtung;
+        public SightingViewEntry Sichtung { get; }
 
-        public int? Id => sichtung.Id;
-        public DateOnly? Date => sichtung.Date;
-        public string? Number => this.sichtung.VehicleNumber;
-        public string? Location => this.sichtung.Location;
-        public string? Context => this.sichtung.Context;
-        public string? Note => this.sichtung.Note;
+        public int? Id => Sichtung.Id;
+        public DateOnly? Date => Sichtung.Date;
+        public string? Number => this.Sichtung.VehicleNumber;
+        public string? Location => this.Sichtung.Location;
+        public string? Context => this.Sichtung.Context;
+        public string? Note => this.Sichtung.Note;
 
         public SichtungItemViewModel(SightingViewEntry sighting)
         {
-            this.sichtung = sighting;
+            this.Sichtung = sighting;
         }
     }
 }

@@ -67,6 +67,11 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             throw new NotImplementedException();
         }
 
+        public override Task<SightingPictureDto?> GetSightingPictureById(int sightingId)
+        {
+            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
+        }
+
         //public override async Task UpdateContext(ContextDto dto, UpdateMode updateMode)
         //{
         //    switch (updateMode)

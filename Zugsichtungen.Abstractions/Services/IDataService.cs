@@ -11,5 +11,6 @@ namespace Zugsichtungen.Abstractions.Services
         Task AddSichtungAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto);
         Task SaveChangesAsync();
         Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
+        Task<SightingPictureDto?> GetSightingPictureById(int sightingId);
     }
 }

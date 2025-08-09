@@ -9,9 +9,7 @@ namespace Zugsichtungen.Infrastructure.Services
     {
         public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note, string? filePath)
         {
-
-
-            var newSighting = new SightingDto
+            var newSighting = new Sighting
             {
                 VehicleId = vehicleId,
                 ContextId = kontextId,
@@ -20,23 +18,24 @@ namespace Zugsichtungen.Infrastructure.Services
                 Note = note
             };
 
-            SightingPictureDto? sightingPictureDto = null;
+            SightingPicture? sightingPictureDto = null;
 
             if (filePath != null)
             {
-                sightingPictureDto = new SightingPictureDto();
-                sightingPictureDto.Filename = new FileInfo(filePath).Name;
-                sightingPictureDto.Image = await File.ReadAllBytesAsync(filePath);
-                               
+                sightingPictureDto = new SightingPicture
+                {
+                    Filename = new FileInfo(filePath).Name,
+                    Image = await File.ReadAllBytesAsync(filePath)
+                };
             }
-            
-            await this.AddSichtungAsync(newSighting, sightingPictureDto); 
+
+            await this.AddSichtungAsync(newSighting, sightingPictureDto);
         }
 
-
-        private async Task AddSichtungAsync(SightingDto sightingDto, SightingPictureDto? sightingPictureDto)
+        public async Task AddSichtungAsync(Sighting sighting, SightingPicture? sightingPicture)
         {
-            await dataService.AddSichtungAsync(sightingDto, sightingPictureDto);
+            await dataService.AddSichtungAsync(mapper.Map<Sighting, SightingDto>(sighting),
+                mapper.Map<SightingPicture?, SightingPictureDto?>(sightingPicture));
             await dataService.SaveChangesAsync();
         }
 
@@ -82,6 +81,18 @@ namespace Zugsichtungen.Infrastructure.Services
         public Task UpdateContextes(List<Context> contextes)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<SightingPicture?> GetSightingPictureByIdAsync(int id)
+        {
+            var dto = await dataService.GetSightingPictureById(id);
+
+            if (dto == null)
+            {
+                return null;
+            }
+
+            return mapper.Map<SightingPicture>(dto);
         }
     }
 }

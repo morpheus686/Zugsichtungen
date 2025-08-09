@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
+using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Foundation.Mapping;
 using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Infrastructure.SQLite.Models;
@@ -14,12 +15,17 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         private readonly ZugbeobachtungenContext context;
         private readonly IMapper mapper;
         private readonly ILogger<SQLiteDataService> logger;
+        private readonly IImageRepository imageRepository;
 
-        public SQLiteDataService(ZugbeobachtungenContext context, IMapper mapper, ILogger<SQLiteDataService> logger) : base(context)
+        public SQLiteDataService(ZugbeobachtungenContext context, 
+            IMapper mapper, 
+            ILogger<SQLiteDataService> logger,
+            IImageRepository imageRepository) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
             this.logger = logger;
+            this.imageRepository = imageRepository;
         }
 
         public override async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
@@ -56,6 +62,11 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
         {
             throw new NotImplementedException();
+        }
+
+        public override Task<SightingPictureDto?> GetSightingPictureById(int sightingId)
+        {
+            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
     }
 }

@@ -4,6 +4,6 @@ namespace Zugsichtungen.Abstractions.Interfaces
 {
     public interface IImageRepository
     {
-        Task<SightingPictureDto?> GetByIdAsync(int id);
+        Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId);
     }
 }
