@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
@@ -14,6 +15,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
         private readonly IDialogService dialogService;
         private readonly ISightingService sichtungService;
+        private readonly ILogger<SightingOverviewTabViewModel> logger;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
         public SichtungItemViewModel? SelectedItem { get; set; }
@@ -23,7 +25,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         public ICommand ShowSightingDetailsCommand { get; }
 
 
-        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService)
+        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService, ILogger<SightingOverviewTabViewModel> logger)
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
@@ -32,6 +34,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             this.sichtungenList = [];
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
+            this.logger = logger;
         }
 
         private bool CanExecuteShowSightingsDetails(object? arg) => this.SelectedItem != null && !this.IsBusy;
@@ -52,7 +55,16 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
         protected override Task InitializeInternalAsync()
         {
-            return UpdateSichtungen();
+            try
+            {
+                return UpdateSichtungen();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+                throw;
+            }
+
         }
 
         private bool CanExecuteEditContextes(object? arg) => !this.IsBusy;

@@ -5,7 +5,7 @@ namespace Zugsichtungen.UI.Views.TabViews
     /// <summary>
     /// Interaktionslogik für SightingOverviewTabView.xaml
     /// </summary>
-    public partial class SightingOverviewTabView : LoadableView
+    public partial class SightingOverviewTabView : TabView
     {
         public SightingOverviewTabView()
         {

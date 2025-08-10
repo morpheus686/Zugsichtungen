@@ -20,6 +20,7 @@ namespace Zugsichtungen.UI.Converter
                 var image = new BitmapImage();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad; // WICHTIG: Stream danach freigeben
+                image.DecodePixelWidth = 600;
                 image.StreamSource = ms;
                 image.EndInit();
                 image.Freeze(); // WICHTIG für Thread-Sicherheit in WPF

@@ -1,4 +1,4 @@
-﻿<customControls:LoadableView x:Class="Zugsichtungen.UI.Views.TabViews.SightingOverviewTabView"
+﻿<customControls:TabView x:Class="Zugsichtungen.UI.Views.TabViews.SightingOverviewTabView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,9 +11,9 @@
                 xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <customControls:LoadableView.Resources>
+    <customControls:TabView.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
-    </customControls:LoadableView.Resources>
+    </customControls:TabView.Resources>
 
     <Grid>
         <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
@@ -41,4 +41,4 @@
                 Margin="30"
                 Command="{Binding AddSichtungCommand, Mode=OneTime}"/>
     </Grid>
-</customControls:LoadableView>
+</customControls:TabView>

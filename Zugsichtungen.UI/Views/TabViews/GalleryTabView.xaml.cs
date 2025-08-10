@@ -5,7 +5,7 @@ namespace Zugsichtungen.UI.Views.TabViews
     /// <summary>
     /// Interaktionslogik für GalleryTabView.xaml
     /// </summary>
-    public partial class GalleryTabView : LoadableView
+    public partial class GalleryTabView : TabView
     {
         public GalleryTabView()
         {
