@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Mopups.Hosting;
+using UraniumUI;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Services;
@@ -18,16 +20,28 @@ namespace Zugsichtungen.MAUI
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
+            builder.UseUraniumUI()
+                .UseUraniumUIMaterial()// 👈 Don't forget these two lines.
+                .UseUraniumUIBlurs()
+                .ConfigureMopups();
+
+
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFontAwesomeIconFonts();
                 });
 
             var dbPath = PrepareDatabase();
             var sqliteConnectionString = $"Data Source={dbPath}";
+
+            builder.Services.AddMopupsDialogs();
+            builder.Services.AddCommunityToolkitDialogs();
 
             builder.Services.AddDbContext<ZugbeobachtungenContext>(options =>
             {

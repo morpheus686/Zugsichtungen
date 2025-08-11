@@ -1,34 +1,78 @@
-﻿using Zugsichtungen.Abstractions.Interfaces;
-using Zugsichtungen.Abstractions.Services;
+﻿using CommunityToolkit.Maui.Views;
+using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Foundation.Enumerations;
+using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.Enumerations;
 
 namespace Zugsichtungen.MAUI.Services
 {
-    internal class DialogService : IDialogService
+    internal class DialogService : Abstractions.Services.IDialogService
     {
-        public Task<object?> ShowDialog(ILoadable viewModel)
+        private readonly IServiceProvider _serviceProvider;
+        private readonly UraniumUI.Dialogs.IDialogService uraniumDialogService;
+        private readonly ViewLocator _viewLocator;
+
+        public DialogService(IServiceProvider serviceProvider, 
+            UraniumUI.Dialogs.IDialogService uraniumDialogService)
         {
-            throw new NotImplementedException();
+            _serviceProvider = serviceProvider;
+            this.uraniumDialogService = uraniumDialogService;
+            _viewLocator = new ViewLocator(typeof(App).Assembly);
         }
 
-        public Task<object?> ShowDialogAsync(ILoadable viewModel)
+        public async Task<object?> ShowDialogAsync(ILoadable viewModel)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await viewModel.Initialize();
+                var view = _viewLocator.ResolveView(viewModel);
+
+                if (view is Popup popup)
+                {
+                    popup.BindingContext = viewModel;
+                    var result = await Application.Current.MainPage.ShowPopupAsync(popup);
+
+                    if (result == null)
+                    {
+                        return DialogResult.Abort;
+                    }
+                }
+
+                return DialogResult.Abort;
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Fehler", e.Message, "OK");
+                return DialogResult.Abort;
+            }
         }
 
-        public Task ShowIndeterminateDialogAsync(Func<Action<string, IndeterminateState>, object?, Task> progressTask, object? parameter = null)
+        public async Task ShowIndeterminateDialogAsync(Func<Action<string, IndeterminateState>, object?, Task> progressTask, object? parameter = null)
         {
-            throw new NotImplementedException();
+            var viewModel = new IndeterminateDialogViewModel();
+
+            using (await this.uraniumDialogService.DisplayProgressAsync("Lädt", "Bitte warten..."))
+            {
+                await progressTask((m, state) => { /* optional UI-Update */ }, parameter);
+            }
         }
 
-        public string? ShowOpenFileDialog(string filter = "Alle Dateien (*.*)|*.*")
+        public async Task<string?> ShowOpenFileDialogAsync(string filter = "Alle Dateien (*.*)|*.*")
         {
-            throw new NotImplementedException();
+            var file = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Datei auswählen"
+            });
+            return file?.FullPath;
         }
 
         public string[] ShowOpenFilesDialog(string filter = "Alle Dateien (*.*)|*.*")
         {
-            throw new NotImplementedException();
+            var files = FilePicker.PickMultipleAsync(new PickOptions
+            {
+                PickerTitle = "Dateien auswählen"
+            }).Result;
+            return files.Select(f => f.FullPath).ToArray();
         }
     }
 }

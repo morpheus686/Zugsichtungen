@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="Zugsichtungen.MAUI.DialogView.AddSichtungDialogView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                 xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter">
+    <toolkit:Popup.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </toolkit:Popup.Resources>
+
+    
+<Border Padding="20">
+
+        <!-- Inhalt hier rein -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0"
+                   Grid.ColumnSpan="2" FontSize="Title"
+                   Text="Sichtung anlegen" 
+                   Margin="5"
+                   TextColor="Black"/>
+
+            <Label Text="Sichtungsdatum"
+                   TextColor="Black"
+                   VerticalTextAlignment="Center"
+                   Margin="5"
+                   Grid.Row="1" Grid.Column="0" />
+
+            <material:DatePickerField Grid.Row="1" Grid.Column="1" 
+                                      Margin="5"
+                                      Date="{Binding SelectedDate, Mode=TwoWay}"/>
+            <Label Text="Sichtungsort"
+                   TextColor="Black"
+                   VerticalTextAlignment="Center"
+                   Margin="5"
+                   Grid.Row="2"
+                   Grid.Column="0"/>
+            <VerticalStackLayout Grid.Row="2"
+                                 Grid.Column="1"
+                                 Margin="5">
+               <material:TextField Text="{Binding Place, Mode=TwoWay}"/>
+                <Label Text="Ort ist ungültig"
+                       TextColor="Red"
+                       IsVisible="{Binding HasErrors}" />
+            </VerticalStackLayout>
+
+
+            <Label Text="Triebfahrzeug"
+                   TextColor="Black"
+                   VerticalTextAlignment="Center"
+                   Margin="5"
+                   Grid.Row="3"
+                   Grid.Column="0"/>
+            <material:DropdownField Grid.Row="3"
+                                    Grid.Column="1"
+                                    ItemsSource="{Binding VehicleList, Mode=OneTime}" 
+                                    ItemDisplayBinding="{Binding Vehicle}"
+                                    SelectedItem="{Binding SelectedFahrzeug}"
+                                    Margin="5"/>
+
+            <Label Text="Thema"
+                   TextColor="Black"
+                   VerticalTextAlignment="Center"
+                   Margin="5"
+                   Grid.Row="4"
+                   Grid.Column="0"/>
+            <material:DropdownField Grid.Row="4"
+                                    Grid.Column="1"
+                                    ItemsSource="{Binding ContextList, Mode=OneTime}" 
+                                    ItemDisplayBinding="{Binding Name}"
+                                    SelectedItem="{Binding SelectedKontext}"
+                                    Margin="5"/>
+
+            <Label Text="Bild"
+                   TextColor="Black"
+                   VerticalTextAlignment="Center"
+                   Margin="5"
+                   Grid.Row="5"
+            Grid.Column="0"/>
+            <Grid Grid.Row="5" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <material:TextField Grid.Column="0"
+                                Margin="5"
+                                Text="{Binding ImagePath, Mode=OneWay}"
+                                IsReadOnly="True"
+                                />
+                <material:ButtonView Grid.Column="1"
+                                     Margin="5"
+                                     TappedCommand="{Binding AddImageCommand, Mode=OneTime}">
+                    <Image>
+                        <Image.Source>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
+                        </Image.Source>
+                    </Image>
+                </material:ButtonView>
+            </Grid>
+
+
+            <HorizontalStackLayout Grid.Row="7" Grid.Column="1">
+                <material:ButtonView WidthRequest="100"
+                        Margin="5">
+                    <Label Text="Speichern" 
+                           HorizontalTextAlignment="Center"
+                           IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}"/>
+                </material:ButtonView>
+                <material:ButtonView WidthRequest="100"
+                        Margin="5">
+                    <Label Text="Abbrechen"
+                           HorizontalTextAlignment="Center" />
+                </material:ButtonView>
+            </HorizontalStackLayout>
+
+        </Grid>
+    </Border>
+</toolkit:Popup>

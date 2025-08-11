@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<toolkit:Popup  xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui" 
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:local="clr-namespace:Zugsichtungen.MAUI.UI.View.DialogView" >
+    <Frame
+        Padding="20"
+        BackgroundColor="White"
+        CornerRadius="10"
+        WidthRequest="600"
+        HeightRequest="400"
+        VerticalOptions="Center"
+        HorizontalOptions="Center">
+        <Grid>
+            <!-- Dein komplexes Layout, analog zu WPF -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Beispiel: Titel -->
+            <Label Text="Sichtung hinzufügen" FontSize="24" FontAttributes="Bold"/>
+
+            <!-- Hauptformular im Grid.Row=1 -->
+            <!-- Hier kannst du deine Controls und Bindings ähnlich wie im WPF XAML machen -->
+
+            <!-- Buttons im Grid.Row=2 -->
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Button Text="Abbrechen" Command="{Binding CancelCommand}" />
+                <Button Text="Speichern" Command="{Binding SaveCommand}" IsEnabled="{Binding IsValid}" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Frame>
+</toolkit:Popup>

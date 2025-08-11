@@ -38,15 +38,15 @@ namespace Zugsichtungen.Services
             }
         }
 
-        public string? ShowOpenFileDialog(string filter = "Alle Dateien (*.*)|*.*")
+        public Task<string?> ShowOpenFileDialogAsync(string filter = "Alle Dateien (*.*)|*.*")
         {
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                Filter = filter,
-                Multiselect = false
-            };
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            bool? result = dlg.ShowDialog();
 
-            return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
+            if (result == true)
+                return Task.FromResult<string?>(dlg.FileName);
+
+            return Task.FromResult<string?>(null);
         }
 
         public string[] ShowOpenFilesDialog(string filter = "Alle Dateien (*.*)|*.*")

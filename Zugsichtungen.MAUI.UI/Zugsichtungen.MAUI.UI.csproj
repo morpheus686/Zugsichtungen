@@ -1,14 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
+    <MauiXaml Remove="View\DialogView\AddSichtungDialogView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
+    <PackageReference Include="UraniumUI" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Blurs" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Dialogs.CommunityToolkit" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Dialogs.Mopups" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Icons.FontAwesome" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Icons.MaterialIcons" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Icons.MaterialSymbols" Version="2.12.1" />
+    <PackageReference Include="UraniumUI.Material" Version="2.12.1" />
   </ItemGroup>
 
 </Project>

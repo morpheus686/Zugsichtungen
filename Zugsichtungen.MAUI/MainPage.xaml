@@ -1,35 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<uranium:UraniumContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="Zugsichtungen.MAUI.MainPage"
-             Title="Sichtungsübersicht">
-    <ScrollView>
-        <VerticalStackLayout
+             Title="Sichtungen">
+    <uranium:UraniumContentPage.Attachments>
+        <material:BackdropView Title="Filter" IconImageSource="filter.png">
+            <VerticalStackLayout>
+                <material:CheckBox Text="Zeige nur Sichtungen mit Bilder" />
+            </VerticalStackLayout>
+        </material:BackdropView>
+
+    </uranium:UraniumContentPage.Attachments>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollView>
+            <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <CollectionView ItemsSource="{Binding Sichtungsliste, Mode=OneWay}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border
+                <CollectionView ItemsSource="{Binding Sichtungsliste, Mode=OneWay}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
                             Margin="10"
                             Padding="15"
                             BackgroundColor="DarkRed">
-                            <StackLayout>
-                                <Label Text="{Binding Date}" FontAttributes="Bold" FontSize="Medium" />
-                                <Label Text="{Binding Number}" FontSize="Small" />
-                                <Label Text="{Binding Location}" FontSize="Small" />
-
-                                <!-- Mehr Inhalte hier -->
-                            </StackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <!--<Button Text="Sichtung hinzufügen"
+                                <StackLayout>
+                                    <Label Text="{Binding Date}"  FontSize="Small" />
+                                    <Label Text="{Binding Number}" FontSize="Small" />
+                                    <Label Text="{Binding Location}" FontSize="Small" />
+                                </StackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <material:ButtonView StyleClass="FilledButton"
                 Margin="30"
-                Command="{Binding AddSichtungCommand, Mode=OneTime}"/>-->
-        </VerticalStackLayout>
-    </ScrollView>
+                TappedCommand="{Binding AddSichtungCommand, Mode=OneTime}"
+                HorizontalOptions="End"
+                VerticalOptions="End">            
+            <Image>
+                <Image.Source>
+                    <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
+                </Image.Source>
+            </Image>
+        </material:ButtonView>
+    </Grid>
 
-</ContentPage>
+</uranium:UraniumContentPage>

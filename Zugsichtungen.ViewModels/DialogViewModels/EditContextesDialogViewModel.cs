@@ -7,8 +7,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
     {
         private readonly ISightingService sichtungService;
 
-        public override bool HasErrors => false;
-
         public EditContextesDialogViewModel(ISightingService sichtungService)
         {
             this.sichtungService = sichtungService;

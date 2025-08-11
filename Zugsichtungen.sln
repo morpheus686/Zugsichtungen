@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Infrastructure.SQLite", "Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj", "{E1F78070-E48C-41B1-A913-5BF40AF42471}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.MAUI.UI", "Zugsichtungen.MAUI.UI\Zugsichtungen.MAUI.UI.csproj", "{FBD8AFF6-A9FA-4A06-86E3-E031D2F7AC0F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,10 +82,6 @@ Global
 		{E1F78070-E48C-41B1-A913-5BF40AF42471}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1F78070-E48C-41B1-A913-5BF40AF42471}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1F78070-E48C-41B1-A913-5BF40AF42471}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBD8AFF6-A9FA-4A06-86E3-E031D2F7AC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBD8AFF6-A9FA-4A06-86E3-E031D2F7AC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBD8AFF6-A9FA-4A06-86E3-E031D2F7AC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBD8AFF6-A9FA-4A06-86E3-E031D2F7AC0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

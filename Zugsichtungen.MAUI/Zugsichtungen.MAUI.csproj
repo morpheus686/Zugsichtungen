@@ -76,7 +76,16 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.90" />
+		<PackageReference Include="UraniumUI" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Blurs" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Dialogs.CommunityToolkit" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Dialogs.Mopups" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Icons.FontAwesome" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Icons.MaterialIcons" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Icons.MaterialSymbols" Version="2.12.1" />
+		<PackageReference Include="UraniumUI.Material" Version="2.12.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -87,9 +96,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="DialogView\AddSichtungDialogView.xaml.cs">
+	    <DependentUpon>AddSichtungDialogView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="Platforms\Android\Assets\zugbeobachtungen.db">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Maui.Controls" Version="9.0.90" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="DialogView\AddSichtungDialogView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

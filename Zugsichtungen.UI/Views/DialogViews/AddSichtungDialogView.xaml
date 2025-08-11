@@ -46,7 +46,7 @@
                         Margin="10"
                         FontSize="16"
                         Width="100"
-                        SelectedDate="{Binding SelectedDate, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                        SelectedDate="{Binding SelectedDate, Mode=TwoWay, ValidatesOnNotifyDataErrors=True}"/>
             <TextBlock Text="Ort"
                        Grid.Row="0"
                        Grid.Column="2" 
@@ -57,7 +57,7 @@
                         Margin="10"
                      Width="200"
                      FontSize="16"
-                     Text="{Binding Place, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"/>
+                     Text="{Binding Place, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"/>
             <TextBlock Text="Fahrzeug"
                        Grid.Row="1"
                        Grid.Column="0" 

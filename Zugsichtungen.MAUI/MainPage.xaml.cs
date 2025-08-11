@@ -1,12 +1,10 @@
-﻿using Zugsichtungen.ViewModels.TabViewModels;
-
+﻿using UraniumUI.Pages;
+using Zugsichtungen.ViewModels.TabViewModels;
 
 namespace Zugsichtungen.MAUI
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : UraniumContentPage
     {
-        int count = 0;
-
         public MainPage(SightingOverviewTabViewModel viewModel)
         {
             InitializeComponent();

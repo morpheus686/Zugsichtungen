@@ -21,8 +21,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
-        public override bool HasErrors => false;
-
         public ShowSightingDetailsDialogViewModel(ISightingService sightingService, SightingViewEntry sichtung, IDialogService dialogService)
         {
             this.sightingService = sightingService;
