@@ -72,58 +72,9 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
 
-        //public override async Task UpdateContext(ContextDto dto, UpdateMode updateMode)
-        //{
-        //    switch (updateMode)
-        //    {
-        //        case UpdateMode.Full:
-        //            await UpdateContextFullAsync(dto);
-        //            break;
-
-        //        case UpdateMode.Partial:
-        //            await UpdateContextPartialAsync(dto);
-        //            break;
-
-        //        case UpdateMode.Tracked:
-        //            await UpdateContextTrackedAsync(dto);
-        //            break;
-        //    }
-        //}
-        //private async Task UpdateContextFullAsync(ContextDto dto)
-        //{
-        //    var entity = new Context
-        //    {
-        //        Id = dto.Id,
-        //        Description = dto.Name
-        //    };
-
-        //    context.Attach(entity);
-        //    context.Entry(entity).State = EntityState.Modified;
-
-        //    await context.SaveChangesAsync();
-        //}
-
-        //private async Task UpdateContextTrackedAsync(ContextDto dto)
-        //{
-        //    var entity = new Context { Id = dto.Id };
-
-        //    context.Attach(entity);
-
-        //    context.Entry(entity).Property(x => x.Description).CurrentValue = dto.Name;
-        //    context.Entry(entity).Property(x => x.Description).IsModified = true;
-
-        //    await context.SaveChangesAsync();
-        //}
-
-        //private async Task UpdateContextPartialAsync(ContextDto dto)
-        //{
-        //    var entity = await context.Contexts.FirstOrDefaultAsync(x => x.Id == dto.Id);
-        //    if (entity is null) return;
-
-        //    // Mappen nur der Felder, die sich ändern dürfen
-        //    entity.Description = dto.Name;
-
-        //    await context.SaveChangesAsync();
-        //}
+        public override Task<bool> CheckIfSightingPictureExists(int sightingId)
+        {
+            return this.imageRepository.CheckIfImageExistsAsync(sightingId);
+        }
     }
 }

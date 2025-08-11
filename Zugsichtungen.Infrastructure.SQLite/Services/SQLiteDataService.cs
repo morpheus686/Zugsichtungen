@@ -68,5 +68,10 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         {
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
+
+        public override Task<bool> CheckIfSightingPictureExists(int sightingId)
+        {
+            return this.imageRepository.CheckIfImageExistsAsync(sightingId);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace Zugsichtungen.Abstractions.Services
         Task SaveChangesAsync();
         Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
         Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
+        Task<bool> CheckIfSightingPictureExists(int sightingId);
     }
 }

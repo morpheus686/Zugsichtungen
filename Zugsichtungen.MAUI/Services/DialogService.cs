@@ -36,6 +36,8 @@ namespace Zugsichtungen.MAUI.Services
                     {
                         return DialogResult.Abort;
                     }
+
+                    return result;
                 }
 
                 return DialogResult.Abort;
@@ -50,10 +52,17 @@ namespace Zugsichtungen.MAUI.Services
         public async Task ShowIndeterminateDialogAsync(Func<Action<string, IndeterminateState>, object?, Task> progressTask, object? parameter = null)
         {
             var viewModel = new IndeterminateDialogViewModel();
+            var progressDialog = await this.uraniumDialogService.DisplayProgressAsync("Speichern", "Bitte warten...");
 
-            using (await this.uraniumDialogService.DisplayProgressAsync("Lädt", "Bitte warten..."))
+            try
             {
-                await progressTask((m, state) => { /* optional UI-Update */ }, parameter);
+                await progressTask((message, state) =>
+                {
+                }, parameter);
+            }
+            finally
+            {
+                progressDialog.Dispose();
             }
         }
 

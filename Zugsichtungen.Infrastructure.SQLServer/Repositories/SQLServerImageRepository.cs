@@ -1,19 +1,49 @@
 ﻿using Microsoft.Data.SqlClient;
 using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Infrastructure.Repositories;
 
 namespace Zugsichtungen.Infrastructure.SQLServer.Repositories
 {
-    public class SQLServerImageRepository : IImageRepository
+    public class SQLServerImageRepository : ImageRepositoryBase
     {
         private readonly string connectionString;
 
-        public SQLServerImageRepository(string connectionString)
+        public SQLServerImageRepository(string connectionString)// : base(connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public async Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId)
+        public override async Task<bool> CheckIfImageExistsAsync(int sightingId)
+        {
+            using (var connection = await GetOpenedConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT CASE WHEN EXISTS (SELECT 1 FROM SightingPicture WHERE SightingId = @Id) THEN 1 ELSE 0 END AS HatEintrag;";
+                    command.Parameters.AddWithValue("@Id", sightingId);
+
+                    var value = await command.ExecuteScalarAsync();
+
+                    if (value == null)
+                    {
+                        return false;
+                    }
+
+                    var isExisting = (Int32)value;
+
+                    if (isExisting == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        public override async Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId)
         {
             using (var connection = await GetOpenedConnection())
             {
@@ -24,7 +54,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Repositories
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
-                        if (await reader.ReadAsync()) 
+                        if (await reader.ReadAsync())
                         {
                             return new SightingPictureDto
                             {
@@ -38,7 +68,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Repositories
                 }
 
                 return null;
-            }            
+            }
         }
 
         private async Task<SqlConnection> GetOpenedConnection()

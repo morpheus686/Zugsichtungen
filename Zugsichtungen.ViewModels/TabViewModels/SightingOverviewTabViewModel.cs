@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.DialogViewModels;
@@ -64,7 +65,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                 logger.LogError(e, e.Message);
                 throw;
             }
-
         }
 
         private bool CanExecuteEditContextes(object? arg) => !this.IsBusy;
@@ -99,10 +99,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                         addSichtungDialogViewModel.Place,
                         addSichtungDialogViewModel.Note,
                         addSichtungDialogViewModel.ImagePath);
-
-                    updateMessage("Sichtung gespeichert.", IndeterminateState.Success);
                     await this.UpdateSichtungen();
-                    await Task.Delay(2000);
                 });
             }
 
@@ -116,7 +113,15 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
             foreach (var item in sichtungen)
             {
-                Sichtungsliste.Add(new SichtungItemViewModel(item));
+                var pictureExists = await this.sichtungService.CheckIfPictureExists(item.Id);
+                SightingPicture? sightingPicture = null;
+
+                if (pictureExists)
+                {
+                    sightingPicture = await this.sichtungService.GetSightingPictureByIdAsync(item.Id);
+                }
+
+                Sichtungsliste.Add(new SichtungItemViewModel(item, sightingPicture));
             }
         }
     }

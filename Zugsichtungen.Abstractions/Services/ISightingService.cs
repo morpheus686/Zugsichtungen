@@ -11,6 +11,7 @@ namespace Zugsichtungen.Abstractions.Services
         Task UpdateContextes(List<Context> contextes);
         Task<List<VehicleViewEntry>> GetAllVehicleViewEntriesAsync();
         Task<SightingPicture?> GetSightingPictureByIdAsync(int id);
+        Task<bool> CheckIfPictureExists(int sightingId);
 
     }
 }

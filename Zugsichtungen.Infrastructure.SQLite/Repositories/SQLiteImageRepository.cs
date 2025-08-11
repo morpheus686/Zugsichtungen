@@ -1,10 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Infrastructure.Repositories;
 
 namespace Zugsichtungen.Infrastructure.SQLite.Repositories
 {
-    public class SQLiteImageRepository : IImageRepository
+    public class SQLiteImageRepository : ImageRepositoryBase
     {
         private readonly string connectionString;
 
@@ -13,7 +13,37 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
             this.connectionString = connectionString;
         }
 
-        public async Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId)
+        public override async Task<bool> CheckIfImageExistsAsync(int sightingId)
+        {
+            using (var connection = await GetOpenedConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT EXISTS (SELECT 1 FROM SichtungBild WHERE SichtungId = @Id) AS isExisting";
+                    command.Parameters.AddWithValue("@Id", sightingId);
+
+                    var value = await command.ExecuteScalarAsync();
+
+                    if (value == null)
+                    {
+                        return false;
+                    }
+
+                    var isExisting = (Int64)value;
+
+                    if (isExisting == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        public override async Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId)
         {
             using (var connection = await GetOpenedConnection())
             {

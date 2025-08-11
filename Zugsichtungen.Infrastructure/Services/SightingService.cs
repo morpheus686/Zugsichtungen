@@ -7,6 +7,9 @@ namespace Zugsichtungen.Infrastructure.Services
 {
     public class SightingService(IDataService dataService, IMapper mapper) : ISightingService
     {
+        private readonly IDataService dataService = dataService;
+        private readonly IMapper mapper = mapper;
+
         public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note, string? filePath)
         {
             var newSighting = new Sighting
@@ -93,6 +96,11 @@ namespace Zugsichtungen.Infrastructure.Services
             }
 
             return mapper.Map<SightingPicture>(dto);
+        }
+
+        public Task<bool> CheckIfPictureExists(int sightingId)
+        {
+            return this.dataService.CheckIfSightingPictureExists(sightingId);
         }
     }
 }

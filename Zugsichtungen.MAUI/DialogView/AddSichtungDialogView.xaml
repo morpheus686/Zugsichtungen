@@ -104,7 +104,7 @@
                                 Margin="5"
                                 Text="{Binding ImagePath, Mode=OneWay}"
                                 IsReadOnly="True"
-                                />
+                                    TextColor="Black"/>
                 <material:ButtonView Grid.Column="1"
                                      Margin="5"
                                      TappedCommand="{Binding AddImageCommand, Mode=OneTime}">
@@ -116,16 +116,19 @@
                 </material:ButtonView>
             </Grid>
 
-
             <HorizontalStackLayout Grid.Row="7" Grid.Column="1">
                 <material:ButtonView WidthRequest="100"
-                        Margin="5">
+                        Margin="5"
+                                     x:Name="SaveButtonView"
+                                     Tapped="SaveButtonView_Tapped">
                     <Label Text="Speichern" 
                            HorizontalTextAlignment="Center"
                            IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}"/>
                 </material:ButtonView>
                 <material:ButtonView WidthRequest="100"
-                        Margin="5">
+                                     x:Name="AbortButtonView"
+                        Margin="5"
+                                     Tapped="AbortButtonView_Tapped">
                     <Label Text="Abbrechen"
                            HorizontalTextAlignment="Center" />
                 </material:ButtonView>
