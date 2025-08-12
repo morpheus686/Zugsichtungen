@@ -21,5 +21,7 @@ namespace Zugsichtungen.Infrastructure.Services
             var affected = await context.SaveChangesAsync();
             Debug.WriteLine("Affected rows: " + affected);
         }
+
+        public abstract Task<bool> DeleteSightingAsync(int sightingId);
     }
 }

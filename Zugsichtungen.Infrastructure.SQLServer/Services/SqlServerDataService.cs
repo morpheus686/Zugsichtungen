@@ -76,5 +76,10 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         {
             return this.imageRepository.CheckIfImageExistsAsync(sightingId);
         }
+
+        public override Task<bool> DeleteSightingAsync(int sightingId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

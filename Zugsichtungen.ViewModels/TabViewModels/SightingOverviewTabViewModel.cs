@@ -121,7 +121,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                     sightingPicture = await this.sichtungService.GetSightingPictureByIdAsync(item.Id);
                 }
 
-                Sichtungsliste.Add(new SichtungItemViewModel(item, sightingPicture));
+                Sichtungsliste.Add(new SichtungItemViewModel(item, this.dialogService, sightingPicture));
             }
         }
     }

@@ -9,6 +9,7 @@
     xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter">
     <toolkit:Popup.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:MultiSourceImageConverter x:Key="MultiSourceImageConverter" />
     </toolkit:Popup.Resources>
 
     
@@ -100,30 +101,41 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <material:TextField Grid.Column="0"
-                                Margin="5"
-                                Text="{Binding ImagePath, Mode=OneWay}"
-                                IsReadOnly="True"
-                                    TextColor="Black"/>
-                <material:ButtonView Grid.Column="1"
-                                     Margin="5"
-                                     TappedCommand="{Binding AddImageCommand, Mode=OneTime}">
-                    <Image>
-                        <Image.Source>
-                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
-                        </Image.Source>
-                    </Image>
-                </material:ButtonView>
+                <Image Grid.Column="0"
+                    Margin="5"
+                    Source="{Binding ImagePath, Converter={StaticResource MultiSourceImageConverter}, Mode=OneWay}"
+                      WidthRequest="150"
+                       HeightRequest="100"/>
+                <VerticalStackLayout Grid.Column="1"
+                                     Margin="5">
+                    <material:ButtonView 
+                                         TappedCommand="{Binding AddImageCommand, Mode=OneTime}">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
+                            </Image.Source>
+                        </Image>
+                    </material:ButtonView>
+
+                    <material:ButtonView 
+                                         TappedCommand="{Binding RemoveImageCommand, Mode=OneTime}">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Minus}" Color="White" />
+                            </Image.Source>
+                        </Image>
+                    </material:ButtonView>
+                </VerticalStackLayout>
             </Grid>
 
             <HorizontalStackLayout Grid.Row="7" Grid.Column="1">
                 <material:ButtonView WidthRequest="100"
                         Margin="5"
                                      x:Name="SaveButtonView"
-                                     Tapped="SaveButtonView_Tapped">
+                                     Tapped="SaveButtonView_Tapped"
+                                     IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}">
                     <Label Text="Speichern" 
-                           HorizontalTextAlignment="Center"
-                           IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}"/>
+                           HorizontalTextAlignment="Center"/>
                 </material:ButtonView>
                 <material:ButtonView WidthRequest="100"
                                      x:Name="AbortButtonView"

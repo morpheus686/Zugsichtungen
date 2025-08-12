@@ -58,6 +58,7 @@ namespace Zugsichtungen.MAUI.Services
             {
                 await progressTask((message, state) =>
                 {
+                    viewModel.SetNewMessage(message, state);
                 }, parameter);
             }
             finally

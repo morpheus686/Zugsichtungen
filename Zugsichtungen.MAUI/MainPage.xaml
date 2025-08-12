@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+                            xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
              x:Class="Zugsichtungen.MAUI.MainPage"
              Title="Sichtungen">
     <uranium:UraniumContentPage.Attachments>
@@ -11,7 +12,6 @@
                 <material:CheckBox Text="Zeige nur Sichtungen mit Bilder" />
             </VerticalStackLayout>
         </material:BackdropView>
-
     </uranium:UraniumContentPage.Attachments>
 
     <Grid>
@@ -25,18 +25,29 @@
                 <CollectionView ItemsSource="{Binding Sichtungsliste, Mode=OneWay}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Border
-                            Margin="10"
-                            Padding="15"
-                            BackgroundColor="DarkRed">
-                                <StackLayout>
-                                    <Label Text="{Binding Date}"  FontSize="Small" />
-                                    <Label Text="{Binding Number}" FontSize="Small" />
-                                    <Label Text="{Binding Location}" FontSize="Small" />
-                                </StackLayout>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+                            <SwipeView >
+                                <SwipeView.RightItems>
+                                    <SwipeItem Text="Delete"
+                                       BackgroundColor="Red" 
+                                               Command="{Binding DeleteSightingCommand, Mode=OneTime}">
+                                        <SwipeItem.IconImageSource>
+                                            <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Delete}" Color="White" />
+                                        </SwipeItem.IconImageSource>
+                                    </SwipeItem>
+                                </SwipeView.RightItems>
+                                <Border
+                                    Margin="10"
+                                    Padding="15"
+                                    BackgroundColor="DarkGray">
+                                    <StackLayout>
+                                        <Label Text="{Binding Date}"  FontSize="Small" />
+                                        <Label Text="{Binding Number}" FontSize="Small" />
+                                        <Label Text="{Binding Location}" FontSize="Small" />
+                                    </StackLayout>
+                                </Border>
+                            </SwipeView>  
+                        </DataTemplate>   
+                    </CollectionView.ItemTemplate>  
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
@@ -44,7 +55,7 @@
                 Margin="30"
                 TappedCommand="{Binding AddSichtungCommand, Mode=OneTime}"
                 HorizontalOptions="End"
-                VerticalOptions="End">            
+                VerticalOptions="End">
             <Image>
                 <Image.Source>
                     <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />

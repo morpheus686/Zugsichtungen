@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
@@ -73,7 +72,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 if (imagePath != value)
                 {
                     imagePath = value;
-                    RaisePropertyChanged(nameof(imagePath));
+                    RaisePropertyChanged(nameof(ImagePath));
                 }                
             }
         }

@@ -21,7 +21,7 @@ namespace Zugsichtungen.Infrastructure.Repositories
 
         public async Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId)
         {
-            using (var connection = await GetOpenedConnection())
+            using (var connection = await GetOpenedConnectionAsync())
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = GetImageQuery;
@@ -44,7 +44,7 @@ namespace Zugsichtungen.Infrastructure.Repositories
 
         public async Task<bool> CheckIfImageExistsAsync(int sightingId)
         {
-            using (var connection = await GetOpenedConnection())
+            using (var connection = await GetOpenedConnectionAsync())
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = ExistsQuery;
@@ -58,7 +58,7 @@ namespace Zugsichtungen.Infrastructure.Repositories
             }
         }
 
-        private async Task<DbConnection> GetOpenedConnection()
+        private async Task<DbConnection> GetOpenedConnectionAsync()
         {
             var connection = CreateConnection(this.connectionstring);
             await connection.OpenAsync();

@@ -26,7 +26,6 @@ namespace Zugsichtungen
     public partial class App : Application
     {
         public new static App Current => (App)Application.Current;
-        public IServiceProvider ServiceProvider { get; private set; } = default!;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -35,9 +34,8 @@ namespace Zugsichtungen
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            ServiceProvider = services.BuildServiceProvider();
-
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            var serviceProvider = services.BuildServiceProvider();
+            var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }
 

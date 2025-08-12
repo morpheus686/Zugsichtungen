@@ -21,7 +21,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Zugsichtungen.MAUI</ApplicationTitle>
+		<ApplicationTitle>Zugsichtungen</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.zugsichtungen.maui</ApplicationId>

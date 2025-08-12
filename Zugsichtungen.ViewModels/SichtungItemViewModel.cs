@@ -1,10 +1,15 @@
-﻿using Zugsichtungen.Domain.Models;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System.Windows.Input;
+using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels
 {
     public class SichtungItemViewModel : ViewModelBase
     {
+        private readonly IDialogService dialogService;
+
         public SightingViewEntry Sichtung { get; }
         public SightingPicture? SightingPicture { get; }
 
@@ -27,10 +32,25 @@ namespace Zugsichtungen.ViewModels
             }
         }
 
-        public SichtungItemViewModel(SightingViewEntry sighting, SightingPicture? sightingPicture)
+        public ICommand DeleteSightingCommand { get; }
+
+        public SichtungItemViewModel(SightingViewEntry sighting,
+            IDialogService dialogService, 
+            SightingPicture? sightingPicture)
         {
             this.Sichtung = sighting;
+            this.dialogService = dialogService;
             this.SightingPicture = sightingPicture;
+
+            this.DeleteSightingCommand = new AsyncCommand(ExecuteDeleteSightingCommand);
+        }
+
+        private async Task ExecuteDeleteSightingCommand()
+        {
+            await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
+            {
+                await Task.Delay(5000);
+            });
         }
     }
 }
