@@ -4,7 +4,7 @@ namespace Zugsichtungen.MAUI.Converter
 {
     public class MultiSourceImageConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             switch (value)
             {
@@ -17,15 +17,12 @@ namespace Zugsichtungen.MAUI.Converter
 
                 case Stream stream:
                     return ImageSource.FromStream(() => stream);
-
                 default:
-                    // Hier könntest du z.B. ein Platzhalterbild zurückgeben
-                    // return ImageSource.FromFile("placeholder.png");
                     return null;
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
 }

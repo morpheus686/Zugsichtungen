@@ -10,7 +10,7 @@ using Zugsichtungen.Infrastructure.SQLite.Models;
 using Zugsichtungen.Infrastructure.SQLite.Repositories;
 using Zugsichtungen.Infrastructure.SQLite.Services;
 using Zugsichtungen.MAUI.Services;
-using Zugsichtungen.ViewModels.DialogViewModels;
+using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.TabViewModels;
 
 namespace Zugsichtungen.MAUI
@@ -70,7 +70,7 @@ namespace Zugsichtungen.MAUI
             builder.Services.AddSingleton<GalleryTabViewModel>();
 
             builder.Services.AddSingleton<IDialogService, DialogService>();
-            builder.Services.AddTransient<AddSichtungDialogViewModel>();
+            builder.Services.AddTransient<MainWindowViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

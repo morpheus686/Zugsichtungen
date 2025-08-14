@@ -60,6 +60,12 @@ namespace Zugsichtungen
                     });
 
                     services.AddScoped<IDataService, SQLiteDataService>();
+
+                    if (sqliteConnectionString == null)
+                    {
+                        throw new ApplicationException("Connectionstring ist nicht in den Einstellungen festgelegt!");
+                    }
+
                     services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
                     {
                         return new SQLiteImageRepository(sqliteConnectionString);
@@ -74,6 +80,12 @@ namespace Zugsichtungen
                     });
 
                     services.AddScoped<IDataService, SqlServerDataService>();
+
+                    if (sqlServerConnectionString == null)
+                    {
+                        throw new ApplicationException("Connectionstring ist nicht in den Einstellungen festgelegt!");
+                    }
+
                     services.AddScoped<IImageRepository, SQLServerImageRepository>(sp =>
                     {
                         return new SQLServerImageRepository(sqlServerConnectionString);

@@ -6,7 +6,9 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                  xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter">
+    xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter"
+    xmlns:dialogViewModels="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
+    x:DataType="{x:Type dialogViewModels:AddSichtungDialogViewModel}">
     <toolkit:Popup.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <converter:MultiSourceImageConverter x:Key="MultiSourceImageConverter" />
@@ -87,7 +89,7 @@
                                     ItemsSource="{Binding ContextList, Mode=OneTime}" 
                                     ItemDisplayBinding="{Binding Name}"
                                     SelectedItem="{Binding SelectedKontext}"
-                                    Margin="5"/>
+                                    Margin="5" />
 
             <Label Text="Bild"
                    TextColor="Black"

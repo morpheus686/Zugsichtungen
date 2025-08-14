@@ -4,10 +4,81 @@
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
                             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
+                            xmlns:tabViewModel="clr-namespace:Zugsichtungen.ViewModels.TabViewModels;assembly=Zugsichtungen.ViewModels"
+                            xmlns:viewModel="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
+                            xmlns:templateSelectors="clr-namespace:Zugsichtungen.MAUI.TemplateSelectors"
+                            xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter"
              x:Class="Zugsichtungen.MAUI.MainPage"
-             Title="Sichtungen">
+             Title="Sichtungen"
+                            x:DataType="{x:Type tabViewModel:SightingOverviewTabViewModel}"
+                            NavigationPage.HasNavigationBar="False">
+    <uranium:UraniumContentPage.ToolbarItems>
+        <ToolbarItem Text="☰"></ToolbarItem>
+    </uranium:UraniumContentPage.ToolbarItems>
+
+    <uranium:UraniumContentPage.Resources>
+        <DataTemplate x:Key="SightingOverviewTemplate" x:DataType="{x:Type tabViewModel:SightingOverviewTabViewModel}">
+            <Grid>
+                <ScrollView>
+                    <VerticalStackLayout
+                        Padding="30,0"
+                        Spacing="25">
+                        <CollectionView ItemsSource="{Binding Sichtungsliste, Mode=OneWay}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="{x:Type viewModel:SichtungItemViewModel}">
+                                    <SwipeView >
+                                        <SwipeView.RightItems>
+                                            <SwipeItem Text="Delete"
+                                       BackgroundColor="Red" 
+                                               Command="{Binding DeleteSightingCommand, Mode=OneTime}">
+                                                <SwipeItem.IconImageSource>
+                                                    <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Delete}" Color="White" />
+                                                </SwipeItem.IconImageSource>
+                                            </SwipeItem>
+                                        </SwipeView.RightItems>
+                                        <Border
+                                    Margin="10"
+                                    Padding="15"
+                                    BackgroundColor="DarkGray">
+                                            <StackLayout>
+                                                <Label Text="{Binding Date}"  FontSize="Small" />
+                                                <Label Text="{Binding Number}" FontSize="Small" />
+                                                <Label Text="{Binding Location}" FontSize="Small" />
+                                            </StackLayout>
+                                        </Border>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+                <material:ButtonView StyleClass="FilledButton"
+                    Margin="30"
+                    TappedCommand="{Binding AddSichtungCommand, Mode=OneTime}"
+                    HorizontalOptions="End"
+                    VerticalOptions="End">
+                    <Image>
+                        <Image.Source>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
+                        </Image.Source>
+                    </Image>
+                </material:ButtonView>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="GalleryTemplate" x:DataType="{x:Type tabViewModel:GalleryTabViewModel}" >
+            <Border Background="Yellow" />
+        </DataTemplate>
+
+        <converter:TabViewToTemplateConverter x:Key="TabToTemplateConverter"
+                                         OverviewTemplate="{StaticResource SightingOverviewTemplate}"
+                                         GalleryTemplate="{StaticResource GalleryTemplate}" />
+    </uranium:UraniumContentPage.Resources>
+
     <uranium:UraniumContentPage.Attachments>
-        <material:BackdropView Title="Filter" IconImageSource="filter.png">
+        <material:BackdropView Title="Filter">
+            <material:BackdropView.IconImageSource>
+                <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Filter_list}" Color="White" />
+            </material:BackdropView.IconImageSource>
             <VerticalStackLayout>
                 <material:CheckBox Text="Zeige nur Sichtungen mit Bilder" />
             </VerticalStackLayout>
@@ -15,53 +86,56 @@
     </uranium:UraniumContentPage.Attachments>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ScrollView>
-            <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-                <CollectionView ItemsSource="{Binding Sichtungsliste, Mode=OneWay}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <SwipeView >
-                                <SwipeView.RightItems>
-                                    <SwipeItem Text="Delete"
-                                       BackgroundColor="Red" 
-                                               Command="{Binding DeleteSightingCommand, Mode=OneTime}">
-                                        <SwipeItem.IconImageSource>
-                                            <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Delete}" Color="White" />
-                                        </SwipeItem.IconImageSource>
-                                    </SwipeItem>
-                                </SwipeView.RightItems>
-                                <Border
-                                    Margin="10"
-                                    Padding="15"
-                                    BackgroundColor="DarkGray">
-                                    <StackLayout>
-                                        <Label Text="{Binding Date}"  FontSize="Small" />
-                                        <Label Text="{Binding Number}" FontSize="Small" />
-                                        <Label Text="{Binding Location}" FontSize="Small" />
-                                    </StackLayout>
-                                </Border>
-                            </SwipeView>  
-                        </DataTemplate>   
-                    </CollectionView.ItemTemplate>  
-                </CollectionView>
-            </VerticalStackLayout>
-        </ScrollView>
-        <material:ButtonView StyleClass="FilledButton"
-                Margin="30"
-                TappedCommand="{Binding AddSichtungCommand, Mode=OneTime}"
-                HorizontalOptions="End"
-                VerticalOptions="End">
-            <Image>
-                <Image.Source>
-                    <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
-                </Image.Source>
-            </Image>
-        </material:ButtonView>
-    </Grid>
+        <!-- Hauptinhalt -->
+        <Grid RowDefinitions="Auto,*">
+            <!-- Header -->
+            <Grid BackgroundColor="#2196F3" HeightRequest="50" Padding="10" ColumnDefinitions="50,*">
+                <Button Text="☰" 
+                        FontSize="24"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        Command="{Binding ToggleDrawerCommand}" />
+                <Label Text="Sichtungen" 
+                       Grid.Column="1"
+                       VerticalOptions="Center"
+                       TextColor="White"
+                       FontSize="18"/>
+            </Grid>
 
+            <!-- Content -->
+            <ContentView Grid.Row="1"
+                         Content="{Binding SelectedTab, Converter={StaticResource TabToTemplateConverter}}"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"/>
+        </Grid>
+
+        <!-- Overlay -->
+        <BoxView x:Name="Overlay"
+                 BackgroundColor="Black"
+                 Opacity="0"
+                 IsVisible="False"
+                 InputTransparent="True">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOverlayTapped"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+
+        <!-- Drawer -->
+        <StackLayout x:Name="Drawer"
+                     BackgroundColor="LightGray"
+                     WidthRequest="250"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="Start"
+                     TranslationX="-250"
+                     Padding="20">
+            <Label Text="Menü" FontSize="20" Margin="0,0,0,20"/>
+            <Button Text="Sichtungen"
+                    Command="{Binding SelectTabCommand}"
+                    CommandParameter="{Binding SightingOverviewTabViewModel}" 
+                    />
+            <Button Text="Galerie"
+                    Command="{Binding SelectTabCommand}"
+                    CommandParameter="{Binding GalleryTabViewModel}" />
+        </StackLayout>
+    </Grid>
 </uranium:UraniumContentPage>

@@ -117,4 +117,8 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="TabView\" />
+	</ItemGroup>
+
 </Project>

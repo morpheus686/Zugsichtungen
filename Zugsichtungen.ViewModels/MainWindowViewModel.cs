@@ -8,12 +8,24 @@ namespace Zugsichtungen.ViewModels
     public class MainWindowViewModel : LoadableViewModel
     {
         private TabViewModelBase selectedTab;
+        private bool isDrawerOpen;
 
         public SichtungItemViewModel? SelectedItem { get; set; }
 
         public SightingOverviewTabViewModel SightingOverviewTabViewModel { get; }
         public GalleryTabViewModel GalleryTabViewModel { get; }
         public ICommand SelectTabCommand { get; }
+        public ICommand? ToggleDrawerCommand { get; set; }
+
+        public bool IsDrawerOpen
+        {
+            get => isDrawerOpen;
+            set
+            {
+                isDrawerOpen = value;
+                RaisePropertyChanged(nameof(IsDrawerOpen));
+            }
+        }
 
         public TabViewModelBase SelectedTab
         {
@@ -28,6 +40,7 @@ namespace Zugsichtungen.ViewModels
         public MainWindowViewModel(SightingOverviewTabViewModel sightingOverviewTabViewModel, GalleryTabViewModel galleryTabViewModel)
         {
             this.SelectTabCommand = new RelayCommand<TabViewModelBase>(ExecuteSelectTabCommand);
+            this.ToggleDrawerCommand = new RelayCommand(() => IsDrawerOpen = !IsDrawerOpen);
 
             this.GalleryTabViewModel = galleryTabViewModel;
             this.SightingOverviewTabViewModel = sightingOverviewTabViewModel;
@@ -40,6 +53,8 @@ namespace Zugsichtungen.ViewModels
             {    
                 this.SelectedTab = tabViewModel;
             }
+
+            this.IsDrawerOpen = false;
         }
 
         protected override Task InitializeInternalAsync()

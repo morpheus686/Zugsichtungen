@@ -14,9 +14,9 @@ namespace Zugsichtungen.ViewModels.TabViewModels
     public class SightingOverviewTabViewModel : TabViewModelBase
     {
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
-        private readonly IDialogService dialogService;
-        private readonly ISightingService sichtungService;
-        private readonly ILogger<SightingOverviewTabViewModel> logger;
+        private readonly IDialogService? dialogService;
+        private readonly ISightingService? sichtungService;
+        private readonly ILogger<SightingOverviewTabViewModel>? logger;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
         public SichtungItemViewModel? SelectedItem { get; set; }
@@ -25,14 +25,16 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         public ICommand EditContextesCommand { get; }
         public ICommand ShowSightingDetailsCommand { get; }
 
-
-        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService, ILogger<SightingOverviewTabViewModel> logger)
+        public SightingOverviewTabViewModel()
         {
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
-            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);
+            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);   
+            this.sichtungenList = [];           
+        }
 
-            this.sichtungenList = [];
+        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService, ILogger<SightingOverviewTabViewModel> logger) : this()
+        {
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
             this.logger = logger;

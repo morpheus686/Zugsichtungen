@@ -8,16 +8,17 @@ namespace Zugsichtungen.MAUI.Services
 {
     internal class DialogService : Abstractions.Services.IDialogService
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly UraniumUI.Dialogs.IDialogService uraniumDialogService;
         private readonly ViewLocator _viewLocator;
+        private readonly Page page;
 
-        public DialogService(IServiceProvider serviceProvider, 
-            UraniumUI.Dialogs.IDialogService uraniumDialogService)
+        public DialogService(UraniumUI.Dialogs.IDialogService uraniumDialogService)
         {
-            _serviceProvider = serviceProvider;
             this.uraniumDialogService = uraniumDialogService;
             _viewLocator = new ViewLocator(typeof(App).Assembly);
+
+            this.page = Application.Current?.Windows.FirstOrDefault()?.Page
+                ?? throw new TypeLoadException();
         }
 
         public async Task<object?> ShowDialogAsync(ILoadable viewModel)
@@ -30,7 +31,7 @@ namespace Zugsichtungen.MAUI.Services
                 if (view is Popup popup)
                 {
                     popup.BindingContext = viewModel;
-                    var result = await Application.Current.MainPage.ShowPopupAsync(popup);
+                    var result = await page.ShowPopupAsync(popup);
 
                     if (result == null)
                     {
@@ -44,7 +45,7 @@ namespace Zugsichtungen.MAUI.Services
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Fehler", e.Message, "OK");
+                await this.page.DisplayAlert("Fehler", e.Message, "OK");
                 return DialogResult.Abort;
             }
         }
