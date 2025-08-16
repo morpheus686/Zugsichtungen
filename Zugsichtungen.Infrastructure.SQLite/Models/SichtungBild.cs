@@ -13,5 +13,7 @@ public partial class SichtungBild
 
     public byte[] Bild { get; set; } = null!;
 
+    public byte[]? Thumbnail { get; set; }
+
     public virtual Sichtungen Sichtung { get; set; } = null!;
 }

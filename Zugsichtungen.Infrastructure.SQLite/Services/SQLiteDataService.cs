@@ -88,5 +88,19 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             this.context.Remove(sichtung);
             return true;
         }
+
+        public override Task<List<SightingPictureDto>> GetAllSightingPicturesAsync()
+        {
+            return this.context.SichtungBilds
+              .AsNoTracking() // keine Change-Tracking-Overhead
+              .Select(b => new SightingPictureDto
+              {
+                  Id = b.Id,
+                  SightingId = b.SichtungId,
+                  Filename = b.Dateiname,
+                  Thumbnail = b.Thumbnail
+              })
+              .ToListAsync();
+        }
     }
 }

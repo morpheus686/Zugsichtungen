@@ -97,9 +97,7 @@ public partial class ZugbeobachtungenContext : DbContext
         {
             entity.ToTable("SichtungBild");
 
-            entity.HasOne(d => d.Sichtung).WithMany(p => p.SichtungBilds)
-                .HasForeignKey(d => d.SichtungId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Sichtung).WithMany(p => p.SichtungBilds).HasForeignKey(d => d.SichtungId);
         });
 
         modelBuilder.Entity<Sichtungen>(entity =>

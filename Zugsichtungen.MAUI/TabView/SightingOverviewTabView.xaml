@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Zugsichtungen.MAUI.TabView.SightingOverviewTabView"
+             xmlns:viewModel="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
+             xmlns:grouping="clr-namespace:Zugsichtungen.ViewModels.Grouping;assembly=Zugsichtungen.ViewModels">
+    <Grid>
+        <CollectionView ItemsSource="{Binding GroupedSightings, Mode=OneWay}"
+                        SelectionMode="None"
+                        ItemsLayout="VerticalList"
+                        IsGrouped="True">
+
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="grouping:SightingGroupViewModel">
+                    <Label Text="{Binding Date}"
+                       FontSize="Medium"
+                       FontAttributes="Bold"
+                       BackgroundColor="LightGray"
+                       Padding="10,5"/>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewModel:SichtungItemViewModel">
+                    <SwipeView >
+                        <SwipeView.RightItems>
+                            <SwipeItem Text="Delete"
+                                    BackgroundColor="Red" 
+                                            Command="{Binding DeleteSightingCommand, Mode=OneTime}">
+                                <SwipeItem.IconImageSource>
+                                    <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Delete}" Color="White" />
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+                        </SwipeView.RightItems>
+                        <Border Margin="10"
+                                 Padding="10"
+                                 BackgroundColor="DarkGray">
+                            <StackLayout>
+                                <Label Text="{Binding Number}" FontSize="Small" />
+                                <Label Text="{Binding Location}" FontSize="Small" />
+                            </StackLayout>
+                        </Border>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <material:ButtonView StyleClass="FilledButton"
+                 Margin="30"
+                 TappedCommand="{Binding AddSichtungCommand, Mode=OneTime}"
+                 HorizontalOptions="End"
+                 VerticalOptions="End">
+            <Image>
+                <Image.Source>
+                    <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
+                </Image.Source>
+            </Image>
+        </material:ButtonView>
+    </Grid>
+</ContentView>

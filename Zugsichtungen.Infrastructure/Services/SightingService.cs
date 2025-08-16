@@ -25,10 +25,13 @@ namespace Zugsichtungen.Infrastructure.Services
 
             if (filePath != null)
             {
+                var picture = await File.ReadAllBytesAsync(filePath);
+
                 sightingPictureDto = new SightingPicture
                 {
                     Filename = new FileInfo(filePath).Name,
-                    Image = await File.ReadAllBytesAsync(filePath)
+                    Image = picture,
+                    Thumbnail = ImageHelper.CreateThumbnail(picture)
                 };
             }
 

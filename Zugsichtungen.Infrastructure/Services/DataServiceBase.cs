@@ -23,5 +23,6 @@ namespace Zugsichtungen.Infrastructure.Services
         }
 
         public abstract Task<bool> DeleteSightingAsync(int sightingId);
+        public abstract Task<List<SightingPictureDto>> GetAllSightingPicturesAsync();
     }
 }

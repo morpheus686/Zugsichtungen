@@ -5,7 +5,7 @@ namespace Zugsichtungen.MAUI
 {
     public partial class MainPage : UraniumContentPage
     {
-        private MainWindowViewModel ViewModel => this.BindingContext as MainWindowViewModel;
+        private MainWindowViewModel? ViewModel => this.BindingContext as MainWindowViewModel;
 
         public MainPage(MainWindowViewModel viewModel)
         {
@@ -20,7 +20,7 @@ namespace Zugsichtungen.MAUI
             };
 
 
-            Loaded += MainWindow_Loaded;
+            this.Loaded += MainWindow_Loaded;
         }
 
         private async Task ToggleDrawerAnimation(bool open)

@@ -99,6 +99,9 @@
 	  <Compile Update="DialogView\AddSichtungDialogView.xaml.cs">
 	    <DependentUpon>AddSichtungDialogView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="TabView\GalleryTabViewModel.xaml.cs">
+	    <DependentUpon>GalleryTabViewModel.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -115,10 +118,12 @@
 	  <MauiXaml Update="DialogView\AddSichtungDialogView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="TabView\" />
+	  <MauiXaml Update="TabView\GalleryTabViewModel.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="TabView\SightingOverviewTabView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

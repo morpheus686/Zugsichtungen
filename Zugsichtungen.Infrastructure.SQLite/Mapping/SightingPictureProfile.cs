@@ -13,6 +13,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Mapping
                 .ForMember(dest => dest.Bild, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.Dateiname, opt => opt.MapFrom(src => src.Filename))
                 .ForMember(dest => dest.SichtungId, opt => opt.MapFrom(src => src.SightingId))
+                .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => src.Thumbnail))
                 .ReverseMap();
         }
     }

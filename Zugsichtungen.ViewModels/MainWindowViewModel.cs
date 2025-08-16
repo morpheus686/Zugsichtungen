@@ -16,6 +16,7 @@ namespace Zugsichtungen.ViewModels
         public GalleryTabViewModel GalleryTabViewModel { get; }
         public ICommand SelectTabCommand { get; }
         public ICommand? ToggleDrawerCommand { get; set; }
+        public string CurrentTabTitle => SelectedTab.Title;
 
         public bool IsDrawerOpen
         {
@@ -52,6 +53,7 @@ namespace Zugsichtungen.ViewModels
             if (tabViewModel != null) 
             {    
                 this.SelectedTab = tabViewModel;
+                RaisePropertyChanged(nameof(CurrentTabTitle));
             }
 
             this.IsDrawerOpen = false;

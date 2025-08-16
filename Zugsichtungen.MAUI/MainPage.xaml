@@ -8,65 +8,17 @@
                             xmlns:viewModel="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
                             xmlns:templateSelectors="clr-namespace:Zugsichtungen.MAUI.TemplateSelectors"
                             xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter"
+                            xmlns:tabViews="clr-namespace:Zugsichtungen.MAUI.TabView"
              x:Class="Zugsichtungen.MAUI.MainPage"
-             Title="Sichtungen"
-                            x:DataType="{x:Type tabViewModel:SightingOverviewTabViewModel}"
-                            NavigationPage.HasNavigationBar="False">
-    <uranium:UraniumContentPage.ToolbarItems>
-        <ToolbarItem Text="☰"></ToolbarItem>
-    </uranium:UraniumContentPage.ToolbarItems>
+             Title="{Binding CurrentTabTitle, Mode=OneWay}"
+                            x:DataType="{x:Type viewModel:MainWindowViewModel}">
 
     <uranium:UraniumContentPage.Resources>
         <DataTemplate x:Key="SightingOverviewTemplate" x:DataType="{x:Type tabViewModel:SightingOverviewTabViewModel}">
-            <Grid>
-                <ScrollView>
-                    <VerticalStackLayout
-                        Padding="30,0"
-                        Spacing="25">
-                        <CollectionView ItemsSource="{Binding Sichtungsliste, Mode=OneWay}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="{x:Type viewModel:SichtungItemViewModel}">
-                                    <SwipeView >
-                                        <SwipeView.RightItems>
-                                            <SwipeItem Text="Delete"
-                                       BackgroundColor="Red" 
-                                               Command="{Binding DeleteSightingCommand, Mode=OneTime}">
-                                                <SwipeItem.IconImageSource>
-                                                    <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Delete}" Color="White" />
-                                                </SwipeItem.IconImageSource>
-                                            </SwipeItem>
-                                        </SwipeView.RightItems>
-                                        <Border
-                                    Margin="10"
-                                    Padding="15"
-                                    BackgroundColor="DarkGray">
-                                            <StackLayout>
-                                                <Label Text="{Binding Date}"  FontSize="Small" />
-                                                <Label Text="{Binding Number}" FontSize="Small" />
-                                                <Label Text="{Binding Location}" FontSize="Small" />
-                                            </StackLayout>
-                                        </Border>
-                                    </SwipeView>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </VerticalStackLayout>
-                </ScrollView>
-                <material:ButtonView StyleClass="FilledButton"
-                    Margin="30"
-                    TappedCommand="{Binding AddSichtungCommand, Mode=OneTime}"
-                    HorizontalOptions="End"
-                    VerticalOptions="End">
-                    <Image>
-                        <Image.Source>
-                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
-                        </Image.Source>
-                    </Image>
-                </material:ButtonView>
-            </Grid>
+            <tabViews:SightingOverviewTabView />
         </DataTemplate>
         <DataTemplate x:Key="GalleryTemplate" x:DataType="{x:Type tabViewModel:GalleryTabViewModel}" >
-            <Border Background="Yellow" />
+            <tabViews:GalleryTabViewModel />
         </DataTemplate>
 
         <converter:TabViewToTemplateConverter x:Key="TabToTemplateConverter"
@@ -74,28 +26,18 @@
                                          GalleryTemplate="{StaticResource GalleryTemplate}" />
     </uranium:UraniumContentPage.Resources>
 
-    <uranium:UraniumContentPage.Attachments>
-        <material:BackdropView Title="Filter">
-            <material:BackdropView.IconImageSource>
-                <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static m:MaterialSharp.Filter_list}" Color="White" />
-            </material:BackdropView.IconImageSource>
-            <VerticalStackLayout>
-                <material:CheckBox Text="Zeige nur Sichtungen mit Bilder" />
-            </VerticalStackLayout>
-        </material:BackdropView>
-    </uranium:UraniumContentPage.Attachments>
-
     <Grid>
         <!-- Hauptinhalt -->
         <Grid RowDefinitions="Auto,*">
             <!-- Header -->
-            <Grid BackgroundColor="#2196F3" HeightRequest="50" Padding="10" ColumnDefinitions="50,*">
+            <Grid BackgroundColor="DarkRed" Padding="10" ColumnDefinitions="50,*">
                 <Button Text="☰" 
                         FontSize="24"
                         BackgroundColor="Transparent"
                         TextColor="White"
+                        Padding="5"
                         Command="{Binding ToggleDrawerCommand}" />
-                <Label Text="Sichtungen" 
+                <Label Text="{Binding CurrentTabTitle, Mode=OneWay}" 
                        Grid.Column="1"
                        VerticalOptions="Center"
                        TextColor="White"
@@ -130,12 +72,15 @@
                      Padding="20">
             <Label Text="Menü" FontSize="20" Margin="0,0,0,20"/>
             <Button Text="Sichtungen"
-                    Command="{Binding SelectTabCommand}"
+                    Command="{Binding SelectTabCommand, Mode=OneTime}"
                     CommandParameter="{Binding SightingOverviewTabViewModel}" 
-                    />
+                    BackgroundColor="Transparent"
+                    Margin="10"/>
             <Button Text="Galerie"
                     Command="{Binding SelectTabCommand}"
-                    CommandParameter="{Binding GalleryTabViewModel}" />
+                    CommandParameter="{Binding GalleryTabViewModel, Mode=OneTime}" 
+                    BackgroundColor="Transparent"
+                    Margin="10"/>
         </StackLayout>
     </Grid>
 </uranium:UraniumContentPage>

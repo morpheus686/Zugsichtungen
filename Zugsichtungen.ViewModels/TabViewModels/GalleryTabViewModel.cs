@@ -4,5 +4,9 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 {
     public class GalleryTabViewModel : TabViewModelBase
     {
+        public GalleryTabViewModel()
+        {
+            this.Title = "Galerie";
+        }
     }
 }

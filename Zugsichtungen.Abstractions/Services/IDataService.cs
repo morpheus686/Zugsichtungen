@@ -14,5 +14,6 @@ namespace Zugsichtungen.Abstractions.Services
         Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
         Task<bool> CheckIfSightingPictureExists(int sightingId);
         Task<bool> DeleteSightingAsync(int sightingId);
+        Task<List<SightingPictureDto>> GetAllSightingPicturesAsync();
     }
 }

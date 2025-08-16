@@ -8,33 +8,35 @@ using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.Enumerations;
+using Zugsichtungen.ViewModels.Grouping;
 
 namespace Zugsichtungen.ViewModels.TabViewModels
 {
     public class SightingOverviewTabViewModel : TabViewModelBase
     {
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
-        private readonly IDialogService? dialogService;
-        private readonly ISightingService? sichtungService;
+        private readonly IDialogService dialogService;
+        private readonly ISightingService sichtungService;
         private readonly ILogger<SightingOverviewTabViewModel>? logger;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
+        public ObservableCollection<SightingGroupViewModel> GroupedSightings { get; }
         public SichtungItemViewModel? SelectedItem { get; set; }
 
         public ICommand AddSichtungCommand { get; }
         public ICommand EditContextesCommand { get; }
         public ICommand ShowSightingDetailsCommand { get; }
 
-        public SightingOverviewTabViewModel()
-        {
+        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService, ILogger<SightingOverviewTabViewModel> logger)
+        {         
+            this.Title = "Sichtungen";
+
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
             ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);   
-            this.sichtungenList = [];           
-        }
 
-        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService, ILogger<SightingOverviewTabViewModel> logger) : this()
-        {
+            this.sichtungenList = [];
+            this.GroupedSightings = [];
             this.dialogService = dialogService;
             this.sichtungService = sichtungService;
             this.logger = logger;
@@ -124,6 +126,18 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                 }
 
                 Sichtungsliste.Add(new SichtungItemViewModel(item, this.dialogService, sightingPicture));
+            }
+
+            var groups = Sichtungsliste
+                .GroupBy(x => x.Date)
+                .Select(g => new SightingGroupViewModel(g.Key, g))
+                .OrderByDescending(g => g.Date);
+
+            GroupedSightings.Clear();
+
+            foreach (var group in groups)
+            {
+                GroupedSightings.Add(group);
             }
         }
     }

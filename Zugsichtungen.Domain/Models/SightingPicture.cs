@@ -7,6 +7,7 @@
         public int? SightingId { get; set; }
 
         public byte[] Image { get; set; } = null!;
+        public byte[]? Thumbnail { get; set; }
 
         public string Filename { get; set; } = null!;
     }

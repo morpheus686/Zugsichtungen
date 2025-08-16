@@ -81,5 +81,10 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         {
             throw new NotImplementedException();
         }
+
+        public override Task<List<SightingPictureDto>> GetAllSightingPicturesAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

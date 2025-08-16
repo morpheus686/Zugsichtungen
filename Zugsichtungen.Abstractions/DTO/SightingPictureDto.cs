@@ -8,6 +8,8 @@
 
         public byte[] Image { get; set; } = null!;
 
+        public byte[]? Thumbnail { get; set; } = null!;
+
         public string Filename { get; set; } = null!;
     }
 }
