@@ -11,36 +11,22 @@ namespace Zugsichtungen.ViewModels
         private readonly IDialogService dialogService;
 
         public SightingViewEntry Sichtung { get; }
-        public SightingPicture? SightingPicture { get; }
 
-        public int? Id => Sichtung.Id;
+        public int Id => Sichtung.Id;
         public DateOnly? Date => Sichtung.Date;
         public string? Number => this.Sichtung.VehicleNumber;
         public string? Location => this.Sichtung.Location;
         public string? Context => this.Sichtung.Context;
         public string? Note => this.Sichtung.Note;
-        public byte[]? Picture
-        {
-            get
-            {
-                if (this.SightingPicture == null)
-                {
-                    return null;
-                }
-
-                return this.SightingPicture.Image;
-            }
-        }
+        public byte[]? Thumbnail => this.Sichtung.Thumbnail;
 
         public ICommand DeleteSightingCommand { get; }
 
         public SichtungItemViewModel(SightingViewEntry sighting,
-            IDialogService dialogService, 
-            SightingPicture? sightingPicture)
+            IDialogService dialogService)
         {
             this.Sichtung = sighting;
             this.dialogService = dialogService;
-            this.SightingPicture = sightingPicture;
 
             this.DeleteSightingCommand = new AsyncCommand(ExecuteDeleteSightingCommand);
         }

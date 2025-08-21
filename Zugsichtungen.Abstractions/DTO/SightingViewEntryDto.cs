@@ -14,5 +14,7 @@
 
         public string? Note { get; set; }
         public byte[]? Image { get; set; }
+        public byte[]? Thumbnail { get; set; }
+
     }
 }

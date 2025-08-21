@@ -13,10 +13,18 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <customControls:TabView.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
+
+        <CollectionViewSource x:Key="SichtungenGrouped"
+                              Source="{Binding Sichtungsliste}">
+            <CollectionViewSource.GroupDescriptions>
+                <!-- Gruppieren nach Date -->
+                <PropertyGroupDescription PropertyName="Date" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </customControls:TabView.Resources>
 
     <Grid>
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Sichtungsliste}"
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource SichtungenGrouped}}"
                       SelectedItem="{Binding SelectedItem}" 
                       Grid.Row="1"
                       Margin="10">
@@ -25,12 +33,24 @@
                       Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Datum" Binding="{Binding Date, Mode=OneWay, Converter={StaticResource DateOnlyToGermanDateConverter}}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Thema" Binding="{Binding Context, Mode=OneWay}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Bemerkung" Binding="{Binding Note, Mode=OneWay}" IsReadOnly="True" />
             </DataGrid.Columns>
+
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, Converter={StaticResource DateOnlyToGermanDateConverter}}"
+                                       FontWeight="Bold"
+                                       Background="LightGray"
+                                       Padding="5"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
         </DataGrid>
 
         <Button HorizontalAlignment="Right"

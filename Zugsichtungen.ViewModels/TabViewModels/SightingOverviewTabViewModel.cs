@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.DialogViewModels;
@@ -117,15 +116,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
             foreach (var item in sichtungen)
             {
-                var pictureExists = await this.sichtungService.CheckIfPictureExists(item.Id);
-                SightingPicture? sightingPicture = null;
-
-                if (pictureExists)
-                {
-                    sightingPicture = await this.sichtungService.GetSightingPictureByIdAsync(item.Id);
-                }
-
-                Sichtungsliste.Add(new SichtungItemViewModel(item, this.dialogService, sightingPicture));
+                Sichtungsliste.Add(new SichtungItemViewModel(item, this.dialogService));
             }
 
             var groups = Sichtungsliste

@@ -13,5 +13,6 @@
         public string? Context { get; set; }
 
         public string? Note { get; set; }
+        public byte[]? Thumbnail { get; set; }   
     }
 }
