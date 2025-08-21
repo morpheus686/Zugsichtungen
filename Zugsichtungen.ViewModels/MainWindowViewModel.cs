@@ -23,8 +23,11 @@ namespace Zugsichtungen.ViewModels
             get => isDrawerOpen;
             set
             {
-                isDrawerOpen = value;
-                RaisePropertyChanged(nameof(IsDrawerOpen));
+                if (this.isDrawerOpen != value)
+                {
+                    isDrawerOpen = value;
+                    RaisePropertyChanged(nameof(IsDrawerOpen));
+                }
             }
         }
 
@@ -45,13 +48,13 @@ namespace Zugsichtungen.ViewModels
 
             this.GalleryTabViewModel = galleryTabViewModel;
             this.SightingOverviewTabViewModel = sightingOverviewTabViewModel;
-            this.selectedTab = SightingOverviewTabViewModel;            
+            this.selectedTab = SightingOverviewTabViewModel;
         }
 
         private void ExecuteSelectTabCommand(TabViewModelBase? tabViewModel)
         {
-            if (tabViewModel != null) 
-            {    
+            if (tabViewModel != null)
+            {
                 this.SelectedTab = tabViewModel;
                 RaisePropertyChanged(nameof(CurrentTabTitle));
             }
