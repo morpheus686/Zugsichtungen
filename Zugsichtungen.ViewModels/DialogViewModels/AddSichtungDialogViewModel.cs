@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.DialogViewModels.ItemViewModel;
 
@@ -29,7 +28,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private string? imagePath = null;
         private string place = string.Empty;
         private VehicleViewEntryItemViewModel selectedFahrzeug = null!;
-        private Context selectedKontext = null!;
+        private ContextItemViewModel selectedKontext = null!;
         private readonly ISightingService sichtungService;
         private readonly IDialogService dialogService;
         private readonly Dictionary<string, List<string>> _errors;
@@ -45,7 +44,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 RaisePropertyChanged(nameof(SelectedFahrzeug));
             }
         }
-        public Context SelectedKontext
+        public ContextItemViewModel SelectedKontext
         {
             get => selectedKontext;
             set
@@ -66,7 +65,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         }
 
         public ObservableCollection<VehicleViewEntryItemViewModel> VehicleList { get; private set; }
-        public ObservableCollection<Context> ContextList { get; private set; }
+        public ObservableCollection<ContextItemViewModel> ContextList { get; private set; }
 
         public string Note { get; set; } = string.Empty;
         public string Place
@@ -113,7 +112,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 this.sichtungService.GetAllContextesAsync,
                 this.ContextList,
                 item => this.SelectedKontext = item,
-                item => item);
+                item => new ContextItemViewModel(item));
 
             ValidatePlace();
         }
