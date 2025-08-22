@@ -16,7 +16,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
         private readonly IDialogService dialogService;
         private readonly ISightingService sichtungService;
-        private readonly ILogger<SightingOverviewTabViewModel>? logger;
+        private readonly ILogger<SightingOverviewTabViewModel> logger;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
         public ObservableCollection<SightingGroupViewModel> GroupedSightings { get; }

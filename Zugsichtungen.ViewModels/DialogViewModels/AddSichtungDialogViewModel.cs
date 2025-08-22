@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
+using Zugsichtungen.ViewModels.DialogViewModels.ItemViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
@@ -27,14 +28,32 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private DateTime selectedDate;
         private string? imagePath = null;
         private string place = string.Empty;
+        private VehicleViewEntryItemViewModel selectedFahrzeug = null!;
+        private Context selectedKontext = null!;
         private readonly ISightingService sichtungService;
         private readonly IDialogService dialogService;
         private readonly Dictionary<string, List<string>> _errors;
 
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-        public VehicleViewEntry SelectedFahrzeug { get; set; } = null!;
-        public Context SelectedKontext { get; set; } = null!;
+        public VehicleViewEntryItemViewModel SelectedFahrzeug
+        {
+            get => selectedFahrzeug;
+            set
+            {
+                selectedFahrzeug = value;
+                RaisePropertyChanged(nameof(SelectedFahrzeug));
+            }
+        }
+        public Context SelectedKontext
+        {
+            get => selectedKontext;
+            set
+            {
+                selectedKontext = value;
+                RaisePropertyChanged(nameof(SelectedKontext));
+            }
+        }
 
         public DateTime SelectedDate
         {
@@ -46,7 +65,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
-        public ObservableCollection<VehicleViewEntry> VehicleList { get; private set; }
+        public ObservableCollection<VehicleViewEntryItemViewModel> VehicleList { get; private set; }
         public ObservableCollection<Context> ContextList { get; private set; }
 
         public string Note { get; set; } = string.Empty;
@@ -88,35 +107,34 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 this.sichtungService.GetAllVehicleViewEntriesAsync,
                 this.VehicleList,
                 item => this.SelectedFahrzeug = item,
-                nameof(SelectedFahrzeug));
+                item => new VehicleViewEntryItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
                 this.sichtungService.GetAllContextesAsync,
                 this.ContextList,
                 item => this.SelectedKontext = item,
-                nameof(SelectedKontext));
+                item => item);
 
             ValidatePlace();
         }
 
-        private async Task LoadAndSelectFirstAsync<T>(
+        private async Task LoadAndSelectFirstAsync<T, TVM>(
             Func<Task<List<T>>> loadFunc,
-            ObservableCollection<T> targetCollection,
-            Action<T> setSelectedItem,
-            string selectedPropertyName)
+            ObservableCollection<TVM> targetCollection,
+            Action<TVM> setSelectedItem,
+            Func<T, TVM> vmFactory)
         {
             var items = await loadFunc();
             targetCollection.Clear();
 
             foreach (var item in items)
             {
-                targetCollection.Add(item);
+                targetCollection.Add(vmFactory(item));
             }
 
             if (targetCollection.Any())
             {
                 setSelectedItem(targetCollection.First());
-                RaisePropertyChanged(selectedPropertyName);
             }
         }
 

@@ -5,13 +5,14 @@ namespace Zugsichtungen.MAUI
 {
     public partial class MainPage : UraniumContentPage
     {
-        private MainWindowViewModel? ViewModel => this.BindingContext as MainWindowViewModel;
+        private MainWindowViewModel ViewModel { get; }
 
         public MainPage(MainWindowViewModel viewModel)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             this.BindingContext = viewModel;
+            this.ViewModel = viewModel;
 
             viewModel.PropertyChanged += async (s, e) =>
             {

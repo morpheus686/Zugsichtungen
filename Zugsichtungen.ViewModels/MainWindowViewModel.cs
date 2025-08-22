@@ -11,7 +11,6 @@ namespace Zugsichtungen.ViewModels
         private bool isDrawerOpen;
 
         public SichtungItemViewModel? SelectedItem { get; set; }
-
         public SightingOverviewTabViewModel SightingOverviewTabViewModel { get; }
         public GalleryTabViewModel GalleryTabViewModel { get; }
         public ICommand SelectTabCommand { get; }
@@ -53,7 +52,7 @@ namespace Zugsichtungen.ViewModels
 
         private void ExecuteSelectTabCommand(TabViewModelBase? tabViewModel)
         {
-            if (tabViewModel != null)
+            if (tabViewModel != null && this.SelectedTab != tabViewModel)
             {
                 this.SelectedTab = tabViewModel;
                 RaisePropertyChanged(nameof(CurrentTabTitle));

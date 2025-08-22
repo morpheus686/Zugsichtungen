@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Zugsichtungen.MAUI.TabView.SightingOverviewTabView"
              xmlns:viewModel="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
+             xmlns:tabViewModel="clr-namespace:Zugsichtungen.ViewModels.TabViewModels;assembly=Zugsichtungen.ViewModels"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
-             xmlns:grouping="clr-namespace:Zugsichtungen.ViewModels.Grouping;assembly=Zugsichtungen.ViewModels">
+             xmlns:grouping="clr-namespace:Zugsichtungen.ViewModels.Grouping;assembly=Zugsichtungen.ViewModels"
+             x:DataType="tabViewModel:SightingOverviewTabViewModel">
     <Grid>
         <CollectionView ItemsSource="{Binding GroupedSightings, Mode=OneWay}"
                         SelectionMode="None"

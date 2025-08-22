@@ -10,11 +10,8 @@ namespace Zugsichtungen.MAUI.Converter
             {
                 case string path when File.Exists(path):
                     return ImageSource.FromFile(path);
-
-
                 case byte[] bytes when bytes.Length > 0:
                     return ImageSource.FromStream(() => new MemoryStream(bytes));
-
                 case Stream stream:
                     return ImageSource.FromStream(() => stream);
                 default:

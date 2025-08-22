@@ -4,24 +4,24 @@ namespace Zugsichtungen.MAUI.Converter
 {
     public class TabViewToTemplateConverter : IValueConverter
     {
-        public DataTemplate? OverviewTemplate { get; set; }
-        public DataTemplate? GalleryTemplate { get; set; }
+        public DataTemplate OverviewTemplate { get; set; } = null!;
+        public DataTemplate GalleryTemplate { get; set; } = null!;
 
         public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null) return null;
 
-            BindableObject view = null;
+            BindableObject? view = null;
 
             switch (value)
             {
                 case SightingOverviewTabViewModel overview:
-                    view = OverviewTemplate?.CreateContent() as BindableObject;
+                    view = OverviewTemplate.CreateContent() as BindableObject;
                     if (view != null) view.BindingContext = overview;
                     break;
 
                 case GalleryTabViewModel gallery:
-                    view = GalleryTemplate?.CreateContent() as BindableObject;
+                    view = GalleryTemplate.CreateContent() as BindableObject;
                     if (view != null) view.BindingContext = gallery;
                     break;
 

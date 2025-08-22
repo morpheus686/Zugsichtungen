@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <uranium:UraniumContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                            xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+                            xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
                             xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
                             xmlns:tabViewModel="clr-namespace:Zugsichtungen.ViewModels.TabViewModels;assembly=Zugsichtungen.ViewModels"
                             xmlns:viewModel="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
-                            xmlns:templateSelectors="clr-namespace:Zugsichtungen.MAUI.TemplateSelectors"
                             xmlns:converter="clr-namespace:Zugsichtungen.MAUI.Converter"
                             xmlns:tabViews="clr-namespace:Zugsichtungen.MAUI.TabView"
-             x:Class="Zugsichtungen.MAUI.MainPage"
-             Title="{Binding CurrentTabTitle, Mode=OneWay}"
+                            x:Class="Zugsichtungen.MAUI.MainPage"
+                            Title="{Binding CurrentTabTitle, Mode=OneWay}"
                             x:DataType="{x:Type viewModel:MainWindowViewModel}">
 
     <uranium:UraniumContentPage.Resources>
@@ -22,8 +21,8 @@
         </DataTemplate>
 
         <converter:TabViewToTemplateConverter x:Key="TabToTemplateConverter"
-                                         OverviewTemplate="{StaticResource SightingOverviewTemplate}"
-                                         GalleryTemplate="{StaticResource GalleryTemplate}" />
+                                              OverviewTemplate="{StaticResource SightingOverviewTemplate}"
+                                              GalleryTemplate="{StaticResource GalleryTemplate}" />
     </uranium:UraniumContentPage.Resources>
 
     <Grid>
@@ -47,8 +46,8 @@
             <!-- Content -->
             <ContentView Grid.Row="1"
                          Content="{Binding SelectedTab, Converter={StaticResource TabToTemplateConverter}}"
-                         HorizontalOptions="FillAndExpand"
-                         VerticalOptions="FillAndExpand"/>
+                         HorizontalOptions="Fill"
+                         VerticalOptions="Fill"/>
         </Grid>
 
         <!-- Overlay -->
@@ -66,11 +65,13 @@
         <StackLayout x:Name="Drawer"
                      BackgroundColor="LightGray"
                      WidthRequest="250"
-                     VerticalOptions="FillAndExpand"
+                     VerticalOptions="Fill"
                      HorizontalOptions="Start"
                      TranslationX="-250"
                      Padding="20">
-            <Label Text="Menü" FontSize="20" Margin="0,0,0,20"/>
+            <Label Text="Menü" 
+                   FontSize="20" 
+                   Margin="0,0,0,20"/>
             <Button Text="Sichtungen"
                     Command="{Binding SelectTabCommand, Mode=OneTime}"
                     CommandParameter="{Binding SightingOverviewTabViewModel}" 

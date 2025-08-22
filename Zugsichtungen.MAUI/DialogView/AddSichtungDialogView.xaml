@@ -74,9 +74,12 @@
             <material:DropdownField Grid.Row="3"
                                     Grid.Column="1"
                                     ItemsSource="{Binding VehicleList, Mode=OneTime}" 
-                                    ItemDisplayBinding="{Binding Vehicle}"
                                     SelectedItem="{Binding SelectedFahrzeug}"
-                                    Margin="5"/>
+                                    Margin="5">
+                <material:DropdownField.ItemDisplayBinding>
+                    <Binding Path="Vehicle" />
+                </material:DropdownField.ItemDisplayBinding>
+            </material:DropdownField>
 
             <Label Text="Thema"
                    TextColor="Black"
@@ -110,8 +113,7 @@
                        HeightRequest="100"/>
                 <VerticalStackLayout Grid.Column="1"
                                      Margin="5">
-                    <material:ButtonView 
-                                         TappedCommand="{Binding AddImageCommand, Mode=OneTime}">
+                    <material:ButtonView TappedCommand="{Binding AddImageCommand, Mode=OneTime}">
                         <Image>
                             <Image.Source>
                                 <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Plus}" Color="White" />
@@ -119,8 +121,7 @@
                         </Image>
                     </material:ButtonView>
 
-                    <material:ButtonView 
-                                         TappedCommand="{Binding RemoveImageCommand, Mode=OneTime}">
+                    <material:ButtonView TappedCommand="{Binding RemoveImageCommand, Mode=OneTime}">
                         <Image>
                             <Image.Source>
                                 <FontImageSource FontFamily="FASolid" Glyph="{x:Static uranium:Solid.Minus}" Color="White" />
@@ -132,7 +133,7 @@
 
             <HorizontalStackLayout Grid.Row="7" Grid.Column="1">
                 <material:ButtonView WidthRequest="100"
-                        Margin="5"
+                                     Margin="5"
                                      x:Name="SaveButtonView"
                                      Tapped="SaveButtonView_Tapped"
                                      IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}">
