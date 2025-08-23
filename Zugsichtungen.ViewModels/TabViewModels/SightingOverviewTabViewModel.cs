@@ -138,7 +138,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private async Task UpdateSichtungen()
         {
             this.Sichtungsliste.Clear();
-            var sichtungen = await this.dataService.GetSichtungenAsync();
+            var sichtungen = await this.sightingService.GetAllSightingViewEntriesAsync();
 
             foreach (var item in sichtungen)
             {

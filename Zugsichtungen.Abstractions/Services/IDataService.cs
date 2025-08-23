@@ -6,7 +6,6 @@ namespace Zugsichtungen.Abstractions.Services
 {
     public interface IDataService
     {
-        Task<List<SightingViewEntryDto>> GetSichtungenAsync();
         Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync();
         Task<List<ContextDto>> GetKontextesAsync();
         Task SaveChangesAsync();
@@ -15,6 +14,9 @@ namespace Zugsichtungen.Abstractions.Services
         Task<bool> CheckIfSightingPictureExists(int sightingId);
         Task<bool> DeleteSightingAsync(int sightingId);
         Task<List<SightingPictureDto>> GetAllSightingPicturesAsync();
+
+        // Ab hier DDD-Methoden
         Task AddAsync(Sighting sighting);
+        Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
     }
 }

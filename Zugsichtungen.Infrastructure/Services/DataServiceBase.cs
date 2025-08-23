@@ -11,16 +11,12 @@ namespace Zugsichtungen.Infrastructure.Services
 {
     public abstract class DataServiceBase : IDataService
     {
-        protected DataServiceBase(DbContext context, ILogger<DataServiceBase> logger, IMapper mapper)
+        protected DataServiceBase(DbContext context)
         {
             this.context = context;
-            this.logger = logger;
-            this.mapper = mapper;
         }
 
-        private readonly ILogger<DataServiceBase> logger;
         private readonly DbContext context;
-        private readonly IMapper mapper;
         public abstract Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync();
         public abstract Task<List<ContextDto>> GetKontextesAsync();
         public abstract Task<List<SightingViewEntryDto>> GetSichtungenAsync();
@@ -37,5 +33,6 @@ namespace Zugsichtungen.Infrastructure.Services
         public abstract Task<bool> DeleteSightingAsync(int sightingId);
         public abstract Task<List<SightingPictureDto>> GetAllSightingPicturesAsync();
         public abstract Task AddAsync(Sighting sighting);
+        public abstract Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
     }
 }

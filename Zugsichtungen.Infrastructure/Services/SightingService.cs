@@ -2,6 +2,7 @@
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Foundation.Mapping;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
@@ -16,19 +17,6 @@ namespace Zugsichtungen.Infrastructure.Services
 
         private readonly IDataService dataService;
         private readonly IMapper mapper;
-
-        public async Task<List<SightingViewEntry>> GetAllSightingsAsync()
-        {
-            var sightingList = await dataService.GetSichtungenAsync();
-            var pocoList = new List<SightingViewEntry>();
-
-            foreach (var item in sightingList)
-            {
-                pocoList.Add(mapper.Map<SightingViewEntry>(item));
-            }
-
-            return pocoList;
-        }
 
         public async Task<List<Context>> GetAllContextesAsync()
         {
@@ -90,6 +78,12 @@ namespace Zugsichtungen.Infrastructure.Services
             }
 
             await dataService.AddAsync(newSighting);
+        }
+
+        public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
+        {
+            var sightingList = await this.dataService.GetAllSightingViewEntriesAsync();
+            return mapper.MapList<SightingViewEntry, SightingViewEntryDto>(sightingList);
         }
     }
 }

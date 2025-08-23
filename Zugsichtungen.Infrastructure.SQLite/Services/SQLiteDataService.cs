@@ -18,10 +18,10 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         private readonly ILogger<SQLiteDataService> logger;
         private readonly IImageRepository imageRepository;
 
-        public SQLiteDataService(ZugbeobachtungenContext context, 
-            IMapper mapper, 
+        public SQLiteDataService(ZugbeobachtungenContext context,
+            IMapper mapper,
             ILogger<SQLiteDataService> logger,
-            IImageRepository imageRepository) : base(context, logger, mapper)
+            IImageRepository imageRepository) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
@@ -122,6 +122,24 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             }
 
             return entity;
+        }
+
+        public async override Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync()
+        {
+            var sichtungen = await context.Sichtungsviews.ToListAsync();
+            var sightingList = new List<SightingViewEntry>();
+
+            foreach (var item in sichtungen)
+            {
+                sightingList.Add(MapFromEntity(item));
+            }
+
+            return sightingList;
+        }
+
+        private SightingViewEntry MapFromEntity(Sichtungsview entity)
+        {
+            return SightingViewEntry.Create(entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, null);
         }
     }
 }
