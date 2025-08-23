@@ -49,11 +49,6 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return mapper.MapList<Context, ContextDto>(contextList);
         }
 
-        public override Task AddSightingAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
-        {
-            return AddSightingInternalAsync(newSichtung, sightingPictureDto, context.Sightings, context.SightingPictures, "Sighting");
-        }
-
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
         {
             throw new NotImplementedException();
@@ -77,6 +72,38 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         public override Task<List<SightingPictureDto>> GetAllSightingPicturesAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async override Task AddAsync(Domain.Models.Sighting sighting)
+        {
+            var entity = MapToEntity(sighting);
+            await this.context.Sightings.AddAsync(entity);
+            await SaveChangesAsync();
+        }
+
+        private Sighting MapToEntity(Domain.Models.Sighting sighting)
+        {
+            var entity = new Sighting
+            {
+                Date = sighting.Date,
+                Location = sighting.Location,
+                VehicleId = sighting.VehicleId,
+                ContextId = sighting.ContextId,
+                Comment = sighting.Note
+            };
+
+            var sightingPicture = sighting.SightingPicture;
+
+            if (sightingPicture != null)
+            {
+                entity.SightingPictures.Add(new SightingPicture
+                {
+                    Image = sightingPicture.Image,
+                    Filename = sightingPicture.Filename
+                });
+            }
+
+            return entity;
         }
     }
 }

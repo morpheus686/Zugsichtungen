@@ -2,13 +2,27 @@
 {
     public class SightingPicture
     {
-        public int Id { get; set; }
+        private SightingPicture() { }
 
-        public int? SightingId { get; set; }
+        public int Id { get; private set; }
 
-        public byte[] Image { get; set; } = null!;
-        public byte[]? Thumbnail { get; set; }
+        public int SightingId { get; private set; }
 
-        public string Filename { get; set; } = null!;
+        public byte[] Image { get; private set; } = null!;
+        public byte[]? Thumbnail { get; private set; }
+
+        public string Filename { get; private set; } = null!;
+
+        public static SightingPicture Create(int id, int sightingId,  byte[] image, byte[]? thumbnail, string filename)
+        {
+            return new SightingPicture
+            {
+                Id = id,
+                SightingId = sightingId,
+                Image = image,
+                Thumbnail = thumbnail,
+                Filename = filename
+            };
+        }
     }
 }

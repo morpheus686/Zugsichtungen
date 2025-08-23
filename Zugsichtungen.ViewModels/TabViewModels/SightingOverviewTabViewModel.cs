@@ -19,6 +19,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private readonly IDialogService dialogService;
         private readonly IDataService dataService;
         private readonly ILogger<SightingOverviewTabViewModel> logger;
+        private readonly ISightingService sightingService;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
         public ObservableCollection<SightingGroupViewModel> GroupedSightings { get; }
@@ -28,7 +29,10 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         public ICommand EditContextesCommand { get; }
         public ICommand ShowSightingDetailsCommand { get; }
 
-        public SightingOverviewTabViewModel(IDialogService dialogService, IDataService dataService, ILogger<SightingOverviewTabViewModel> logger)
+        public SightingOverviewTabViewModel(IDialogService dialogService,
+            IDataService dataService,
+            ILogger<SightingOverviewTabViewModel> logger,
+            ISightingService sightingService)
         {
             this.Title = "Sichtungen";
 
@@ -41,6 +45,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             this.dialogService = dialogService;
             this.dataService = dataService;
             this.logger = logger;
+            this.sightingService = sightingService;
         }
 
         private bool CanExecuteShowSightingsDetails(object? arg) => this.SelectedItem != null && !this.IsBusy;
@@ -98,7 +103,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                 {
                     updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
 
-                    var newSighting = new SightingDto
+                    var newSightingDto = new SightingDto
                     {
                         VehicleId = addSichtungDialogViewModel.SelectedFahrzeug.Id,
                         ContextId = addSichtungDialogViewModel.SelectedKontext.Id,
@@ -122,7 +127,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                         };
                     }
 
-                    await this.dataService.AddSightingAsync(newSighting, sightingPictureDto);
+                    await this.sightingService.AddSightingAsync(newSightingDto, sightingPictureDto);
                     await this.UpdateSichtungen();
                 });
             }

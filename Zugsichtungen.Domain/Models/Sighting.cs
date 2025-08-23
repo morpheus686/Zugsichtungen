@@ -2,18 +2,48 @@
 {
     public class Sighting
     {
-        public int? Id { get; set; }
+        private Sighting()
+        {
+            this.pictures = [];
+        }
 
-        public int? VehicleId { get; set; }
+        private readonly List<SightingPicture> pictures;
+        public IReadOnlyCollection<SightingPicture> Pictures => pictures.AsReadOnly();
+        public SightingPicture? SightingPicture => pictures.FirstOrDefault();
 
-        public DateOnly? Date { get; set; }
+        public int Id { get; private set; }
 
-        public string? Location { get; set; }
+        public int VehicleId { get; private set; }
 
-        public int? ContextId { get; set; }
+        public DateOnly Date { get; private set; }
 
-        public string? Note { get; set; }
+        public string Location { get; private set; }
 
-        public byte[]? Image { get; set; } 
+        public int ContextId { get; private set; }
+
+        public string? Note { get; private set; }
+
+        public static Sighting Create(int id, int vehicleId, DateOnly date, string location, int contextId, string? note)
+        {
+            return new Sighting()
+            {
+                Id = id,
+                VehicleId = vehicleId,
+                Date = date,
+                Location = location,
+                ContextId = contextId,
+                Note = note
+            };
+        }
+
+        public void AddPicture(SightingPicture sightingPicture)
+        {
+            if (pictures.Any())
+            {
+                throw new InvalidOperationException("Es ist nur ein Bild pro Sichtung erlaubt!");
+            }
+
+            pictures.Add(sightingPicture);
+        }
     }
 }

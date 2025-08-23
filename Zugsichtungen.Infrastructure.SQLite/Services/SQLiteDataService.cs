@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.Mapping;
 using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Infrastructure.SQLite.Models;
@@ -44,11 +45,6 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         {
             var kontexte = await context.Kontextes.ToListAsync();
             return mapper.MapList<Kontexte, ContextDto>(kontexte);
-        }
-
-        public override Task AddSightingAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
-        {
-            return AddSightingInternalAsync(newSichtung, sightingPictureDto, context.Sichtungens, context.SichtungBilds, "Sichtung");
         }
 
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
@@ -93,6 +89,39 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
                   Thumbnail = b.Thumbnail
               })
               .ToListAsync();
+        }
+
+        public override async Task AddAsync(Sighting sighting)
+        {
+            var entity = MapToEntity(sighting);
+            await this.context.Sichtungens.AddAsync(entity);
+            await SaveChangesAsync();
+        }
+
+        private Sichtungen MapToEntity(Sighting sighting)
+        {
+            var entity = new Sichtungen
+            {
+                Datum = sighting.Date,
+                Ort = sighting.Location,
+                FahrzeugId = sighting.VehicleId,
+                KontextId = sighting.ContextId,
+                Bemerkung = sighting.Note
+            };
+
+            var sightingPicture = sighting.SightingPicture;
+
+            if (sightingPicture != null)
+            {
+                entity.SichtungBilds.Add(new SichtungBild
+                {
+                    Bild = sightingPicture.Image,
+                    Dateiname = sightingPicture.Filename,
+                    Thumbnail = sightingPicture.Thumbnail,
+                });
+            }
+
+            return entity;
         }
     }
 }

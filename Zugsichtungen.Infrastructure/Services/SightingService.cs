@@ -17,41 +17,6 @@ namespace Zugsichtungen.Infrastructure.Services
         private readonly IDataService dataService;
         private readonly IMapper mapper;
 
-        public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note, string? filePath)
-        {
-            var newSighting = new Sighting
-            {
-                VehicleId = vehicleId,
-                ContextId = kontextId,
-                Location = place,
-                Date = date,
-                Note = note
-            };
-
-            SightingPicture? sightingPictureDto = null;
-
-            if (filePath != null)
-            {
-                var picture = await File.ReadAllBytesAsync(filePath);
-
-                sightingPictureDto = new SightingPicture
-                {
-                    Filename = new FileInfo(filePath).Name,
-                    Image = picture,
-                    Thumbnail = ImageHelper.CreateThumbnail(picture)
-                };
-            }
-
-            await this.AddSichtungAsync(newSighting, sightingPictureDto);
-        }
-
-        public async Task AddSichtungAsync(Sighting sighting, SightingPicture? sightingPicture)
-        {
-            await dataService.AddSightingAsync(mapper.Map<Sighting, SightingDto>(sighting),
-                mapper.Map<SightingPicture?, SightingPictureDto?>(sightingPicture));
-            await dataService.SaveChangesAsync();
-        }
-
         public async Task<List<SightingViewEntry>> GetAllSightingsAsync()
         {
             var sightingList = await dataService.GetSichtungenAsync();
@@ -111,6 +76,20 @@ namespace Zugsichtungen.Infrastructure.Services
         public Task<bool> CheckIfPictureExists(int sightingId)
         {
             return this.dataService.CheckIfSightingPictureExists(sightingId);
+        }
+
+        public async Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
+        {
+            var newSighting = Sighting.Create(-1, sighting.VehicleId, sighting.Date, sighting.Location, sighting.ContextId, sighting.Note);
+            SightingPicture? newSightingPicture = null;
+
+            if (sightingPicture != null)
+            {
+                newSightingPicture = SightingPicture.Create(-1, newSighting.Id, sightingPicture.Image, null, sightingPicture.Filename);
+                newSighting.AddPicture(newSightingPicture);
+            }
+
+            await dataService.AddAsync(newSighting);
         }
     }
 }
