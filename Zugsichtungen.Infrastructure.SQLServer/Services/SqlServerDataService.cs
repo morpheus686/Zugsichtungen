@@ -5,7 +5,6 @@ using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Domain.Models;
-using Zugsichtungen.Foundation.Mapping;
 using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Infrastructure.SQLServer.Models;
 
@@ -29,20 +28,6 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             this.imageRepository = imageRepository;
         }
 
-        public override async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
-        {
-            this.logger.LogInformation("Rufe alle Triebfahrzeuge aus der Datenbank ab.");
-            var vehicleList = await context.Vehiclelists.ToListAsync();
-            return mapper.MapList<Vehiclelist, VehicleViewEntryDto>(vehicleList);
-        }
-
-        public override async Task<List<ContextDto>> GetKontextesAsync()
-        {
-            this.logger.LogInformation("Rufe alle Themen aus der Datenbank ab.");
-            var contextList = await context.Contexts.ToListAsync();
-            return mapper.MapList<Models.Context, ContextDto>(contextList);
-        }
-
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
         {
             throw new NotImplementedException();
@@ -54,11 +39,6 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         }
 
         public override Task<bool> DeleteSightingAsync(int sightingId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<List<SightingPictureDto>> GetAllSightingPicturesAsync()
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,6 @@ using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Domain.Models;
-using Zugsichtungen.Foundation.Mapping;
 using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Infrastructure.SQLite.Models;
 
@@ -27,18 +26,6 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             this.mapper = mapper;
             this.logger = logger;
             this.imageRepository = imageRepository;
-        }
-
-        public override async Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync()
-        {
-            var fahrzeuge = await context.Fahrzeuglistes.ToListAsync();
-            return mapper.MapList<Fahrzeugliste, VehicleViewEntryDto>(fahrzeuge);
-        }
-
-        public override async Task<List<ContextDto>> GetKontextesAsync()
-        {
-            var kontexte = await context.Kontextes.ToListAsync();
-            return mapper.MapList<Kontexte, ContextDto>(kontexte);
         }
 
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
@@ -66,22 +53,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return true;
         }
 
-
         // ab hier sind die Methoden, die nach dem DDD implementiert sind
-
-        public override Task<List<SightingPictureDto>> GetAllSightingPicturesAsync()
-        {
-            return this.context.SichtungBilds
-              .AsNoTracking() // keine Change-Tracking-Overhead
-              .Select(b => new SightingPictureDto
-              {
-                  Id = b.Id,
-                  SightingId = b.SichtungId,
-                  Filename = b.Dateiname,
-                  Thumbnail = b.Thumbnail
-              })
-              .ToListAsync();
-        }
 
         public override async Task AddAsync(Sighting sighting)
         {
