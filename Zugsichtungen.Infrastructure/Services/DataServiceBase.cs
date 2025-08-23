@@ -19,10 +19,8 @@ namespace Zugsichtungen.Infrastructure.Services
         private readonly DbContext context;
         public abstract Task<List<VehicleViewEntryDto>> GetAllFahrzeugeAsync();
         public abstract Task<List<ContextDto>> GetKontextesAsync();
-        public abstract Task<List<SightingViewEntryDto>> GetSichtungenAsync();
         public abstract Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
         public abstract Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
-        public abstract Task<bool> CheckIfSightingPictureExists(int sightingId);
 
         public async Task SaveChangesAsync()
         {
@@ -34,5 +32,7 @@ namespace Zugsichtungen.Infrastructure.Services
         public abstract Task<List<SightingPictureDto>> GetAllSightingPicturesAsync();
         public abstract Task AddAsync(Sighting sighting);
         public abstract Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
+        public abstract Task<List<Context>> GetContextesAsync();
+        public abstract Task<List<VehicleViewEntry>> GetVehiclesAsync();
     }
 }

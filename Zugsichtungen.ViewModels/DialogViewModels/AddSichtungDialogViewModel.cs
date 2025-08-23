@@ -11,10 +11,10 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class AddSichtungDialogViewModel : DialogViewModelBase, INotifyDataErrorInfo
     {
-        public AddSichtungDialogViewModel(IDataService dataService, IDialogService dialogService)
+        public AddSichtungDialogViewModel(ISightingService sightingService, IDialogService dialogService)
         {
             SelectedDate = DateTime.Now;
-            this.dataService = dataService;
+            this.sightingService = sightingService;
             this.dialogService = dialogService;
             this.VehicleList = [];
             this.ContextList = [];
@@ -29,7 +29,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private string place = string.Empty;
         private VehicleViewEntryItemViewModel selectedFahrzeug = null!;
         private ContextItemViewModel selectedKontext = null!;
-        private readonly IDataService dataService;
+        private readonly ISightingService sightingService;
         private readonly IDialogService dialogService;
         private readonly Dictionary<string, List<string>> _errors;
 
@@ -103,13 +103,13 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         protected override async Task InitializeInternalAsync()
         {
             await LoadAndSelectFirstAsync(
-                this.dataService.GetAllFahrzeugeAsync,
+                this.sightingService.GetVehicleViewEntriesAsync,
                 this.VehicleList,
                 item => this.SelectedFahrzeug = item,
                 item => new VehicleViewEntryItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
-                this.dataService.GetKontextesAsync,
+                this.sightingService.GetContextesAsync,
                 this.ContextList,
                 item => this.SelectedKontext = item,
                 item => new ContextItemViewModel(item));

@@ -18,32 +18,6 @@ namespace Zugsichtungen.Infrastructure.Services
         private readonly IDataService dataService;
         private readonly IMapper mapper;
 
-        public async Task<List<Context>> GetAllContextesAsync()
-        {
-            var contextList = await dataService.GetKontextesAsync();
-            var pocoList = new List<Context>();
-
-            foreach (var item in contextList)
-            {
-                pocoList.Add(mapper.Map<Context>(item));
-            }
-
-            return pocoList;
-        }
-
-        public async Task<List<VehicleViewEntry>> GetAllVehicleViewEntriesAsync()
-        {
-            var vehicleList = await dataService.GetAllFahrzeugeAsync();
-            var pocoList = new List<VehicleViewEntry>();
-
-            foreach (var item in vehicleList)
-            {
-                pocoList.Add(mapper.Map<VehicleViewEntry>(item));
-            }
-
-            return pocoList;
-        }
-
         public Task UpdateContextes(List<Context> contextes)
         {
             throw new NotImplementedException();
@@ -61,10 +35,7 @@ namespace Zugsichtungen.Infrastructure.Services
             return mapper.Map<SightingPicture>(dto);
         }
 
-        public Task<bool> CheckIfPictureExists(int sightingId)
-        {
-            return this.dataService.CheckIfSightingPictureExists(sightingId);
-        }
+        // ab hier sind die Methoden, die nach dem DDD implementiert sind
 
         public async Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
         {
@@ -84,6 +55,18 @@ namespace Zugsichtungen.Infrastructure.Services
         {
             var sightingList = await this.dataService.GetAllSightingViewEntriesAsync();
             return mapper.MapList<SightingViewEntry, SightingViewEntryDto>(sightingList);
+        }
+
+        public async Task<List<ContextDto>> GetContextesAsync()
+        {
+            var contextes = await this.dataService.GetContextesAsync();
+            return mapper.MapList<Context, ContextDto>(contextes);
+        }
+
+        public async Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync()
+        {
+            var vehicles = await this.dataService.GetVehiclesAsync();
+            return mapper.MapList<VehicleViewEntry, VehicleViewEntryDto>(vehicles);
         }
     }
 }

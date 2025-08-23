@@ -53,11 +53,6 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
 
-        public override Task<bool> CheckIfSightingPictureExists(int sightingId)
-        {
-            return this.imageRepository.CheckIfImageExistsAsync(sightingId);
-        }
-
         public override Task<bool> DeleteSightingAsync(int sightingId)
         {
             throw new NotImplementedException();
@@ -116,6 +111,42 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         private SightingViewEntry MapFromEntity(SightingList entity)
         {
             return SightingViewEntry.Create(entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, null, entity.Comment, null);
+        }
+
+        public async override Task<List<Domain.Models.Context>> GetContextesAsync()
+        {
+            var contextEntities = await context.Contexts.ToListAsync();
+            var contextes = new List<Domain.Models.Context>();
+
+            foreach (var entity in contextEntities)
+            {
+                contextes.Add(MapFromEntity(entity));
+            }
+
+            return contextes;
+        }
+
+        private Domain.Models.Context MapFromEntity(Models.Context entity)
+        {
+            return Domain.Models.Context.Create(entity.Id, entity.Description);
+        }
+
+        public async override Task<List<VehicleViewEntry>> GetVehiclesAsync()
+        {
+            var vehicleEntities = await context.Vehiclelists.ToListAsync();
+            var vehicles = new List<VehicleViewEntry>();
+
+            foreach (var entity in vehicleEntities)
+            {
+                vehicles.Add(MapFromEntity(entity));
+            }
+
+            return vehicles;
+        }
+
+        private VehicleViewEntry MapFromEntity(Vehiclelist entity)
+        {
+            return VehicleViewEntry.Create(entity.Id, entity.VehicleDesignation, entity.SeriesId);
         }
     }
 }

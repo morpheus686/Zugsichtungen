@@ -35,12 +35,6 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return mapper.MapList<Fahrzeugliste, VehicleViewEntryDto>(fahrzeuge);
         }
 
-        public override async Task<List<SightingViewEntryDto>> GetSichtungenAsync()
-        {
-            var sichtungen = await context.Sichtungsviews.ToListAsync();
-            return mapper.MapList<Sichtungsview, SightingViewEntryDto>(sichtungen);
-        }
-
         public override async Task<List<ContextDto>> GetKontextesAsync()
         {
             var kontexte = await context.Kontextes.ToListAsync();
@@ -57,11 +51,6 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
 
-        public override Task<bool> CheckIfSightingPictureExists(int sightingId)
-        {
-            return this.imageRepository.CheckIfImageExistsAsync(sightingId);
-        }
-
         public override async Task<bool> DeleteSightingAsync(int sightingId)
         {
             var sichtung = await this.context.Sichtungens
@@ -76,6 +65,9 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             this.context.Remove(sichtung);
             return true;
         }
+
+
+        // ab hier sind die Methoden, die nach dem DDD implementiert sind
 
         public override Task<List<SightingPictureDto>> GetAllSightingPicturesAsync()
         {
@@ -140,6 +132,42 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         private SightingViewEntry MapFromEntity(Sichtungsview entity)
         {
             return SightingViewEntry.Create(entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, null);
+        }
+
+        public async override Task<List<Context>> GetContextesAsync()
+        {
+            var contextEntities = await context.Kontextes.ToListAsync();
+            var contextes = new List<Context>();
+
+            foreach (var entity in contextEntities)
+            {
+                contextes.Add(MapFromEntity(entity));
+            }
+
+            return contextes;
+        }
+
+        private Context MapFromEntity(Kontexte entity)
+        {
+            return Context.Create(entity.Id, entity.Name);
+        }
+
+        public async override Task<List<VehicleViewEntry>> GetVehiclesAsync()
+        {
+            var vehicleEntities = await context.Fahrzeuglistes.ToListAsync();
+            var vehicles = new List<VehicleViewEntry>();
+
+            foreach (var entity in vehicleEntities)
+            {
+                vehicles.Add(MapFromEntity(entity));
+            }
+
+            return vehicles;
+        }
+
+        private VehicleViewEntry MapFromEntity(Fahrzeugliste entity)
+        {
+            return VehicleViewEntry.Create(entity.Id, entity.Fahrzeug, entity.BaureiheId);
         }
     }
 }

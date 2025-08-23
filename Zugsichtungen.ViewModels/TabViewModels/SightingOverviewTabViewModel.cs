@@ -89,7 +89,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private async Task ExecuteAddSichtung()
         {
             IsBusy = true;
-            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(dataService, dialogService);
+            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(this.sightingService, this.dialogService);
             var result = await this.dialogService.ShowDialogAsync(addSichtungDialogViewModel);
 
             if (result == null)
