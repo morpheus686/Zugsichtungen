@@ -5,10 +5,17 @@ using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
-    public class SightingService(IDataService dataService, IMapper mapper) : ISightingService
+    public class SightingService : ISightingService
     {
-        private readonly IDataService dataService = dataService;
-        private readonly IMapper mapper = mapper;
+        public SightingService(IDataService dataService, IMapper mapper)
+        {
+            this.dataService = dataService;
+            this.mapper = mapper;
+        }
+
+
+        private readonly IDataService dataService;
+        private readonly IMapper mapper;
 
         public async Task AddSichtungAsync(DateOnly date, int vehicleId, int kontextId, string place, string? note, string? filePath)
         {
