@@ -33,6 +33,10 @@
             <DataTemplate DataType="{x:Type tabViewModel:GalleryTabViewModel}" >
                 <tabView:GalleryTabView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type dialogViewModel:SettingsDialogViewModel}">
+                <dialogView:SettingsDialogView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

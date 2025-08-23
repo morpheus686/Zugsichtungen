@@ -1,7 +1,7 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System.Windows.Input;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels
@@ -10,7 +10,7 @@ namespace Zugsichtungen.ViewModels
     {
         private readonly IDialogService dialogService;
 
-        public SightingViewEntry Sichtung { get; }
+        public SightingViewEntryDto Sichtung { get; }
 
         public int Id => Sichtung.Id;
         public DateOnly? Date => Sichtung.Date;
@@ -22,7 +22,7 @@ namespace Zugsichtungen.ViewModels
 
         public ICommand DeleteSightingCommand { get; }
 
-        public SichtungItemViewModel(SightingViewEntry sighting,
+        public SichtungItemViewModel(SightingViewEntryDto sighting,
             IDialogService dialogService)
         {
             this.Sichtung = sighting;

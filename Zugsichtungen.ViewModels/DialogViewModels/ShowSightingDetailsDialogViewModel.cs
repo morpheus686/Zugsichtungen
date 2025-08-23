@@ -1,13 +1,13 @@
-﻿using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
+﻿using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class ShowSightingDetailsDialogViewModel : DialogViewModelBase
     {
-        private readonly ISightingService sightingService;
-        private readonly SightingViewEntry sighting;
+        private readonly IDataService dataService;
+        private readonly SightingViewEntryDto sighting;
         private readonly IDialogService dialogService;
         private byte[]? image;
 
@@ -21,9 +21,9 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
-        public ShowSightingDetailsDialogViewModel(ISightingService sightingService, SightingViewEntry sichtung, IDialogService dialogService)
+        public ShowSightingDetailsDialogViewModel(IDataService dataService, SightingViewEntryDto sichtung, IDialogService dialogService)
         {
-            this.sightingService = sightingService;
+            this.dataService = dataService;
             this.sighting = sichtung;
             this.dialogService = dialogService;
 
@@ -35,7 +35,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             await dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
             {
                 updateMessage("Bild wird geladen", Enumerations.IndeterminateState.Working);
-                var picture = await this.sightingService.GetSightingPictureByIdAsync(this.sighting.Id);
+                var picture = await this.dataService.GetSightingPictureBySightingIdAsync(this.sighting.Id);
 
                 if (picture != null)
                 {

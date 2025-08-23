@@ -40,7 +40,7 @@ namespace Zugsichtungen.Infrastructure.Services
 
         public async Task AddSichtungAsync(Sighting sighting, SightingPicture? sightingPicture)
         {
-            await dataService.AddSichtungAsync(mapper.Map<Sighting, SightingDto>(sighting),
+            await dataService.AddSightingAsync(mapper.Map<Sighting, SightingDto>(sighting),
                 mapper.Map<SightingPicture?, SightingPictureDto?>(sightingPicture));
             await dataService.SaveChangesAsync();
         }

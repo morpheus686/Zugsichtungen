@@ -99,12 +99,15 @@ FontSize="22">
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
                             <materialDesign:PopupBox Grid.Column="2"
-                                                 Width="50"
+                                                 Width="75"
                                                  HorizontalContentAlignment="Center"
-                                                 Visibility="Collapsed">
+                                                 Visibility="Visible"
+                                                     >
                                 <StackPanel Orientation="Vertical">
-                                    <Button Content="Themen verwalten" 
-                                        Command="{Binding EditContextesCommand, Mode=OneTime}"/>
+                                    <Button Content="Einstellungen" 
+                                        Command="{Binding OpenSettingsCommand, Mode=OneTime}"/>
+                                    <Button Content="Daten verwalten"
+                                            />
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </Grid>

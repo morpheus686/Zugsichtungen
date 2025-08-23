@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Zugsichtungen.Foundation.ViewModel;
+﻿using Zugsichtungen.Foundation.ViewModel;
 using Zugsichtungen.ViewModels.Enumerations;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels

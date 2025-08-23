@@ -11,10 +11,10 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 {
     public class AddSichtungDialogViewModel : DialogViewModelBase, INotifyDataErrorInfo
     {
-        public AddSichtungDialogViewModel(ISightingService sichtungService, IDialogService dialogService)
+        public AddSichtungDialogViewModel(IDataService dataService, IDialogService dialogService)
         {
             SelectedDate = DateTime.Now;
-            this.sichtungService = sichtungService;
+            this.dataService = dataService;
             this.dialogService = dialogService;
             this.VehicleList = [];
             this.ContextList = [];
@@ -29,7 +29,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private string place = string.Empty;
         private VehicleViewEntryItemViewModel selectedFahrzeug = null!;
         private ContextItemViewModel selectedKontext = null!;
-        private readonly ISightingService sichtungService;
+        private readonly IDataService dataService;
         private readonly IDialogService dialogService;
         private readonly Dictionary<string, List<string>> _errors;
 
@@ -57,8 +57,8 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         public DateTime SelectedDate
         {
             get { return selectedDate; }
-            set 
-            { 
+            set
+            {
                 selectedDate = value;
                 RaisePropertyChanged(nameof(selectedDate));
             }
@@ -91,25 +91,25 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 {
                     imagePath = value;
                     RaisePropertyChanged(nameof(ImagePath));
-                }                
+                }
             }
         }
         public ICommand AddImageCommand { get; }
         public ICommand RemoveImageCommand { get; }
 
         public bool PlaceIsInvalid { get; private set; }
-        public  bool HasErrors => _errors.Any();
+        public bool HasErrors => _errors.Any();
 
         protected override async Task InitializeInternalAsync()
         {
             await LoadAndSelectFirstAsync(
-                this.sichtungService.GetAllVehicleViewEntriesAsync,
+                this.dataService.GetAllFahrzeugeAsync,
                 this.VehicleList,
                 item => this.SelectedFahrzeug = item,
                 item => new VehicleViewEntryItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
-                this.sichtungService.GetAllContextesAsync,
+                this.dataService.GetKontextesAsync,
                 this.ContextList,
                 item => this.SelectedKontext = item,
                 item => new ContextItemViewModel(item));

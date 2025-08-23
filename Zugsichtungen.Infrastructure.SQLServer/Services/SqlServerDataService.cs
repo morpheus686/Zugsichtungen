@@ -20,7 +20,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         public SqlServerDataService(TrainspottingContext context,
             IMapper mapper, 
             ILogger<SqlServerDataService> logger,
-            IImageRepository imageRepository) : base(context)
+            IImageRepository imageRepository) : base(context, logger, mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -49,17 +49,9 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return mapper.MapList<Context, ContextDto>(contextList);
         }
 
-        public override async Task AddSichtungAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
+        public override Task AddSightingAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
         {
-            this.logger.LogInformation("Füge neue Sichtung zur Datenbank hinzu.");
-            var newEntity = await context.Sightings.AddAsync(mapper.MapSingle<SightingDto, Sighting>(newSichtung));
-            this.logger.LogInformation("Neue Sichtung angelegt.");
-
-            if (sightingPictureDto != null)
-            {
-                var sightingPictureEntity = await context.SightingPictures.AddAsync(mapper.Map<SightingPictureDto, SightingPicture>(sightingPictureDto));
-                sightingPictureEntity.Entity.Sighting = newEntity.Entity;
-            }
+            return AddSightingInternalAsync(newSichtung, sightingPictureDto, context.Sightings, context.SightingPictures, "Sighting");
         }
 
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)

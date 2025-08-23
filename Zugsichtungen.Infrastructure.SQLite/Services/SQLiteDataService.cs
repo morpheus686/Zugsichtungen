@@ -20,7 +20,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         public SQLiteDataService(ZugbeobachtungenContext context, 
             IMapper mapper, 
             ILogger<SQLiteDataService> logger,
-            IImageRepository imageRepository) : base(context)
+            IImageRepository imageRepository) : base(context, logger, mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -46,17 +46,9 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return mapper.MapList<Kontexte, ContextDto>(kontexte);
         }
 
-        public override async Task AddSichtungAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
+        public override Task AddSightingAsync(SightingDto newSichtung, SightingPictureDto? sightingPictureDto)
         {
-            this.logger.LogInformation("Füge neue Sichtung zur Datenbank hinzu.");
-            var newEntity = await context.Sichtungens.AddAsync(mapper.MapSingle<SightingDto, Sichtungen>(newSichtung));
-            this.logger.LogInformation("Neue Sichtung angelegt.");
-
-            if (sightingPictureDto != null)
-            {
-                var sightingPictureEntity = await context.SichtungBilds.AddAsync(mapper.Map<SightingPictureDto, SichtungBild>(sightingPictureDto));
-                sightingPictureEntity.Entity.Sichtung = newEntity.Entity;
-            }
+            return AddSightingInternalAsync(newSichtung, sightingPictureDto, context.Sichtungens, context.SichtungBilds, "Sichtung");
         }
 
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)

@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
                        xmlns:enumerations="clr-namespace:Zugsichtungen.Foundation.Enumerations;assembly=Zugsichtungen.Foundation"
                        DialogViewType="None"
-                       Header="Sichtung Hinzufügen"
+                       Header="Sichtung hinzufügen"
                      Style="{StaticResource DialogViewStyle}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">

@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Foundation.Enumerations;
 using Zugsichtungen.Foundation.ViewModel;
+using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.Enumerations;
 using Zugsichtungen.ViewModels.Grouping;
@@ -15,7 +17,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
     {
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
         private readonly IDialogService dialogService;
-        private readonly ISightingService sichtungService;
+        private readonly IDataService dataService;
         private readonly ILogger<SightingOverviewTabViewModel> logger;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
@@ -26,18 +28,18 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         public ICommand EditContextesCommand { get; }
         public ICommand ShowSightingDetailsCommand { get; }
 
-        public SightingOverviewTabViewModel(IDialogService dialogService, ISightingService sichtungService, ILogger<SightingOverviewTabViewModel> logger)
-        {         
+        public SightingOverviewTabViewModel(IDialogService dialogService, IDataService dataService, ILogger<SightingOverviewTabViewModel> logger)
+        {
             this.Title = "Sichtungen";
 
             AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
             EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
-            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);   
+            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);
 
             this.sichtungenList = [];
             this.GroupedSightings = [];
             this.dialogService = dialogService;
-            this.sichtungService = sichtungService;
+            this.dataService = dataService;
             this.logger = logger;
         }
 
@@ -49,7 +51,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
             if (this.SelectedItem != null)
             {
-                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(sichtungService, this.SelectedItem.Sichtung, this.dialogService);
+                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(this.dataService, this.SelectedItem.Sichtung, this.dialogService);
                 await this.dialogService.ShowDialogAsync(showDetailsViewModel);
             }
 
@@ -82,7 +84,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private async Task ExecuteAddSichtung()
         {
             IsBusy = true;
-            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(sichtungService, dialogService);
+            var addSichtungDialogViewModel = new AddSichtungDialogViewModel(dataService, dialogService);
             var result = await this.dialogService.ShowDialogAsync(addSichtungDialogViewModel);
 
             if (result == null)
@@ -96,12 +98,31 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                 {
                     updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
 
-                    await this.sichtungService.AddSichtungAsync(DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
-                        addSichtungDialogViewModel.SelectedFahrzeug.Id,
-                        addSichtungDialogViewModel.SelectedKontext.Id,
-                        addSichtungDialogViewModel.Place,
-                        addSichtungDialogViewModel.Note,
-                        addSichtungDialogViewModel.ImagePath);
+                    var newSighting = new SightingDto
+                    {
+                        VehicleId = addSichtungDialogViewModel.SelectedFahrzeug.Id,
+                        ContextId = addSichtungDialogViewModel.SelectedKontext.Id,
+                        Location = addSichtungDialogViewModel.Place,
+                        Date = DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
+                        Note = addSichtungDialogViewModel.Note
+                    };
+
+                    var filePath = addSichtungDialogViewModel.ImagePath;
+                    SightingPictureDto? sightingPictureDto = null;
+
+                    if (filePath != null)
+                    {
+                        var picture = await File.ReadAllBytesAsync(filePath);
+
+                        sightingPictureDto = new SightingPictureDto
+                        {
+                            Filename = new FileInfo(filePath).Name,
+                            Image = picture,
+                            Thumbnail = ImageHelper.CreateThumbnail(picture)
+                        };
+                    }
+
+                    await this.dataService.AddSightingAsync(newSighting, sightingPictureDto);
                     await this.UpdateSichtungen();
                 });
             }
@@ -112,7 +133,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         private async Task UpdateSichtungen()
         {
             this.Sichtungsliste.Clear();
-            var sichtungen = await this.sichtungService.GetAllSightingsAsync();
+            var sichtungen = await this.dataService.GetSichtungenAsync();
 
             foreach (var item in sichtungen)
             {
