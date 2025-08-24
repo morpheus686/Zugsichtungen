@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Data;
 using System.Data.Common;
-using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Infrastructure.Repositories;
 
 namespace Zugsichtungen.Infrastructure.SQLite.Repositories
@@ -21,15 +21,9 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
             return new SqliteConnection(connectionstring);
         }
 
-        protected override SightingPictureDto MapReader(IDataReader reader)
+        protected override SightingPicture MapReader(IDataReader reader)
         {
-            return new SightingPictureDto
-            {
-                Id = reader.GetInt32(0),
-                SightingId = reader.GetInt32(1),
-                Image = (byte[])reader["Bild"],
-                Filename = reader.GetString(3)
-            };
+            return SightingPicture.Create(reader.GetInt32(0), reader.GetInt32(1), (byte[])reader["Bild"], null, reader.GetString(3));
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Zugsichtungen.Abstractions.Services
     {
         Task SaveChangesAsync();
         Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
-        Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
         Task<bool> DeleteSightingAsync(int sightingId);
 
         // Ab hier DDD-Methoden
@@ -16,5 +15,6 @@ namespace Zugsichtungen.Abstractions.Services
         Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
         Task<List<Context>> GetContextesAsync();
         Task<List<VehicleViewEntry>> GetVehiclesAsync();
+        Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
     }
 }

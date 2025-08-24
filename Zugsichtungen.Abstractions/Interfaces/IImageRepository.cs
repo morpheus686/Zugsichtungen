@@ -1,10 +1,10 @@
-﻿using Zugsichtungen.Abstractions.DTO;
+﻿using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Abstractions.Interfaces
 {
     public interface IImageRepository
     {
-        Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId);
+        Task<SightingPicture?> GetImageBySightingIdAsync(int sightingId);
         Task<bool> CheckIfImageExistsAsync(int sightingId);
     }
 }

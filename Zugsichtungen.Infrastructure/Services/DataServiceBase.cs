@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
@@ -19,7 +17,6 @@ namespace Zugsichtungen.Infrastructure.Services
         private readonly DbContext context;
 
         public abstract Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
-        public abstract Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
 
         public async Task SaveChangesAsync()
         {
@@ -32,5 +29,6 @@ namespace Zugsichtungen.Infrastructure.Services
         public abstract Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
         public abstract Task<List<Context>> GetContextesAsync();
         public abstract Task<List<VehicleViewEntry>> GetVehiclesAsync();
+        public abstract Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
     }
 }

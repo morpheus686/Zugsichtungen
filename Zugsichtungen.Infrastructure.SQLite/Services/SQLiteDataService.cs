@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
@@ -13,17 +12,14 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
     public class SQLiteDataService : DataServiceBase
     {
         private readonly ZugbeobachtungenContext context;
-        private readonly IMapper mapper;
         private readonly ILogger<SQLiteDataService> logger;
         private readonly IImageRepository imageRepository;
 
         public SQLiteDataService(ZugbeobachtungenContext context,
-            IMapper mapper,
             ILogger<SQLiteDataService> logger,
             IImageRepository imageRepository) : base(context)
         {
             this.context = context;
-            this.mapper = mapper;
             this.logger = logger;
             this.imageRepository = imageRepository;
         }
@@ -31,11 +27,6 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
         {
             throw new NotImplementedException();
-        }
-
-        public override Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId)
-        {
-            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
 
         public override async Task<bool> DeleteSightingAsync(int sightingId)
@@ -62,7 +53,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             await SaveChangesAsync();
         }
 
-        private Sichtungen MapToEntity(Sighting sighting)
+        private static Sichtungen MapToEntity(Sighting sighting)
         {
             var entity = new Sichtungen
             {
@@ -101,7 +92,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return sightingList;
         }
 
-        private SightingViewEntry MapFromEntity(Sichtungsview entity)
+        private static SightingViewEntry MapFromEntity(Sichtungsview entity)
         {
             return SightingViewEntry.Create(entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, null);
         }
@@ -119,7 +110,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return contextes;
         }
 
-        private Context MapFromEntity(Kontexte entity)
+        private static Context MapFromEntity(Kontexte entity)
         {
             return Context.Create(entity.Id, entity.Name);
         }
@@ -137,9 +128,14 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return vehicles;
         }
 
-        private VehicleViewEntry MapFromEntity(Fahrzeugliste entity)
+        private static VehicleViewEntry MapFromEntity(Fahrzeugliste entity)
         {
             return VehicleViewEntry.Create(entity.Id, entity.Fahrzeug, entity.BaureiheId);
+        }
+
+        public override Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
+        {
+            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
     }
 }

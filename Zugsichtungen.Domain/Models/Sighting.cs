@@ -17,7 +17,7 @@
 
         public DateOnly Date { get; private set; }
 
-        public string Location { get; private set; }
+        public string Location { get; private set; } = null!;
 
         public int ContextId { get; private set; }
 

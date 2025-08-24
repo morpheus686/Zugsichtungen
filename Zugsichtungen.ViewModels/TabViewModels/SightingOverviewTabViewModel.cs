@@ -17,7 +17,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
     {
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
         private readonly IDialogService dialogService;
-        private readonly IDataService dataService;
         private readonly ILogger<SightingOverviewTabViewModel> logger;
         private readonly ISightingService sightingService;
 
@@ -43,7 +42,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             this.sichtungenList = [];
             this.GroupedSightings = [];
             this.dialogService = dialogService;
-            this.dataService = dataService;
             this.logger = logger;
             this.sightingService = sightingService;
         }
@@ -56,7 +54,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
             if (this.SelectedItem != null)
             {
-                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(this.dataService, this.SelectedItem.Sichtung, this.dialogService);
+                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(this.sightingService, this.SelectedItem.Sichtung, this.dialogService);
                 await this.dialogService.ShowDialogAsync(showDetailsViewModel);
             }
 

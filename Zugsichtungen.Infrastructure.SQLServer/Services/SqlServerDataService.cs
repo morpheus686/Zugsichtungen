@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Enumerations.Database;
@@ -13,17 +12,14 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
     public class SqlServerDataService : DataServiceBase
     {
         private readonly TrainspottingContext context;
-        private readonly IMapper mapper;
         private readonly ILogger<SqlServerDataService> logger;
         private readonly IImageRepository imageRepository;
 
         public SqlServerDataService(TrainspottingContext context,
-            IMapper mapper, 
             ILogger<SqlServerDataService> logger,
             IImageRepository imageRepository) : base(context)
         {
             this.context = context;
-            this.mapper = mapper;
             this.logger = logger;
             this.imageRepository = imageRepository;
         }
@@ -31,11 +27,6 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
         {
             throw new NotImplementedException();
-        }
-
-        public override Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId)
-        {
-            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
 
         public override Task<bool> DeleteSightingAsync(int sightingId)
@@ -50,7 +41,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             await SaveChangesAsync();
         }
 
-        private Models.Sighting MapToEntity(Domain.Models.Sighting sighting)
+        private static Models.Sighting MapToEntity(Domain.Models.Sighting sighting)
         {
             var entity = new Models.Sighting
             {
@@ -88,7 +79,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return sightingList;
         }
 
-        private SightingViewEntry MapFromEntity(SightingList entity)
+        private static SightingViewEntry MapFromEntity(SightingList entity)
         {
             return SightingViewEntry.Create(entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, null, entity.Comment, null);
         }
@@ -106,7 +97,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return contextes;
         }
 
-        private Domain.Models.Context MapFromEntity(Models.Context entity)
+        private static Domain.Models.Context MapFromEntity(Models.Context entity)
         {
             return Domain.Models.Context.Create(entity.Id, entity.Description);
         }
@@ -124,9 +115,14 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return vehicles;
         }
 
-        private VehicleViewEntry MapFromEntity(Vehiclelist entity)
+        private static VehicleViewEntry MapFromEntity(Vehiclelist entity)
         {
             return VehicleViewEntry.Create(entity.Id, entity.VehicleDesignation, entity.SeriesId);
+        }
+
+        public override Task<Domain.Models.SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
+        {
+            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
         }
     }
 }

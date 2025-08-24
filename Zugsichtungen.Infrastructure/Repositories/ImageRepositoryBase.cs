@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
-using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Infrastructure.Repositories
 {
@@ -16,10 +16,10 @@ namespace Zugsichtungen.Infrastructure.Repositories
 
         protected abstract string ExistsQuery { get; }
         protected abstract string GetImageQuery { get; }
-        protected abstract SightingPictureDto MapReader(IDataReader reader);
+        protected abstract SightingPicture MapReader(IDataReader reader);
         protected abstract DbConnection CreateConnection(string connectionstring);
 
-        public async Task<SightingPictureDto?> GetImageBySightingIdAsync(int sightingId)
+        public async Task<SightingPicture?> GetImageBySightingIdAsync(int sightingId)
         {
             using (var connection = await GetOpenedConnectionAsync())
             using (var command = connection.CreateCommand())

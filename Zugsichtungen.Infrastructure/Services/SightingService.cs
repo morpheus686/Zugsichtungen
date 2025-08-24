@@ -23,18 +23,6 @@ namespace Zugsichtungen.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<SightingPicture?> GetSightingPictureByIdAsync(int id)
-        {
-            var dto = await dataService.GetSightingPictureBySightingIdAsync(id);
-
-            if (dto == null)
-            {
-                return null;
-            }
-
-            return mapper.Map<SightingPicture>(dto);
-        }
-
         // ab hier sind die Methoden, die nach dem DDD implementiert sind
 
         public async Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
@@ -67,6 +55,12 @@ namespace Zugsichtungen.Infrastructure.Services
         {
             var vehicles = await this.dataService.GetVehiclesAsync();
             return mapper.MapList<VehicleViewEntry, VehicleViewEntryDto>(vehicles);
+        }
+
+        public async Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId)
+        {
+            var sightingPicture = await dataService.GetPictureBySightingIdAsync(sightingId);
+            return mapper.Map<SightingPictureDto>(sightingPicture);
         }
     }
 }
