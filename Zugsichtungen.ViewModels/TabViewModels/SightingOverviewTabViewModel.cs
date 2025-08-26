@@ -62,11 +62,13 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             IsBusy = false;
         }
 
-        protected override Task InitializeInternalAsync()
+        protected async override Task InitializeInternalAsync()
         {
             try
             {
-                return UpdateSichtungen();
+                await UpdateSichtungen();
+                this.IsInitializing = false;
+                RaisePropertyChanged(nameof(this.IsInitializing));
             }
             catch (Exception e)
             {
@@ -126,8 +128,10 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                     }
 
                     await this.sightingService.AddSightingAsync(newSightingDto, sightingPictureDto);
-                    await this.UpdateSichtungen();
+
                 });
+
+                await this.UpdateSichtungen();
             }
 
             IsBusy = false;

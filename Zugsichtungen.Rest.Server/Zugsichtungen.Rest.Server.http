@@ -1,0 +1,6 @@
+@Zugsichtungen.Rest.Server_HostAddress = http://localhost:5051
+
+GET {{Zugsichtungen.Rest.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

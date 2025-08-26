@@ -104,8 +104,6 @@ namespace Zugsichtungen
 
             services.AddAutoMapper(config => config.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
 
-            services.AddScoped<ISightingService, SightingService>();
-
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<SightingOverviewTabViewModel>();
@@ -113,6 +111,12 @@ namespace Zugsichtungen
 
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<AddSichtungDialogViewModel>();
+
+            //services.AddScoped<ISightingService, SightingService>();
+            services.AddHttpClient<ISightingService, SightingApiService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7046/");
+            });
         }
     }
 }
