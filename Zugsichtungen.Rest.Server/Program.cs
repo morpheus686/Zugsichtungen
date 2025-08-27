@@ -3,9 +3,9 @@ using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Services;
-using Zugsichtungen.Infrastructure.SQLServer.Models;
-using Zugsichtungen.Infrastructure.SQLServer.Repositories;
-using Zugsichtungen.Infrastructure.SQLServer.Services;
+using Zugsichtungen.Infrastructure.SQLite.Models;
+using Zugsichtungen.Infrastructure.SQLite.Repositories;
+using Zugsichtungen.Infrastructure.SQLite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,23 +17,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-var sqlServerConnectionString = "Data Source=Christopher-PC\\SQLEXPRESS01;Initial Catalog=Trainspotting;Integrated Security=True;Trust Server Certificate=True";
+var connectionString = "Data Source=zugbeobachtungen.db";
 
-builder.Services.AddDbContext<TrainspottingContext>(options =>
+builder.Services.AddDbContext<ZugbeobachtungenContext>(options =>
 {
-    options.UseSqlServer(sqlServerConnectionString);
+    options.UseSqlite(connectionString);
 });
 
-builder.Services.AddScoped<IDataService, SqlServerDataService>();
+builder.Services.AddScoped<IDataService, SQLiteDataService>();
 
-if (sqlServerConnectionString == null)
+if (connectionString == null)
 {
     throw new ApplicationException("Connectionstring ist nicht in den Einstellungen festgelegt!");
 }
 
-builder.Services.AddScoped<IImageRepository, SQLServerImageRepository>(sp =>
+builder.Services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
 {
-    return new SQLServerImageRepository(sqlServerConnectionString);
+    return new SQLiteImageRepository(connectionString);
 });
 
 builder.Services.AddScoped<ISightingService, SightingService>();

@@ -14,8 +14,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="zugbeobachtungen.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
