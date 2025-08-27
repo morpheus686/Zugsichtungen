@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ApplicationBase;
@@ -13,11 +12,6 @@ using Zugsichtungen.Infrastructure.SQLite.Services;
 using Zugsichtungen.Infrastructure.SQLServer.Models;
 using Zugsichtungen.Infrastructure.SQLServer.Repositories;
 using Zugsichtungen.Infrastructure.SQLServer.Services;
-using Zugsichtungen.Services;
-using Zugsichtungen.UI.Views;
-using Zugsichtungen.ViewModels;
-using Zugsichtungen.ViewModels.DialogViewModels;
-using Zugsichtungen.ViewModels.TabViewModels;
 
 namespace Zugsichtungen
 {
@@ -27,7 +21,7 @@ namespace Zugsichtungen
     public partial class App : AppBase
     {
 
-        protected override void ConfigureServices(IServiceCollection services)
+        protected override void ConfigureSpecificServices(IServiceCollection services)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
@@ -80,23 +74,7 @@ namespace Zugsichtungen
                     throw new ApplicationException("Keine gültige Datenbank konfiguriert!");
             }
 
-            services.AddLogging(logging =>
-            {
-                logging.AddConsole();
-                logging.AddDebug();
-                logging.SetMinimumLevel(LogLevel.Information);
-            });
-
             services.AddSingleton<ISightingService, SightingService>();
-            services.AddAutoMapper(config => config.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
-
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<MainWindowViewModel>();
-            services.AddSingleton<SightingOverviewTabViewModel>();
-            services.AddSingleton<GalleryTabViewModel>();
-
-            services.AddSingleton<IDialogService, DialogService>();
-            services.AddTransient<AddSichtungDialogViewModel>();
         }
     }
 }

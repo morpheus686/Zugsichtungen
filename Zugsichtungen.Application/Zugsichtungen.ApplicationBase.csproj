@@ -9,9 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Zugsichtungen.Services\Zugsichtungen.Services.csproj" />
     <ProjectReference Include="..\Zugsichtungen.UI\Zugsichtungen.UI.csproj" />
   </ItemGroup>
 
