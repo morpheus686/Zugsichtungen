@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Zugsichtungen.Application\Zugsichtungen.ApplicationBase.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Services\Zugsichtungen.Services.csproj" />
     <ProjectReference Include="..\Zugsichtungen.SharedViews\Zugsichtungen.SharedViews.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Styles\Zugsichtungen.Styles.csproj" />

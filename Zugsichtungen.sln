@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Services", "Z
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.SharedViews", "Zugsichtungen.SharedViews\Zugsichtungen.SharedViews.csproj", "{51015D8A-7A98-412A-BE08-4DA0065020A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.ApplicationBase", "Zugsichtungen.Application\Zugsichtungen.ApplicationBase.csproj", "{51C87117-A77B-4BAD-82CC-D1224944797A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 		{51015D8A-7A98-412A-BE08-4DA0065020A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51015D8A-7A98-412A-BE08-4DA0065020A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51015D8A-7A98-412A-BE08-4DA0065020A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C87117-A77B-4BAD-82CC-D1224944797A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C87117-A77B-4BAD-82CC-D1224944797A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C87117-A77B-4BAD-82CC-D1224944797A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C87117-A77B-4BAD-82CC-D1224944797A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,10 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Windows;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.ApplicationBase;
 using Zugsichtungen.Infrastructure.Services;
+using Zugsichtungen.Infrastructure.SQLite.Helpers;
 using Zugsichtungen.Infrastructure.SQLite.Models;
 using Zugsichtungen.Infrastructure.SQLite.Repositories;
 using Zugsichtungen.Infrastructure.SQLite.Services;
@@ -23,23 +24,10 @@ namespace Zugsichtungen
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : AppBase
     {
-        public new static App Current => (App)Application.Current;
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-
-            var serviceProvider = services.BuildServiceProvider();
-            var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-        }
-
-        private static void ConfigureServices(ServiceCollection services)
+        protected override void ConfigureServices(IServiceCollection services)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
@@ -51,20 +39,15 @@ namespace Zugsichtungen
             switch (configuration["DatabaseProvider"])
             {
                 case "SQLite":
-                    var sqliteConnectionString = configuration.GetConnectionString("SQLiteConnection");
+                    var dbPath = SqliteHelper.CopyDatabaseIfNotExits();
+                    var sqliteConnectionString = $"Data Source={dbPath}";
 
                     services.AddDbContext<ZugbeobachtungenContext>(options =>
                     {
-
                         options.UseSqlite(sqliteConnectionString);
                     });
 
                     services.AddScoped<IDataService, SQLiteDataService>();
-
-                    if (sqliteConnectionString == null)
-                    {
-                        throw new ApplicationException("Connectionstring ist nicht in den Einstellungen festgelegt!");
-                    }
 
                     services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
                     {

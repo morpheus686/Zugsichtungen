@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Windows;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.ApplicationBase;
 using Zugsichtungen.Rest.Services;
 using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;
@@ -14,21 +14,9 @@ namespace Zugsichtungen.Rest
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : AppBase
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-
-            var serviceProvider = services.BuildServiceProvider();
-            var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-        }
-
-        private static void ConfigureServices(ServiceCollection services)
+        protected override void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging(logging =>
             {
