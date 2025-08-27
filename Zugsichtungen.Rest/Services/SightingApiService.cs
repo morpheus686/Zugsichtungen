@@ -4,7 +4,7 @@ using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 
-namespace Zugsichtungen.Services
+namespace Zugsichtungen.Rest.Services
 {
     public class SightingApiService : ISightingService
     {
@@ -17,29 +17,29 @@ namespace Zugsichtungen.Services
 
         public async Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
         {
-            await httpClient.PostAsJsonAsync("api/addsighting", new Tuple<SightingDto, SightingPictureDto?>(sighting, sightingPicture));
+            await this.httpClient.PostAsJsonAsync("api/addsighting", new Tuple<SightingDto, SightingPictureDto?>(sighting, sightingPicture));
         }
 
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
         {
-            var result = await httpClient.GetFromJsonAsync<List<SightingViewEntryDto>>("api/sightings");
+            var result = await this.httpClient.GetFromJsonAsync<List<SightingViewEntryDto>>("api/sightings");
             return result ?? new List<SightingViewEntryDto>();
         }
 
         public async Task<List<ContextDto>> GetContextesAsync()
         {
-            var result = await httpClient.GetFromJsonAsync<List<ContextDto>>("api/contexts");
+            var result = await this.httpClient.GetFromJsonAsync<List<ContextDto>>("api/contexts");
             return result ?? new List<ContextDto>();
         }
 
         public async Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId)
         {
-            return await httpClient.GetFromJsonAsync<SightingPictureDto>($"api/sightingpicture?sightingId={sightingId}");
+            return await this.httpClient.GetFromJsonAsync<SightingPictureDto>($"api/sightingpicture?sightingId={sightingId}");
         }
 
         public async Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync()
         {
-            var result = await httpClient.GetFromJsonAsync<List<VehicleViewEntryDto>>("api/vehicleview");
+            var result = await this.httpClient.GetFromJsonAsync<List<VehicleViewEntryDto>>("api/vehicleview");
             return result ?? new List<VehicleViewEntryDto>();
         }
 

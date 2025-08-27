@@ -29,7 +29,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
   </ItemGroup>
@@ -41,6 +40,8 @@
     <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Services\Zugsichtungen.Services.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.SharedViews\Zugsichtungen.SharedViews.csproj" />
     <ProjectReference Include="..\Zugsichtungen.UI.Controls\Zugsichtungen.UI.Controls.csproj" />
     <ProjectReference Include="..\Zugsichtungen.UI\Zugsichtungen.UI.csproj" />
     <ProjectReference Include="..\Zugsichtungen.ViewModels\Zugsichtungen.ViewModels.csproj" />

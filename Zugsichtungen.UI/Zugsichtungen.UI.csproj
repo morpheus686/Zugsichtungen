@@ -18,6 +18,9 @@
     <Compile Update="Views\DialogViews\AddSichtungDialogView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\DialogViews\IndeterminateDialogView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

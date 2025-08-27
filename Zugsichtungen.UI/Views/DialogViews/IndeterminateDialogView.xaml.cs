@@ -2,7 +2,7 @@
 using Zugsichtungen.UI.Controls.CustomControls;
 using Zugsichtungen.ViewModels.Enumerations;
 
-namespace Zugsichtungen.DialogViews
+namespace Zugsichtungen.UI.Views.DialogViews
 {
     /// <summary>
     /// Interaktionslogik für IndeterminateDialogView.xaml

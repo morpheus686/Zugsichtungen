@@ -44,18 +44,17 @@ namespace Zugsichtungen.Infrastructure.Repositories
 
         public async Task<bool> CheckIfImageExistsAsync(int sightingId)
         {
-            using (var connection = await GetOpenedConnectionAsync())
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = ExistsQuery;
-                var param = command.CreateParameter();
-                param.ParameterName = "@Id";
-                param.Value = sightingId;
-                command.Parameters.Add(param);
+            using var connection = await GetOpenedConnectionAsync();
+            using var command = connection.CreateCommand();
 
-                var value = await command.ExecuteScalarAsync();
-                return value != null && Convert.ToInt32(value) != 0;
-            }
+            command.CommandText = ExistsQuery;
+            var param = command.CreateParameter();
+            param.ParameterName = "@Id";
+            param.Value = sightingId;
+            command.Parameters.Add(param);
+
+            var value = await command.ExecuteScalarAsync();
+            return value != null && Convert.ToInt32(value) != 0;
         }
 
         private async Task<DbConnection> GetOpenedConnectionAsync()
