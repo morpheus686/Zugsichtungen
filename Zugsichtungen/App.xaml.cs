@@ -70,6 +70,8 @@ namespace Zugsichtungen
                     {
                         return new SQLiteImageRepository(sqliteConnectionString);
                     });
+
+                    services.AddSingleton<ISightingService, SightingService>();
                     break;
                 case "SQLServer":
                     var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
@@ -90,7 +92,17 @@ namespace Zugsichtungen
                     {
                         return new SQLServerImageRepository(sqlServerConnectionString);
                     });
+
+                    services.AddSingleton<ISightingService, SightingService>();
                     break;
+                case "Rest":
+                    services.AddHttpClient<ISightingService, SightingApiService>(client =>
+                    {
+                        client.BaseAddress = new Uri("https://localhost:7046/");
+                    });
+
+                    break;
+
                 default:
                     throw new ApplicationException("Keine gültige Datenbank konfiguriert!");
             }
@@ -111,12 +123,6 @@ namespace Zugsichtungen
 
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<AddSichtungDialogViewModel>();
-
-            //services.AddScoped<ISightingService, SightingService>();
-            services.AddHttpClient<ISightingService, SightingApiService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7046/");
-            });
         }
     }
 }

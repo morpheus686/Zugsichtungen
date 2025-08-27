@@ -29,7 +29,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         public ICommand ShowSightingDetailsCommand { get; }
 
         public SightingOverviewTabViewModel(IDialogService dialogService,
-            IDataService dataService,
             ILogger<SightingOverviewTabViewModel> logger,
             ISightingService sightingService)
         {

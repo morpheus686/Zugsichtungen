@@ -31,6 +31,10 @@ namespace Zugsichtungen.Services
             {
                 await progressTask(updateMessage, parameter);
             }
+            catch(Exception e)
+            {
+
+            }
             finally
             {
                 DialogHost.Close(ProgressDialogIdentifier, viewModel);

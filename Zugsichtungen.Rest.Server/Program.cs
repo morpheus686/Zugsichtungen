@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Infrastructure.Services;
@@ -58,6 +59,29 @@ app.MapGet("api/sightings", async (ISightingService service) =>
 {
     var entries = await service.GetAllSightingViewEntriesAsync();
     return Results.Ok(entries);
+});
+
+app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service) =>
+{
+    await service.AddSightingAsync(sighting.Item1, sighting.Item2);
+});
+
+app.MapGet("api/vehicleview", async (ISightingService service) =>
+{
+    var entries = await service.GetVehicleViewEntriesAsync();
+    return Results.Ok(entries);
+});
+
+app.MapGet("api/contexts", async (ISightingService service) =>
+{
+    var entries = await service.GetContextesAsync();
+    return Results.Ok(entries);
+});
+
+app.MapGet("api/sightingpicture", async (int sightingId, ISightingService service) =>
+{
+    var picture = await service.GetPictureBySightingIdAsync(sightingId);
+    return picture is not null ? Results.Ok(picture) : Results.NotFound();
 });
 
 app.Run();

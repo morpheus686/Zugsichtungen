@@ -15,9 +15,9 @@ namespace Zugsichtungen.Services
             this.httpClient = httpClient;
         }
 
-        public Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
+        public async Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
         {
-            throw new NotImplementedException();
+            await httpClient.PostAsJsonAsync("api/addsighting", new Tuple<SightingDto, SightingPictureDto?>(sighting, sightingPicture));
         }
 
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
@@ -26,19 +26,21 @@ namespace Zugsichtungen.Services
             return result ?? new List<SightingViewEntryDto>();
         }
 
-        public Task<List<ContextDto>> GetContextesAsync()
+        public async Task<List<ContextDto>> GetContextesAsync()
         {
-            throw new NotImplementedException();
+            var result = await httpClient.GetFromJsonAsync<List<ContextDto>>("api/contexts");
+            return result ?? new List<ContextDto>();
         }
 
-        public Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId)
+        public async Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId)
         {
-            throw new NotImplementedException();
+            return await httpClient.GetFromJsonAsync<SightingPictureDto>($"api/sightingpicture?sightingId={sightingId}");
         }
 
-        public Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync()
+        public async Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync()
         {
-            throw new NotImplementedException();
+            var result = await httpClient.GetFromJsonAsync<List<VehicleViewEntryDto>>("api/vehicleview");
+            return result ?? new List<VehicleViewEntryDto>();
         }
 
         public Task UpdateContextes(List<Context> contextes)
