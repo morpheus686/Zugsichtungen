@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
   </ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" />
   </ItemGroup>
 

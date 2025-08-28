@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
@@ -7,8 +9,13 @@ using Zugsichtungen.Infrastructure.SQLite.Helpers;
 using Zugsichtungen.Infrastructure.SQLite.Models;
 using Zugsichtungen.Infrastructure.SQLite.Repositories;
 using Zugsichtungen.Infrastructure.SQLite.Services;
+using Zugsichtungen.Infrastructure.SQLServer.Models;
+using Zugsichtungen.Infrastructure.SQLServer.Repositories;
+using Zugsichtungen.Infrastructure.SQLServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+AddOdata(builder);
 
 // Add services to the container.
 
@@ -17,20 +24,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var dbPath = SqliteHelper.CopyDatabaseIfNotExits();
-var sqliteConnectionString = $"Data Source={dbPath}";
+UseSqlite(builder);
+//UseSqlServer(builder);
 
-builder.Services.AddDbContext<ZugbeobachtungenContext>(options =>
-{
-    options.UseSqlite(sqliteConnectionString);
-});
-
-builder.Services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
-{
-    return new SQLiteImageRepository(sqliteConnectionString);
-});
-
-builder.Services.AddScoped<IDataService, SQLiteDataService>();
 builder.Services.AddScoped<ISightingService, SightingService>();
 builder.Services.AddAutoMapper(config => config.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
 
@@ -44,39 +40,94 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 
 //app.UseAuthorization();
 
-//app.MapControllers();
+app.MapControllers();
 
-app.MapGet("api/sightings", async (ISightingService service) =>
-{
-    var entries = await service.GetAllSightingViewEntriesAsync();
-    return Results.Ok(entries);
-});
-
-app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service) =>
-{
-    await service.AddSightingAsync(sighting.Item1, sighting.Item2);
-});
-
-app.MapGet("api/vehicleview", async (ISightingService service) =>
-{
-    var entries = await service.GetVehicleViewEntriesAsync();
-    return Results.Ok(entries);
-});
-
-app.MapGet("api/contexts", async (ISightingService service) =>
-{
-    var entries = await service.GetContextesAsync();
-    return Results.Ok(entries);
-});
-
-app.MapGet("api/sightingpicture", async (int sightingId, ISightingService service) =>
-{
-    var picture = await service.GetPictureBySightingIdAsync(sightingId);
-    return picture is not null ? Results.Ok(picture) : Results.NotFound();
-});
+MapMinimalApi(app);
 
 app.Run();
+
+static void AddOdata(WebApplicationBuilder builder)
+{
+    builder.Services.AddOData();
+    var modelBuilder = new ODataConventionModelBuilder();
+    modelBuilder.EntitySet<SightingViewEntryDto>("Sighting");
+    modelBuilder.EntitySet<SightingPictureDto>("SightingPicture");
+    modelBuilder.EntitySet<ContextDto>("Context");
+    modelBuilder.EntitySet<VehicleViewEntryDto>("Vehicle");
+
+    builder.Services.AddControllers().AddOData(
+        options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(
+            "odata",
+            modelBuilder.GetEdmModel()));
+}
+
+static void MapMinimalApi(WebApplication app)
+{
+    app.MapGet("api/sightings", async (ISightingService service) =>
+    {
+        var entries = await service.GetAllSightingViewEntriesAsync();
+        return Results.Ok(entries);
+    });
+
+    app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service) =>
+    {
+        await service.AddSightingAsync(sighting.Item1, sighting.Item2);
+    });
+
+    app.MapGet("api/vehicleview", async (ISightingService service) =>
+    {
+        var entries = await service.GetVehicleViewEntriesAsync();
+        return Results.Ok(entries);
+    });
+
+    app.MapGet("api/contexts", async (ISightingService service) =>
+    {
+        var entries = await service.GetContextesAsync();
+        return Results.Ok(entries);
+    });
+
+    app.MapGet("api/sightingpicture", async (int sightingId, ISightingService service) =>
+    {
+        var picture = await service.GetPictureBySightingIdAsync(sightingId);
+        return picture is not null ? Results.Ok(picture) : Results.NotFound();
+    });
+}
+
+static void UseSqlite(WebApplicationBuilder builder)
+{
+    var dbPath = SqliteHelper.CopyDatabaseIfNotExits();
+    var sqliteConnectionString = $"Data Source={dbPath}";
+
+
+    builder.Services.AddDbContext<ZugbeobachtungenContext>(options =>
+    {
+        options.UseSqlite(sqliteConnectionString);
+    });
+    builder.Services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
+    {
+        return new SQLiteImageRepository(sqliteConnectionString);
+    });
+
+    builder.Services.AddScoped<IDataService, SQLiteDataService>();
+}
+
+static void UseSqlServer(WebApplicationBuilder builder)
+{
+    var sqlserverConnectionstring = "Data Source=Christopher-PC\\SQLEXPRESS01;Initial Catalog=Trainspotting;Integrated Security=True;Trust Server Certificate=True";
+
+    builder.Services.AddDbContext<TrainspottingContext>(options =>
+    {
+        options.UseSqlServer(sqlserverConnectionstring);
+    });
+
+    builder.Services.AddScoped<IImageRepository, SQLServerImageRepository>(sp =>
+    {
+        return new SQLServerImageRepository(sqlserverConnectionstring);
+    });
+
+    builder.Services.AddScoped<IDataService, SqlServerDataService>();
+}
