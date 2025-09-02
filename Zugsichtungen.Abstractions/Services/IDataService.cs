@@ -11,10 +11,11 @@ namespace Zugsichtungen.Abstractions.Services
         Task<bool> DeleteSightingAsync(int sightingId);
 
         // Ab hier DDD-Methoden
-        Task AddAsync(Sighting sighting);
+        Task<int> AddAsync(Sighting sighting);
         Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
         Task<List<Context>> GetContextesAsync();
         Task<List<VehicleViewEntry>> GetVehiclesAsync();
         Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
+        Task<SightingViewEntry?> GetSightingViewAsync(int sightingId);
     }
 }

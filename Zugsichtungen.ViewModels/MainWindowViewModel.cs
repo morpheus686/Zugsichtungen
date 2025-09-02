@@ -17,7 +17,7 @@ namespace Zugsichtungen.ViewModels
         public ICommand? ToggleDrawerCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public SichtungItemViewModel? SelectedItem { get; set; }
-        public SightingOverviewTabViewModel SightingOverviewTabViewModel { get; }
+        public SightingOverviewTabViewModelBase SightingOverviewTabViewModel { get; }
         public GalleryTabViewModel GalleryTabViewModel { get; }
 
         public string CurrentTabTitle => SelectedTab.Title;
@@ -45,7 +45,7 @@ namespace Zugsichtungen.ViewModels
             }
         }
 
-        public MainWindowViewModel(SightingOverviewTabViewModel sightingOverviewTabViewModel, 
+        public MainWindowViewModel(SightingOverviewTabViewModelBase sightingOverviewTabViewModel, 
             GalleryTabViewModel galleryTabViewModel,
             IDialogService dialogService)
         {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.AspNetCore.SignalR;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Rest.Server.Hubs;
 
 namespace Zugsichtungen.Rest.Server.Controller.OData
 {
@@ -8,15 +10,19 @@ namespace Zugsichtungen.Rest.Server.Controller.OData
     public class SightingWithPictureController : ODataController
     {
         private readonly ISightingService sightingService;
+        private readonly SightingHub sightingHub;
 
-        public SightingWithPictureController(ISightingService sightingService)
+        public SightingWithPictureController(ISightingService sightingService, SightingHub sightingHub)
         {
             this.sightingService = sightingService;
+            this.sightingHub = sightingHub;
         }
 
         public async Task<ActionResult> Post([FromBody] SightingWithPictureDto input)
         {
-            await sightingService.AddSightingAsync(input.Sighting, input.Picture);
+            var newSightingId = await sightingService.AddSightingAsync(input.Sighting, input.Picture);
+            var savedDto = await sightingService.GetSightingViewByIdAsync(newSightingId);
+            await this.sightingHub.Clients.All.SendAsync("SightingAdded", savedDto);
             return NoContent();
         }
     }

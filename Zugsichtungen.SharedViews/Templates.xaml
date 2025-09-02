@@ -21,7 +21,7 @@
         <dialogView:ShowSightingDetailsDialogView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type tabViewModel:SightingOverviewTabViewModel}" >
+    <DataTemplate DataType="{x:Type tabViewModel:SightingOverviewTabViewModelBase}" >
         <tabView:SightingOverviewTabView />
     </DataTemplate>
 

@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.SharedViews",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.ApplicationBase", "Zugsichtungen.Application\Zugsichtungen.ApplicationBase.csproj", "{51C87117-A77B-4BAD-82CC-D1224944797A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.SignalR", "Zugsichtungen.SignalR\Zugsichtungen.SignalR.csproj", "{25956B68-D1B1-4913-851B-077A32DF845B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Webclients", "Zugsichtungen.Webclients\Zugsichtungen.Webclients.csproj", "{12556E24-CA2C-4C6E-A9F5-239C355345C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +116,14 @@ Global
 		{51C87117-A77B-4BAD-82CC-D1224944797A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51C87117-A77B-4BAD-82CC-D1224944797A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51C87117-A77B-4BAD-82CC-D1224944797A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25956B68-D1B1-4913-851B-077A32DF845B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25956B68-D1B1-4913-851B-077A32DF845B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25956B68-D1B1-4913-851B-077A32DF845B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25956B68-D1B1-4913-851B-077A32DF845B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

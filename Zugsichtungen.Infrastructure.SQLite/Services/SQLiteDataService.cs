@@ -46,11 +46,13 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
 
         // ab hier sind die Methoden, die nach dem DDD implementiert sind
 
-        public override async Task AddAsync(Sighting sighting)
+        public override async Task<int> AddAsync(Sighting sighting)
         {
             var entity = MapToEntity(sighting);
             await this.context.Sichtungens.AddAsync(entity);
             await SaveChangesAsync();
+
+            return entity.Id;
         }
 
         private static Sichtungen MapToEntity(Sighting sighting)
@@ -136,6 +138,15 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         public override Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
         {
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
+        }
+
+        public async override Task<SightingViewEntry?> GetSightingViewAsync(int sightingId)
+        {
+            var item = await context.Sichtungsviews.FirstOrDefaultAsync(entity =>  entity.Id == sightingId);
+
+            if (item == null) return null;
+
+            return MapFromEntity(item);
         }
     }
 }

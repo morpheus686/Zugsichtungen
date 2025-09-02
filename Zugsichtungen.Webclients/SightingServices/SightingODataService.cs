@@ -1,11 +1,10 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models;
 
-namespace Zugsichtungen.Rest.Services
+namespace Zugsichtungen.Webclients.SightingService
 {
     public class SightingODataService : ISightingService
     {
@@ -22,7 +21,7 @@ namespace Zugsichtungen.Rest.Services
             this.httpClient = httpClient;
         }
 
-        public async Task AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
+        public async Task<int> AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
         {
             var sightingWithPictureDto = new SightingWithPictureDto()
             {
@@ -30,7 +29,9 @@ namespace Zugsichtungen.Rest.Services
                 Sighting = sighting
             };
 
-            await this.httpClient.PostAsJsonAsync("odata/SightingWithPicture", sightingWithPictureDto);
+            var response = await this.httpClient.PostAsJsonAsync("odata/SightingWithPicture", sightingWithPictureDto);
+            int statusCode = Convert.ToInt32(response.StatusCode);
+            return statusCode;
         }
 
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
@@ -57,6 +58,11 @@ namespace Zugsichtungen.Rest.Services
         }
 
         public Task UpdateContextes(List<Context> contextes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SightingViewEntryDto> GetSightingViewByIdAsync(int sightingId)
         {
             throw new NotImplementedException();
         }

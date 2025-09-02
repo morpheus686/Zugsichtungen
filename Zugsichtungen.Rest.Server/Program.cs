@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
 using Zugsichtungen.Abstractions.DTO;
@@ -12,6 +13,7 @@ using Zugsichtungen.Infrastructure.SQLite.Services;
 using Zugsichtungen.Infrastructure.SQLServer.Models;
 using Zugsichtungen.Infrastructure.SQLServer.Repositories;
 using Zugsichtungen.Infrastructure.SQLServer.Services;
+using Zugsichtungen.Rest.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +31,12 @@ UseSqlite(builder);
 
 builder.Services.AddScoped<ISightingService, SightingService>();
 builder.Services.AddAutoMapper(config => config.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
+AddSignalR(builder);
 
 var app = builder.Build();
+
+app.UseCors();
+app.MapHub<SightingHub>("/SignalRHub");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -49,6 +55,20 @@ app.MapControllers();
 MapMinimalApi(app);
 
 app.Run();
+
+static void AddSignalR(WebApplicationBuilder builder)
+{
+    builder.Services.AddSingleton<SightingHub>();
+
+    builder.Services.AddSignalR();
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod());
+    });
+}
 
 static void AddOdata(WebApplicationBuilder builder)
 {
@@ -73,9 +93,11 @@ static void MapMinimalApi(WebApplication app)
         return Results.Ok(entries);
     });
 
-    app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service) =>
+    app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service, SightingHub hub) =>
     {
-        await service.AddSightingAsync(sighting.Item1, sighting.Item2);
+        var newSightingId = await service.AddSightingAsync(sighting.Item1, sighting.Item2);
+        var savedDto = await service.GetSightingViewByIdAsync(newSightingId);
+        await hub.Clients.All.SendAsync("SightingAdded", savedDto);
     });
 
     app.MapGet("api/vehicleview", async (ISightingService service) =>

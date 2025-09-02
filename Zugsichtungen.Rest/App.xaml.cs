@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ApplicationBase;
-using Zugsichtungen.Rest.Services;
+using Zugsichtungen.Webclients.SightingService;
 
 namespace Zugsichtungen.Rest
 {

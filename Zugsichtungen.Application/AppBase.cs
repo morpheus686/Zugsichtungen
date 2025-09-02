@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Windows;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Abstractions.Strategies;
+using Zugsichtungen.ApplicationBase.Strategies;
 using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
@@ -29,7 +32,7 @@ namespace Zugsichtungen.ApplicationBase
 
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainWindowViewModel>();
-            services.AddSingleton<SightingOverviewTabViewModel>();
+            services.AddSingleton<SightingOverviewTabViewModelBase, SightingOverviewTabViewModel>();
             services.AddSingleton<GalleryTabViewModel>();
 
             services.AddSingleton<IDialogService, DialogService>();

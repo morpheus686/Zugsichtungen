@@ -25,10 +25,11 @@ namespace Zugsichtungen.Infrastructure.Services
         }
 
         public abstract Task<bool> DeleteSightingAsync(int sightingId);
-        public abstract Task AddAsync(Sighting sighting);
+        public abstract Task<int> AddAsync(Sighting sighting);
         public abstract Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
         public abstract Task<List<Context>> GetContextesAsync();
         public abstract Task<List<VehicleViewEntry>> GetVehiclesAsync();
         public abstract Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
+        public abstract Task<SightingViewEntry?> GetSightingViewAsync(int sightingId);
     }
 }

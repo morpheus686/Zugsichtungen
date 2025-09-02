@@ -34,11 +34,13 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             throw new NotImplementedException();
         }
 
-        public async override Task AddAsync(Domain.Models.Sighting sighting)
+        public async override Task<int> AddAsync(Domain.Models.Sighting sighting)
         {
             var entity = MapToEntity(sighting);
             await this.context.Sightings.AddAsync(entity);
             await SaveChangesAsync();
+
+            return entity.Id;
         }
 
         private static Models.Sighting MapToEntity(Domain.Models.Sighting sighting)
@@ -123,6 +125,15 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         public override Task<Domain.Models.SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
         {
             return this.imageRepository.GetImageBySightingIdAsync(sightingId);
+        }
+
+        public async override Task<SightingViewEntry?> GetSightingViewAsync(int sightingId)
+        {
+            var item = await context.SightingLists.FirstOrDefaultAsync(entity =>  entity.Id == sightingId);
+
+            if (item == null) return null;
+
+            return MapFromEntity(item);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Zugsichtungen.MAUI.Converter
 
             switch (value)
             {
-                case SightingOverviewTabViewModel overview:
+                case SightingOverviewTabViewModelBase overview:
                     view = OverviewTemplate.CreateContent() as BindableObject;
                     if (view != null) view.BindingContext = overview;
                     break;
