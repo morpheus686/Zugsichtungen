@@ -5,7 +5,10 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 {
     public class SightingOverviewTabViewModel : SightingOverviewTabViewModelBase
     {
-        public SightingOverviewTabViewModel(IDialogService dialogService, ILogger<SightingOverviewTabViewModelBase> logger, ISightingService sightingService) : base(dialogService, logger, sightingService)
+        public SightingOverviewTabViewModel(IDialogService dialogService,
+            ILogger<SightingOverviewTabViewModelBase> logger, 
+            ISightingService sightingService,
+            ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
         {
         }
 

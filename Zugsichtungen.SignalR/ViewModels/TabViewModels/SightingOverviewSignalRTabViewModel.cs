@@ -16,7 +16,7 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
             ILogger<SightingOverviewTabViewModelBase> logger,
             ISightingService sightingService,
             ISignalRClient signalRClient,
-            ISnackbarService snackbarService) : base(dialogService, logger, sightingService)
+            ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
         {
             signalRClient.On<SightingViewEntryDto>("SightingAdded", s => SightingAdded(s));
             this.snackbarService = snackbarService;

@@ -75,6 +75,7 @@ namespace Zugsichtungen
             }
 
             services.AddSingleton<ISightingService, SightingService>();
+            
         }
     }
 }

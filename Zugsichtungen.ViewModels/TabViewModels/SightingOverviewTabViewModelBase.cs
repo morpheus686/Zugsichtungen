@@ -19,6 +19,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         protected readonly IDialogService dialogService;
         private readonly ILogger<SightingOverviewTabViewModelBase> logger;
         private readonly ISightingService sightingService;
+        private readonly ISnackbarService snackbarService;
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
         public ObservableCollection<SightingGroupViewModel> GroupedSightings { get; }
@@ -30,7 +31,8 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
         public SightingOverviewTabViewModelBase(IDialogService dialogService,
             ILogger<SightingOverviewTabViewModelBase> logger,
-            ISightingService sightingService)
+            ISightingService sightingService,
+            ISnackbarService snackbarService)
         {
             this.Title = "Sichtungen";
 
@@ -43,6 +45,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             this.dialogService = dialogService;
             this.logger = logger;
             this.sightingService = sightingService;
+            this.snackbarService = snackbarService;
         }
 
         private bool CanExecuteShowSightingsDetails(object? arg) => this.SelectedItem != null && !this.IsBusy;
@@ -98,39 +101,49 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
             if ((DialogResult)result == DialogResult.Yes)
             {
-                await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
+                try
                 {
-                    updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
-
-                    var newSightingDto = new SightingDto
+                    await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
                     {
-                        VehicleId = addSichtungDialogViewModel.SelectedFahrzeug.Id,
-                        ContextId = addSichtungDialogViewModel.SelectedKontext.Id,
-                        Location = addSichtungDialogViewModel.Place,
-                        Date = DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
-                        Note = addSichtungDialogViewModel.Note
-                    };
+                        updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
 
-                    var filePath = addSichtungDialogViewModel.ImagePath;
-                    SightingPictureDto? sightingPictureDto = null;
-
-                    if (filePath != null)
-                    {
-                        var picture = await File.ReadAllBytesAsync(filePath);
-
-                        sightingPictureDto = new SightingPictureDto
+                        var newSightingDto = new SightingDto
                         {
-                            Filename = new FileInfo(filePath).Name,
-                            Image = picture,
-                            Thumbnail = ImageHelper.CreateThumbnail(picture)
+                            VehicleId = addSichtungDialogViewModel.SelectedFahrzeug.Id,
+                            ContextId = addSichtungDialogViewModel.SelectedKontext.Id,
+                            Location = addSichtungDialogViewModel.Place,
+                            Date = DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
+                            Note = addSichtungDialogViewModel.Note
                         };
-                    }
 
-                    await this.sightingService.AddSightingAsync(newSightingDto, sightingPictureDto);
+                        var filePath = addSichtungDialogViewModel.ImagePath;
+                        SightingPictureDto? sightingPictureDto = null;
 
-                });
+                        if (filePath != null)
+                        {
+                            var picture = await File.ReadAllBytesAsync(filePath);
 
-                await this.UpdateSightingsAsync();
+                            sightingPictureDto = new SightingPictureDto
+                            {
+                                Filename = new FileInfo(filePath).Name,
+                                Image = picture,
+                                Thumbnail = ImageHelper.CreateThumbnail(picture)
+                            };
+                        }
+
+                        await this.sightingService.AddSightingAsync(newSightingDto, sightingPictureDto);
+
+                        });
+
+                    await this.UpdateSightingsAsync();
+                    this.snackbarService.Show("Neue Sichtung wurde angelegt.");
+                }
+                catch (Exception ex)
+                {
+                    this.snackbarService.Show(ex.Message);
+                    throw;
+                }
+
             }
 
             IsBusy = false;
