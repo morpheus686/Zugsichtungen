@@ -9,38 +9,33 @@ using Zugsichtungen.ViewModels.TabViewModels;
 namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
 {
     public class SightingOverviewSignalRTabViewModel : SightingOverviewTabViewModelBase
-    {        public SightingOverviewSignalRTabViewModel(IDialogService dialogService,
-            ILogger<SightingOverviewTabViewModelBase> logger, 
+    {
+        public SightingOverviewSignalRTabViewModel(IDialogService dialogService,
+            ILogger<SightingOverviewTabViewModelBase> logger,
             ISightingService sightingService,
             ISignalRClient signalRClient) : base(dialogService, logger, sightingService)
         {
-            signalRClient.On<SightingViewEntryDto>("SightingAdded", s =>
+            signalRClient.On<SightingViewEntryDto>("SightingAdded", s => SightingAdded(s));            
+        }
+
+        private void SightingAdded(SightingViewEntryDto s)
+        {
+            App.Current.Dispatcher.Invoke(() =>
             {
-                App.Current.Dispatcher.Invoke(() =>
+                var itemViewModel = new SichtungItemViewModel(s, dialogService);
+                this.Sichtungsliste.Add(itemViewModel);
+
+                var group = this.GroupedSightings.FirstOrDefault(g => g.Date == s.Date);
+
+                if (group != null)
                 {
-                    this.Sichtungsliste.Add(new SichtungItemViewModel(s, dialogService));
-                    bool groupFound = false;
-
-                    foreach (var group in this.GroupedSightings)
-                    {
-                        if (group.Date == s.Date)
-                        {
-                            group.Add(new SichtungItemViewModel(s, dialogService));
-                            groupFound = true;
-                            break;
-                        }
-                    }
-
-                    if (!groupFound)
-                    {
-                        var newGroup = new SightingGroupViewModel(s.Date, Enumerable.Empty<SichtungItemViewModel>())
-                        {
-                            new SichtungItemViewModel(s, dialogService)
-                        };
-
-                        this.GroupedSightings.Add(newGroup);
-                    }
-                });
+                    group.Add(itemViewModel);
+                }
+                else
+                {
+                    var newGroup = new SightingGroupViewModel(s.Date, [itemViewModel]);
+                    this.GroupedSightings.Add(newGroup);
+                }
             });
         }
 

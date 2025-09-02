@@ -2,31 +2,34 @@
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Abstractions.Strategies;
+using Zugsichtungen.ViewModels;
 
 namespace Zugsichtungen.ApplicationBase.Strategies
 {
-    public class SightingReloadStrategy : IUpdateStrategy<SightingViewEntryDto>
+    public class SightingReloadStrategy : IUpdateStrategy<SichtungItemViewModel, SightingViewEntryDto>
     {
         private readonly ISightingService sightingService;
+        private readonly IDialogService dialogService;
 
-        public SightingReloadStrategy(ISightingService sightingService)
+        public SightingReloadStrategy(ISightingService sightingService, IDialogService dialogService)
         {
             this.sightingService = sightingService;
+            this.dialogService = dialogService;
         }
 
-        public Task Apply(ObservableCollection<SightingViewEntryDto> collection, SightingViewEntryDto item)
+        public void Apply(ObservableCollection<SichtungItemViewModel> collection, SightingViewEntryDto item)
         {
-            throw new NotImplementedException();
+            collection.Add(new SichtungItemViewModel(item, dialogService));
         }
 
-        public async Task Apply(ObservableCollection<SightingViewEntryDto> collection, Action<SightingViewEntryDto> addItem)
+        public async Task Apply(ObservableCollection<SichtungItemViewModel> collection)
         {
             collection.Clear();
-            var sichtungen = await this.sightingService.GetAllSightingViewEntriesAsync();
+            var viewEntries = await this.sightingService.GetAllSightingViewEntriesAsync();
 
-            foreach (var item in sichtungen)
+            foreach (var item in viewEntries)
             {
-                addItem(item);
+                collection.Add(new SichtungItemViewModel(item, dialogService));
             }
         }
     }

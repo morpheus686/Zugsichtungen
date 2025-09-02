@@ -2,9 +2,9 @@
 
 namespace Zugsichtungen.Abstractions.Strategies
 {
-    public interface IUpdateStrategy<T>
+    public interface IUpdateStrategy<TViewModel, TItem>
     {
-        Task Apply(ObservableCollection<T> collection, T item);
-        Task Apply(ObservableCollection<T> collection, Action<T> addItem);
+        void Apply(ObservableCollection<TViewModel> collection, TItem item);
+        Task Apply(ObservableCollection<TViewModel> collection);
     }
 }

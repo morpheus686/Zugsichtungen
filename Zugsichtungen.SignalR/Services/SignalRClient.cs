@@ -14,10 +14,5 @@ namespace Zugsichtungen.SignalR.Services
         {
             connection.On(methodName, handler);
         }
-
-        public Task SendAsync(string methodName, object arg)
-        {
-            return connection.SendAsync(methodName, arg);
-        }
     }
 }

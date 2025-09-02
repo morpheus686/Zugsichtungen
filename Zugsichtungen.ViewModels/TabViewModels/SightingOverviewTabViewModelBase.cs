@@ -16,7 +16,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
     public abstract class SightingOverviewTabViewModelBase : TabViewModelBase
     {
         private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
-        private readonly IDialogService dialogService;
+        protected readonly IDialogService dialogService;
         private readonly ILogger<SightingOverviewTabViewModelBase> logger;
         private readonly ISightingService sightingService;
 
@@ -76,14 +76,14 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             }
         }
 
-        private bool CanExecuteEditContextes(object? arg) => !this.IsBusy;
+        private bool CanExecuteEditContextes(object? arg) => !this.IsBusy && this.SelectedItem != null;
 
         private async Task ExecuteEditContextes()
         {
             await Task.CompletedTask;
         }
 
-        private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy;
+        private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy && this.SelectedItem != null;
 
         private async Task ExecuteAddSichtung()
         {
