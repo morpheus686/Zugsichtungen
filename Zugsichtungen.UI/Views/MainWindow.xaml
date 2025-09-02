@@ -124,5 +124,11 @@ FontSize="22">
             Identifier="ProgressDialogHost"
             x:Name="ProgressDialogHost"
             Panel.ZIndex="2"/>
+
+        <materialDesign:Snackbar x:Name="MainSnackbar"
+                                 VerticalAlignment="Bottom"
+                                 HorizontalAlignment="Center" 
+                                 Panel.ZIndex="999"
+                                 MessageQueue="{Binding SnackbarService.SnackbarMessageQueue}"/>
     </Grid>
 </Window>

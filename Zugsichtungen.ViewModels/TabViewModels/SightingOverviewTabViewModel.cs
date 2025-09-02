@@ -9,7 +9,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
         {
         }
 
-        protected override Task UpdateSightings()
+        protected override Task UpdateSightingsAsync()
         {
             return base.ReloadAllSightings();
         }

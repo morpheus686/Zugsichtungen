@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ApplicationBase;
 using Zugsichtungen.SignalR.Services;
@@ -13,7 +14,8 @@ namespace Zugsichtungen.SignalR
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : AppBase
-    {
+    {   
+
         protected override void ConfigureSpecificServices(IServiceCollection services)
         {
             services.AddSingleton(sp =>
@@ -46,6 +48,15 @@ namespace Zugsichtungen.SignalR
 
             services.AddSingleton<ISignalRClient, SignalRClient>();
             services.AddSingleton<SightingOverviewTabViewModelBase, SightingOverviewSignalRTabViewModel>();
+        }
+
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            var signalRClient = ServiceProvider.GetRequiredService<ISignalRClient>();
+            await signalRClient.StopAsync();
+            await signalRClient.DisposeAsync();
         }
     }
 }

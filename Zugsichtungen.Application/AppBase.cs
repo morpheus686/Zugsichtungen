@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Windows;
-using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Abstractions.Strategies;
-using Zugsichtungen.ApplicationBase.Strategies;
 using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
@@ -15,6 +12,7 @@ namespace Zugsichtungen.ApplicationBase
 {
     public abstract class AppBase : Application
     {
+        protected IServiceProvider ServiceProvider { private set; get; } = null!;
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -37,11 +35,12 @@ namespace Zugsichtungen.ApplicationBase
 
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<AddSichtungDialogViewModel>();
+            services.AddSingleton<ISnackbarService, SnackbarService>();
 
             ConfigureSpecificServices(services);
 
-            var serviceProvider = services.BuildServiceProvider();
-            var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+            this.ServiceProvider = services.BuildServiceProvider();
+            var mainWindow = this.ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }
 

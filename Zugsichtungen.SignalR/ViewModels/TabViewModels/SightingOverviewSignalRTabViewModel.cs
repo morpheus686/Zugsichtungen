@@ -10,12 +10,16 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
 {
     public class SightingOverviewSignalRTabViewModel : SightingOverviewTabViewModelBase
     {
+        private readonly ISnackbarService snackbarService;
+
         public SightingOverviewSignalRTabViewModel(IDialogService dialogService,
             ILogger<SightingOverviewTabViewModelBase> logger,
             ISightingService sightingService,
-            ISignalRClient signalRClient) : base(dialogService, logger, sightingService)
+            ISignalRClient signalRClient,
+            ISnackbarService snackbarService) : base(dialogService, logger, sightingService)
         {
-            signalRClient.On<SightingViewEntryDto>("SightingAdded", s => SightingAdded(s));            
+            signalRClient.On<SightingViewEntryDto>("SightingAdded", s => SightingAdded(s));
+            this.snackbarService = snackbarService;
         }
 
         private void SightingAdded(SightingViewEntryDto s)
@@ -36,10 +40,12 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
                     var newGroup = new SightingGroupViewModel(s.Date, [itemViewModel]);
                     this.GroupedSightings.Add(newGroup);
                 }
+
+                snackbarService.Show($"Neue Sichtung vom {s.Date} aus {s.Location} erhalten.");
             });
         }
 
-        protected override Task UpdateSightings()
+        protected override Task UpdateSightingsAsync()
         {
             return Task.CompletedTask;
         }

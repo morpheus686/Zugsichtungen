@@ -83,7 +83,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             await Task.CompletedTask;
         }
 
-        private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy && this.SelectedItem != null;
+        private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy;
 
         private async Task ExecuteAddSichtung()
         {
@@ -130,7 +130,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
                 });
 
-                await this.UpdateSightings();
+                await this.UpdateSightingsAsync();
             }
 
             IsBusy = false;
@@ -159,6 +159,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             }
         }
 
-        protected abstract Task UpdateSightings();
+        protected abstract Task UpdateSightingsAsync();
     }
 }

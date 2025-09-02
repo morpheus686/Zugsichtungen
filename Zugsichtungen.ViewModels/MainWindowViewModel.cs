@@ -19,8 +19,9 @@ namespace Zugsichtungen.ViewModels
         public SichtungItemViewModel? SelectedItem { get; set; }
         public SightingOverviewTabViewModelBase SightingOverviewTabViewModel { get; }
         public GalleryTabViewModel GalleryTabViewModel { get; }
+        public ISnackbarService SnackbarService { get; }
 
-        public string CurrentTabTitle => SelectedTab.Title;
+        public string CurrentTabTitle => SelectedTab.Title;        
 
         public bool IsDrawerOpen
         {
@@ -47,7 +48,8 @@ namespace Zugsichtungen.ViewModels
 
         public MainWindowViewModel(SightingOverviewTabViewModelBase sightingOverviewTabViewModel, 
             GalleryTabViewModel galleryTabViewModel,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            ISnackbarService snackbarService)
         {
             this.SelectTabCommand = new RelayCommand<TabViewModelBase>(ExecuteSelectTabCommand);
             this.ToggleDrawerCommand = new RelayCommand(() => IsDrawerOpen = !IsDrawerOpen);
@@ -55,6 +57,7 @@ namespace Zugsichtungen.ViewModels
 
             this.GalleryTabViewModel = galleryTabViewModel;
             this.dialogService = dialogService;
+            SnackbarService = snackbarService;
             this.SightingOverviewTabViewModel = sightingOverviewTabViewModel;
             this.selectedTab = SightingOverviewTabViewModel;
         }
