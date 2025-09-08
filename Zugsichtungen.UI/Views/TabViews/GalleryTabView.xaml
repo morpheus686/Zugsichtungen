@@ -6,8 +6,196 @@
              xmlns:local="clr-namespace:Zugsichtungen.UI.Views.TabViews"
              xmlns:customControls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Beige">
-            
+                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="800" d:DesignWidth="1600">
+    <customControls:TabView.Resources>
+        <DataTemplate x:Key="GalleryItemTemplate">
+            <materialDesign:Card Margin="2"
+                                 Background="Yellow">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="400" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Column="0"
+                           Grid.RowSpan="4"
+                           Width="300"
+                           Height="200"/>
+
+                    <Button Grid.Column="0"
+                            Grid.RowSpan="4"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Content="{materialDesign:PackIcon Kind=ArrowExpand}"
+                            Style="{StaticResource MaterialDesignIconButton}"/>
+
+                    <TextBlock Text="245 009" Grid.Column="1" 
+                               FontSize="30"/>
+                    <TextBlock Text="04.09.2025" Grid.Column="1" Grid.Row="1"
+                               FontSize="30"/>
+                    <TextBlock Text="Geisenhausen" Grid.Column="1" Grid.Row="2"
+                               FontSize="30"/>
+                </Grid>
+            </materialDesign:Card>
+        </DataTemplate>
+    </customControls:TabView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="1" ItemTemplate="{StaticResource GalleryItemTemplate}" Background="Gray">
+            <ListBox.Items>
+                <materialDesign:Card Margin="2"
+                                 Background="Yellow">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="400" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Column="0"
+                           Grid.RowSpan="4"
+                           Width="300"
+                           Height="200"/>
+
+                        <Button Grid.Column="0"
+                                Grid.Row="0"
+                            Content="{materialDesign:PackIcon Kind=ArrowExpand}"
+                                Style="{StaticResource MaterialDesignIconForegroundButton}"/>
+
+                        <TextBlock Text="245 009" Grid.Column="1" />
+                        <TextBlock Text="04.09.2025" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock Text="Geisenhausen" Grid.Column="1" Grid.Row="2" />
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card Margin="2"
+                                 Background="Yellow">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="400" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Column="0"
+                           Grid.RowSpan="4"
+                           Width="300"
+                           Height="200"/>
+
+                        <Button Grid.Column="0"
+                            Content="{materialDesign:PackIcon Kind=ArrowExpand}" />
+
+                        <TextBlock Text="245 009" Grid.Column="1" />
+                        <TextBlock Text="04.09.2025" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock Text="Geisenhausen" Grid.Column="1" Grid.Row="2" />
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card Margin="2"
+                                 Background="Yellow">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="400" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Column="0"
+                           Grid.RowSpan="4"
+                           Width="300"
+                           Height="200"/>
+
+                        <Button Grid.Column="0"
+                            Content="{materialDesign:PackIcon Kind=ArrowExpand}" />
+
+                        <TextBlock Text="245 009" Grid.Column="1" />
+                        <TextBlock Text="04.09.2025" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock Text="Geisenhausen" Grid.Column="1" Grid.Row="2" />
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card Margin="2"
+                                 Background="Yellow">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="400" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Column="0"
+                           Grid.RowSpan="4"
+                           Width="300"
+                           Height="200"/>
+
+                        <Button Grid.Column="0"
+                            Content="{materialDesign:PackIcon Kind=ArrowExpand}" />
+
+                        <TextBlock Text="245 009" Grid.Column="1" />
+                        <TextBlock Text="04.09.2025" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock Text="Geisenhausen" Grid.Column="1" Grid.Row="2" />
+                    </Grid>
+                </materialDesign:Card>
+            </ListBox.Items>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True"
+                               HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+
+        <Button Content="{materialDesign:PackIcon Kind=NavigateBefore}" Grid.Column="0"
+                Style="{StaticResource MaterialDesignIconForegroundButton}"/>
+        <Button Content="{materialDesign:PackIcon Kind=NavigateNext}" Grid.Column="2"
+                Style="{StaticResource MaterialDesignIconForegroundButton}"/>
+        <Button HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                Foreground="White"
+                Content="{materialDesign:PackIcon Kind=Add,Size=30}"
+                Margin="30"
+                Command="{Binding AddSichtungCommand, Mode=OneTime}"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"/>
+
+        <materialDesign:DecimalUpDown Value="10"/>
     </Grid>
 </customControls:TabView>

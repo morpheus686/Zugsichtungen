@@ -9,7 +9,7 @@ using Zugsichtungen.ViewModels.DialogViewModels.ItemViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels
 {
-    public class AddSichtungDialogViewModel : DialogViewModelBase, INotifyDataErrorInfo
+    public class AddSichtungDialogViewModel : DialogViewModelBase
     {
         public AddSichtungDialogViewModel(ISightingService sightingService, IDialogService dialogService)
         {
@@ -18,9 +18,8 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             this.dialogService = dialogService;
             this.VehicleList = [];
             this.ContextList = [];
-            _errors = new Dictionary<string, List<string>>();
 
-            this.AddImageCommand = new AsyncRelayCommand(ExececuteAddImageCommand);
+            this.AddImageCommand = new AsyncRelayCommand(ExecuteAddImageCommand);
             this.RemoveImageCommand = new RelayCommand(ExecuteRemoveImageCommand);
         }
 
@@ -31,9 +30,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private ContextItemViewModel selectedKontext = null!;
         private readonly ISightingService sightingService;
         private readonly IDialogService dialogService;
-        private readonly Dictionary<string, List<string>> _errors;
-
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
         public VehicleViewEntryItemViewModel SelectedFahrzeug
         {
@@ -98,7 +94,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         public ICommand RemoveImageCommand { get; }
 
         public bool PlaceIsInvalid { get; private set; }
-        public bool HasErrors => _errors.Any();
 
         protected override async Task InitializeInternalAsync()
         {
@@ -137,7 +132,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
-        private async Task ExececuteAddImageCommand()
+        private async Task ExecuteAddImageCommand()
         {
             var result = await this.dialogService.ShowOpenFileDialogAsync();
 
@@ -154,21 +149,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             this.ImagePath = null;
         }
 
-        public IEnumerable GetErrors(string? propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return _errors.SelectMany(err => err.Value);
-            }
-
-            if (_errors.ContainsKey(propertyName))
-            {
-                return _errors[propertyName];
-            }
-
-            return Enumerable.Empty<string>();
-        }
-
         private void ValidatePlace()
         {
             const string propertyName = nameof(Place);
@@ -181,34 +161,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             {
                 ClearErrors(propertyName);
             }
-        }
-
-        private void AddError(string propertyName, string errorMessage)
-        {
-            if (!_errors.ContainsKey(propertyName))
-            {
-                _errors[propertyName] = new List<string>();
-            }
-
-            if (!_errors[propertyName].Contains(errorMessage))
-            {
-                _errors[propertyName].Add(errorMessage);
-                OnErrorsChanged(propertyName);
-            }
-        }
-
-        private void ClearErrors(string propertyName)
-        {
-            if (_errors.ContainsKey(propertyName))
-            {
-                _errors.Remove(propertyName);
-                OnErrorsChanged(propertyName);
-            }
-        }
-
-        private void OnErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
     }
 }
