@@ -54,7 +54,7 @@ app.MapControllers();
 
 MapMinimalApi(app);
 
-app.Run();
+app.Run("http://0.0.0.0:7046");
 
 static void AddSignalR(WebApplicationBuilder builder)
 {
