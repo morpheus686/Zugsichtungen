@@ -1,32 +1,38 @@
+name: Build & Docker Server
 
-name: .NET Build
-
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
-  build:
+  build-server:
     runs-on: windows-2022
 
     steps:
-    - name: Display Runner Info
-      run: systeminfo
+      # Checkout
+      - uses: actions/checkout@v3
 
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      # Setup .NET
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      # Restore Server-Projekt
+      - name: Restore NuGet Packages
+        run: dotnet restore Zugsichtungen.Rest.Server/Zugsichtungen.Rest.Server.csproj
 
-    - name: Restore NuGet Packages
-      run: dotnet restore Zugsichtungen.sln
+      # Publish Server
+      - name: Publish Server Project
+        run: dotnet publish Zugsichtungen.Rest.Server/Zugsichtungen.Rest.Server.csproj -c Release -r win-x64 --self-contained=false -o /app
 
-    - name: Build and publish project
-      run: dotnet publish Zugsichtungen.sln -c Release -r win-x64 --self-contained=false -o /app
+      # Docker Image bauen
+      - name: Build Docker Image
+        run: docker build -t morpheus061986/zugsichtungen:latest .
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ZugsichtungenBuild
-        path: /app
+      # Docker Login
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USER }}" --password-stdin
+
+      # Docker Image pushen
+      - name: Push Docker Image
+        run: docker push morpheus061986/zugsichtungen:latest
