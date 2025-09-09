@@ -19,5 +19,8 @@ WORKDIR /app
 # Kopiere veröffentlichten Server in Runtime-Image
 COPY --from=build /app .
 
+# Expose the port the server listens on
+EXPOSE 7046
+
 # EntryPoint: Server starten
 ENTRYPOINT ["dotnet", "Zugsichtungen.Rest.Server.dll"]
