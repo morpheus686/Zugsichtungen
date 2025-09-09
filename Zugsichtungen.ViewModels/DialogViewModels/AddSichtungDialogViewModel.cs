@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Foundation.ViewModel;
