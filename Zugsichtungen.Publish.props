@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<ItemGroup>
+		<None Update="zugbeobachtungen.db" CopyToOutputDirectory="Never" Condition="'$(MSBuildProjectName)' != 'Zugsichtungen.Infrastructure.SQLite'" />
+	</ItemGroup>
+</Project>
