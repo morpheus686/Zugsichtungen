@@ -15,13 +15,12 @@ namespace Zugsichtungen.SignalR
     /// </summary>
     public partial class App : AppBase
     {   
-
         protected override void ConfigureSpecificServices(IServiceCollection services)
         {
             services.AddSingleton(sp =>
             {
                 var connection = new HubConnectionBuilder()
-                    .WithUrl("https://localhost:7046/SignalRHub") 
+                    .WithUrl("http://localhost:7046/SignalRHub") 
                     .WithAutomaticReconnect()                          
                     .Build();
 
@@ -35,14 +34,14 @@ namespace Zugsichtungen.SignalR
             {
                 services.AddHttpClient<ISightingService, SightingODataService>(client =>
                 {
-                    client.BaseAddress = new Uri("https://localhost:7046/");
+                    client.BaseAddress = new Uri("http://localhost:7046/");
                 });
             }
             else
             {
                 services.AddHttpClient<ISightingService, SightingApiService>(client =>
                 {
-                    client.BaseAddress = new Uri("https://localhost:7046/");
+                    client.BaseAddress = new Uri("http://localhost:7046/");
                 });
             }
 

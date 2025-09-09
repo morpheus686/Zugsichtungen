@@ -18,14 +18,14 @@ namespace Zugsichtungen.Rest
             {
                 services.AddHttpClient<ISightingService, SightingODataService>(client =>
                 {
-                    client.BaseAddress = new Uri("https://localhost:7046/");
+                    client.BaseAddress = new Uri("http://localhost:7046/");
                 });
             }
             else
             {
                 services.AddHttpClient<ISightingService, SightingApiService>(client =>
                 {
-                    client.BaseAddress = new Uri("https://localhost:7046/");
+                    client.BaseAddress = new Uri("http://localhost:7046/");
                 });
             }
         }
