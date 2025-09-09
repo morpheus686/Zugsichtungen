@@ -24,8 +24,8 @@ namespace Zugsichtungen.SignalR
                     .WithUrl("https://localhost:7046/SignalRHub") 
                     .WithAutomaticReconnect()                          
                     .Build();
-                connection.StartAsync().ConfigureAwait(false);
 
+                connection.StartAsync().ConfigureAwait(false);
                 return connection;
             });
 
