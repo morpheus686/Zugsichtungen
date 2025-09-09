@@ -1,0 +1,38 @@
+name: Build & Docker Server
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-server:
+    runs-on: windows-2022
+
+    steps:
+      # Checkout
+      - uses: actions/checkout@v3
+
+      # Setup .NET
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      # Restore Server-Projekt
+      - name: Restore NuGet Packages
+        run: dotnet restore Zugsichtungen.Rest.Server/Zugsichtungen.Rest.Server.csproj
+
+      # Publish Server
+      - name: Publish Server Project
+        run: dotnet publish Zugsichtungen.Rest.Server/Zugsichtungen.Rest.Server.csproj -c Release -r win-x64 --self-contained=false -o /app
+
+      # Docker Image bauen
+      - name: Build Docker Image
+        run: docker build -t morpheus061986/zugsichtungen:latest .
+
+      # Docker Login
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USER }}" --password-stdin
+
+      # Docker Image pushen
+      - name: Push Docker Image
+        run: docker push morpheus061986/zugsichtungen:latest
