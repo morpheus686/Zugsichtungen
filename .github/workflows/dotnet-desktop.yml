@@ -1,0 +1,32 @@
+
+name: .NET Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: Display Runner Info
+      run: systeminfo
+
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore NuGet Packages
+      run: dotnet restore Zugsichtungen.sln
+
+    - name: Build and publish project
+      run: dotnet publish Zugsichtungen.sln -c Release -r win-x64 --self-contained=false -o /app
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ZugsichtungenBuild
+        path: /app
