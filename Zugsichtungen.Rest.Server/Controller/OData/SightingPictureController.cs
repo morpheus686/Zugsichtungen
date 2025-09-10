@@ -7,7 +7,6 @@ using Zugsichtungen.Abstractions.Services;
 
 namespace Zugsichtungen.Rest.Server.Controller.OData
 {
-    [Route("odata/[controller]")]
     public class SightingPictureController : ODataController
     {
         private readonly ISightingService service;

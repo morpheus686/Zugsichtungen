@@ -6,13 +6,12 @@ using Zugsichtungen.Rest.Server.Hubs;
 
 namespace Zugsichtungen.Rest.Server.Controller.OData
 {
-    [Route("odata/[controller]")]
     public class SightingWithPictureController : ODataController
     {
         private readonly ISightingService sightingService;
-        private readonly SightingHub sightingHub;
+        private readonly IHubContext<SightingHub> sightingHub;
 
-        public SightingWithPictureController(ISightingService sightingService, SightingHub sightingHub)
+        public SightingWithPictureController(ISightingService sightingService, IHubContext<SightingHub> sightingHub)
         {
             this.sightingService = sightingService;
             this.sightingHub = sightingHub;

@@ -17,7 +17,7 @@ using Zugsichtungen.Rest.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-AddOdata(builder);
+AddOData(builder);
 
 // Add services to the container.
 
@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseRouting();
 
 //app.UseAuthorization();
@@ -70,7 +70,7 @@ static void AddSignalR(WebApplicationBuilder builder)
     });
 }
 
-static void AddOdata(WebApplicationBuilder builder)
+static void AddOData(WebApplicationBuilder builder)
 {
     builder.Services.AddOData();
     var modelBuilder = new ODataConventionModelBuilder();
@@ -93,7 +93,7 @@ static void MapMinimalApi(WebApplication app)
         return Results.Ok(entries);
     });
 
-    app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service, SightingHub hub) =>
+    app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service, IHubContext<SightingHub> hub) =>
     {
         var newSightingId = await service.AddSightingAsync(sighting.Item1, sighting.Item2);
         var savedDto = await service.GetSightingViewByIdAsync(newSightingId);
@@ -137,19 +137,19 @@ static void UseSqlite(WebApplicationBuilder builder)
     builder.Services.AddScoped<IDataService, SQLiteDataService>();
 }
 
-static void UseSqlServer(WebApplicationBuilder builder)
-{
-    var sqlserverConnectionstring = "Data Source=Christopher-PC\\SQLEXPRESS01;Initial Catalog=Trainspotting;Integrated Security=True;Trust Server Certificate=True";
+//static void UseSqlServer(WebApplicationBuilder builder)
+//{
+//    var sqlserverConnectionstring = "Data Source=Christopher-PC\\SQLEXPRESS01;Initial Catalog=Trainspotting;Integrated Security=True;Trust Server Certificate=True";
 
-    builder.Services.AddDbContext<TrainspottingContext>(options =>
-    {
-        options.UseSqlServer(sqlserverConnectionstring);
-    });
+//    builder.Services.AddDbContext<TrainspottingContext>(options =>
+//    {
+//        options.UseSqlServer(sqlserverConnectionstring);
+//    });
 
-    builder.Services.AddScoped<IImageRepository, SQLServerImageRepository>(sp =>
-    {
-        return new SQLServerImageRepository(sqlserverConnectionstring);
-    });
+//    builder.Services.AddScoped<IImageRepository, SQLServerImageRepository>(sp =>
+//    {
+//        return new SQLServerImageRepository(sqlserverConnectionstring);
+//    });
 
-    builder.Services.AddScoped<IDataService, SqlServerDataService>();
-}
+//    builder.Services.AddScoped<IDataService, SqlServerDataService>();
+//}
