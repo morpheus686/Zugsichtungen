@@ -19,7 +19,7 @@ namespace Zugsichtungen.Rest.Server.Controller.OData
         [EnableQuery]
         public async Task<ActionResult<SightingPictureDto>> Get([FromODataUri] int key) 
         {
-            var picture = await service.GetPictureBySightingIdAsync(key);
+            var picture = await service.GetSightingPictureBySightingIdAsync(key);
             return picture is not null ? Ok(picture) : NotFound();
         }
     }

@@ -17,7 +17,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
 
         public SqlServerDataService(TrainspottingContext context,
             ILogger<SqlServerDataService> logger,
-            IImageRepository imageRepository) : base(context)
+            IImageRepository imageRepository) : base(context, logger)
         {
             this.context = context;
             this.logger = logger;
@@ -36,11 +36,16 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
 
         public async override Task<int> AddAsync(Domain.Models.Sighting sighting)
         {
-            var entity = MapToEntity(sighting);
-            await this.context.Sightings.AddAsync(entity);
-            await SaveChangesAsync();
+            var id = await AddWithLoggingAsync<Models.Sighting?>(async () =>
+            {
+                var entity = MapToEntity(sighting);
+                await this.context.Sightings.AddAsync(entity);
+                await SaveChangesAsync();
 
-            return entity.Id;
+                return entity.Id;
+            });
+
+            return id;
         }
 
         private static Models.Sighting MapToEntity(Domain.Models.Sighting sighting)
@@ -70,15 +75,20 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
 
         public async override Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync()
         {
-            var sichtungen = await context.SightingLists.ToListAsync();
-            var sightingList = new List<SightingViewEntry>();
-
-            foreach (var item in sichtungen)
+            var sightingViewEntryList = await GetAllWithLoggingAsync<SightingList, List<SightingViewEntry>>(async () =>
             {
-                sightingList.Add(MapFromEntity(item));
-            }
+                var sichtungen = await context.SightingLists.ToListAsync();
+                var sightingList = new List<SightingViewEntry>();
 
-            return sightingList;
+                foreach (var item in sichtungen)
+                {
+                    sightingList.Add(MapFromEntity(item));
+                }
+
+                return sightingList;
+            });
+
+            return sightingViewEntryList;
         }
 
         private static SightingViewEntry MapFromEntity(SightingList entity)
@@ -86,7 +96,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return SightingViewEntry.Create(entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, null, entity.Comment, null);
         }
 
-        public async override Task<List<Domain.Models.Context>> GetContextesAsync()
+        public async override Task<List<Domain.Models.Context>> GetContextsAsync()
         {
             var contextEntities = await context.Contexts.ToListAsync();
             var contextes = new List<Domain.Models.Context>();
@@ -104,17 +114,22 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return Domain.Models.Context.Create(entity.Id, entity.Description);
         }
 
-        public async override Task<List<VehicleViewEntry>> GetVehiclesAsync()
+        public async override Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync()
         {
-            var vehicleEntities = await context.Vehiclelists.ToListAsync();
-            var vehicles = new List<VehicleViewEntry>();
-
-            foreach (var entity in vehicleEntities)
+            var vehicleViewEntryList = await GetAllWithLoggingAsync<Vehiclelist, List<VehicleViewEntry>>(async () =>
             {
-                vehicles.Add(MapFromEntity(entity));
-            }
+                var vehicleEntities = await context.Vehiclelists.ToListAsync();
+                var vehicles = new List<VehicleViewEntry>();
 
-            return vehicles;
+                foreach (var entity in vehicleEntities)
+                {
+                    vehicles.Add(MapFromEntity(entity));
+                }
+
+                return vehicles;
+            });
+
+            return vehicleViewEntryList;
         }
 
         private static VehicleViewEntry MapFromEntity(Vehiclelist entity)
@@ -122,18 +137,28 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return VehicleViewEntry.Create(entity.Id, entity.VehicleDesignation, entity.SeriesId);
         }
 
-        public override Task<Domain.Models.SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
+        public override async Task<Domain.Models.SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
         {
-            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
+            var sightingPicture = await GetWithLoggingAsync<Models.SightingPicture, Domain.Models.SightingPicture?>(
+                sightingId,
+                this.imageRepository.GetImageBySightingIdAsync);
+            return sightingPicture;
         }
 
-        public async override Task<SightingViewEntry?> GetSightingViewAsync(int sightingId)
+        public async override Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId)
         {
-            var item = await context.SightingLists.FirstOrDefaultAsync(entity =>  entity.Id == sightingId);
+            var sightingViewEntry = await GetWithLoggingAsync<SightingList, SightingViewEntry?>(
+                sightingId,
+                async id =>
+                {
+                    var item = await context.SightingLists.FirstOrDefaultAsync(entity => entity.Id == sightingId);
 
-            if (item == null) return null;
+                    if (item == null) return null;
 
-            return MapFromEntity(item);
+                    return MapFromEntity(item);
+                });
+
+            return sightingViewEntry;
         }
     }
 }

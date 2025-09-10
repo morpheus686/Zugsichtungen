@@ -13,9 +13,9 @@ namespace Zugsichtungen.Abstractions.Services
         // Ab hier DDD-Methoden
         Task<int> AddAsync(Sighting sighting);
         Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
-        Task<List<Context>> GetContextesAsync();
-        Task<List<VehicleViewEntry>> GetVehiclesAsync();
+        Task<List<Context>> GetContextsAsync();
+        Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync();
         Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
-        Task<SightingViewEntry?> GetSightingViewAsync(int sightingId);
+        Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId);
     }
 }

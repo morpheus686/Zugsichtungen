@@ -8,9 +8,9 @@ namespace Zugsichtungen.Abstractions.Services
         Task UpdateContextes(List<Context> contextes);        
         Task<int> AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture);
         Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync();
-        Task<List<ContextDto>> GetContextesAsync();
+        Task<List<ContextDto>> GetContextsAsync();
         Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync();
-        Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId);
-        Task<SightingViewEntryDto> GetSightingViewByIdAsync(int sightingId);
+        Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
+        Task<SightingViewEntryDto> GetSightingViewEntryBySightingIdAsync(int sightingId);
     }
 }

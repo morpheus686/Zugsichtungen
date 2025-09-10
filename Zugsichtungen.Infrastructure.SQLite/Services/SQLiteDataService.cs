@@ -12,15 +12,13 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
     public class SQLiteDataService : DataServiceBase
     {
         private readonly ZugbeobachtungenContext context;
-        private readonly ILogger<SQLiteDataService> logger;
         private readonly IImageRepository imageRepository;
 
         public SQLiteDataService(ZugbeobachtungenContext context,
             ILogger<SQLiteDataService> logger,
-            IImageRepository imageRepository) : base(context)
+            IImageRepository imageRepository) : base(context, logger)
         {
             this.context = context;
-            this.logger = logger;
             this.imageRepository = imageRepository;
         }
 
@@ -31,28 +29,32 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
 
         public override async Task<bool> DeleteSightingAsync(int sightingId)
         {
-            var sichtung = await this.context.Sichtungens
+            var Sighting = await this.context.Sichtungens
                 .Include(s => s.SichtungBilds)
                 .FirstOrDefaultAsync(s => s.Id == sightingId);
 
-            if (sichtung == null)
+            if (Sighting == null)
             {
                 return false;
             }
 
-            this.context.Remove(sichtung);
+            this.context.Remove(Sighting);
             return true;
         }
 
         // ab hier sind die Methoden, die nach dem DDD implementiert sind
 
-        public override async Task<int> AddAsync(Sighting sighting)
+        public override Task<int> AddAsync(Sighting sighting)
         {
-            var entity = MapToEntity(sighting);
-            await this.context.Sichtungens.AddAsync(entity);
-            await SaveChangesAsync();
+            return AddWithLoggingAsync<Sichtungen>(
+                async () =>
+                {
+                    var entity = MapToEntity(sighting);
+                    await this.context.Sichtungens.AddAsync(entity);
+                    await SaveChangesAsync();
 
-            return entity.Id;
+                    return entity.Id;
+                });
         }
 
         private static Sichtungen MapToEntity(Sighting sighting)
@@ -83,33 +85,44 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
 
         public async override Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync()
         {
-            var sichtungen = await context.Sichtungsviews.ToListAsync();
-            var sightingList = new List<SightingViewEntry>();
-
-            foreach (var item in sichtungen)
+            var sightingViewEntryList = await GetAllWithLoggingAsync<Sichtungsview, List<SightingViewEntry>>(async () =>
             {
-                sightingList.Add(MapFromEntity(item));
-            }
+                var fetchedSightings = await context.Sichtungsviews.ToListAsync();
+                var sightingViewEntries = new List<SightingViewEntry>();
 
-            return sightingList;
+                foreach (var item in fetchedSightings)
+                {
+                    sightingViewEntries.Add(MapFromEntity(item));
+                }
+
+                return sightingViewEntries;
+            });
+
+            return sightingViewEntryList;
         }
+
 
         private static SightingViewEntry MapFromEntity(Sichtungsview entity)
         {
             return SightingViewEntry.Create(entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, null);
         }
 
-        public async override Task<List<Context>> GetContextesAsync()
+        public async override Task<List<Context>> GetContextsAsync()
         {
-            var contextEntities = await context.Kontextes.ToListAsync();
-            var contextes = new List<Context>();
-
-            foreach (var entity in contextEntities)
+            var contextList = await GetAllWithLoggingAsync<Kontexte, List<Context>>(async () =>
             {
-                contextes.Add(MapFromEntity(entity));
-            }
+                var contextEntities = await context.Kontextes.ToListAsync();
+                var contexts = new List<Context>();
 
-            return contextes;
+                foreach (var entity in contextEntities)
+                {
+                    contexts.Add(MapFromEntity(entity));
+                }
+
+                return contexts;
+            });
+
+            return contextList;
         }
 
         private static Context MapFromEntity(Kontexte entity)
@@ -117,17 +130,22 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return Context.Create(entity.Id, entity.Name);
         }
 
-        public async override Task<List<VehicleViewEntry>> GetVehiclesAsync()
+        public async override Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync()
         {
-            var vehicleEntities = await context.Fahrzeuglistes.ToListAsync();
-            var vehicles = new List<VehicleViewEntry>();
-
-            foreach (var entity in vehicleEntities)
+            var vehicleViewEntryList = await GetAllWithLoggingAsync<Fahrzeugliste, List<VehicleViewEntry>>(async () =>
             {
-                vehicles.Add(MapFromEntity(entity));
-            }
+                var vehicleEntities = await context.Fahrzeuglistes.ToListAsync();
+                var vehicles = new List<VehicleViewEntry>();
 
-            return vehicles;
+                foreach (var entity in vehicleEntities)
+                {
+                    vehicles.Add(MapFromEntity(entity));
+                }
+
+                return vehicles;
+            });
+
+            return vehicleViewEntryList;
         }
 
         private static VehicleViewEntry MapFromEntity(Fahrzeugliste entity)
@@ -135,18 +153,29 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             return VehicleViewEntry.Create(entity.Id, entity.Fahrzeug, entity.BaureiheId);
         }
 
-        public override Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
+        public override async Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
         {
-            return this.imageRepository.GetImageBySightingIdAsync(sightingId);
+            var domain = await GetWithLoggingAsync<SichtungBild, SightingPicture?>(
+                sightingId,
+                this.imageRepository.GetImageBySightingIdAsync
+            );
+
+            return domain;
         }
 
-        public async override Task<SightingViewEntry?> GetSightingViewAsync(int sightingId)
+        public async override Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId)
         {
-            var item = await context.Sichtungsviews.FirstOrDefaultAsync(entity =>  entity.Id == sightingId);
+            var domain = await GetWithLoggingAsync<Sichtungsview, SightingViewEntry?>(sightingId,
+                async id =>
+                {
+                    var item = await context.Sichtungsviews.FirstOrDefaultAsync(entity => entity.Id == id);
 
-            if (item == null) return null;
+                    if (item == null) return null;
 
-            return MapFromEntity(item);
+                    return MapFromEntity(item);
+                });
+
+            return domain;
         }
     }
 }

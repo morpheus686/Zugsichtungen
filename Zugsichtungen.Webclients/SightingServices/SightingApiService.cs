@@ -27,18 +27,18 @@ namespace Zugsichtungen.Webclients.SightingService
             return result ?? new List<SightingViewEntryDto>();
         }
 
-        public async Task<List<ContextDto>> GetContextesAsync()
+        public async Task<List<ContextDto>> GetContextsAsync()
         {
             var result = await this.httpClient.GetFromJsonAsync<List<ContextDto>>("api/contexts");
             return result ?? new List<ContextDto>();
         }
 
-        public async Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId)
+        public async Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId)
         {
             return await this.httpClient.GetFromJsonAsync<SightingPictureDto>($"api/sightingpicture?sightingId={sightingId}");
         }
 
-        public Task<SightingViewEntryDto> GetSightingViewByIdAsync(int sightingId)
+        public Task<SightingViewEntryDto> GetSightingViewEntryBySightingIdAsync(int sightingId)
         {
             throw new NotImplementedException();
         }

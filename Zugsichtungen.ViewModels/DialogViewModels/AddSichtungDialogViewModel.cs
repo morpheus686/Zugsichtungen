@@ -102,7 +102,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 item => new VehicleViewEntryItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
-                this.sightingService.GetContextesAsync,
+                this.sightingService.GetContextsAsync,
                 this.ContextList,
                 item => this.SelectedKontext = item,
                 item => new ContextItemViewModel(item));

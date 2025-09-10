@@ -40,13 +40,13 @@ namespace Zugsichtungen.Webclients.SightingService
             return response?.Value ?? new List<SightingViewEntryDto>();
         }
 
-        public async Task<List<ContextDto>> GetContextesAsync()
+        public async Task<List<ContextDto>> GetContextsAsync()
         {
             var response = await httpClient.GetFromJsonAsync<ODataResponse<ContextDto>>("odata/Context");
             return response?.Value ?? new List<ContextDto>();
         }
 
-        public async Task<SightingPictureDto?> GetPictureBySightingIdAsync(int sightingId)
+        public async Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId)
         {
             return await httpClient.GetFromJsonAsync<SightingPictureDto>($"odata/SightingPicture({sightingId})");
         }
@@ -62,7 +62,7 @@ namespace Zugsichtungen.Webclients.SightingService
             throw new NotImplementedException();
         }
 
-        public Task<SightingViewEntryDto> GetSightingViewByIdAsync(int sightingId)
+        public Task<SightingViewEntryDto> GetSightingViewEntryBySightingIdAsync(int sightingId)
         {
             throw new NotImplementedException();
         }

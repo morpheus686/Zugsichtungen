@@ -35,7 +35,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             await dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
             {
                 updateMessage("Bild wird geladen", Enumerations.IndeterminateState.Working);
-                var picture = await this.sightingService.GetPictureBySightingIdAsync(this.sighting.Id);
+                var picture = await this.sightingService.GetSightingPictureBySightingIdAsync(this.sighting.Id);
 
                 if (picture != null)
                 {

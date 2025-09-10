@@ -18,7 +18,7 @@ namespace Zugsichtungen.Rest.Server.Controller.OData
         [EnableQuery]
         public async Task<ActionResult<IQueryable<ContextDto>>> Get()
         {
-            var entries = await service.GetContextesAsync();
+            var entries = await service.GetContextsAsync();
             return Ok(entries.AsQueryable());
         }
     }

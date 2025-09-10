@@ -96,7 +96,7 @@ static void MapMinimalApi(WebApplication app)
     app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service, IHubContext<SightingHub> hub) =>
     {
         var newSightingId = await service.AddSightingAsync(sighting.Item1, sighting.Item2);
-        var savedDto = await service.GetSightingViewByIdAsync(newSightingId);
+        var savedDto = await service.GetSightingViewEntryBySightingIdAsync(newSightingId);
         await hub.Clients.All.SendAsync("SightingAdded", savedDto);
     });
 
@@ -108,13 +108,13 @@ static void MapMinimalApi(WebApplication app)
 
     app.MapGet("api/contexts", async (ISightingService service) =>
     {
-        var entries = await service.GetContextesAsync();
+        var entries = await service.GetContextsAsync();
         return Results.Ok(entries);
     });
 
     app.MapGet("api/sightingpicture", async (int sightingId, ISightingService service) =>
     {
-        var picture = await service.GetPictureBySightingIdAsync(sightingId);
+        var picture = await service.GetSightingPictureBySightingIdAsync(sightingId);
         return picture is not null ? Results.Ok(picture) : Results.NotFound();
     });
 }
