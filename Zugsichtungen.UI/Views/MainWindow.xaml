@@ -12,9 +12,11 @@
         xmlns:converter="clr-namespace:Zugsichtungen.UI.Converter"
         xmlns:vm="clr-namespace:Zugsichtungen.ViewModels;assembly=Zugsichtungen.ViewModels"
         xmlns:dialogViewModel="clr-namespace:Zugsichtungen.ViewModels.DialogViewModels;assembly=Zugsichtungen.ViewModels"
+        WindowStyle="None"
         Background="{StaticResource MaterialDesignPaper}"
         FontFamily="{StaticResource MaterialDesignFont}"
-        Style="{StaticResource MaterialDesignWindow}">
+        Style="{StaticResource MaterialDesignWindow}"
+        materialDesign:ElevationAssist.Elevation="Dp3">
 
     <Window.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
@@ -78,11 +80,14 @@ FontSize="22">
                                           Padding="0"
                                           Mode="PrimaryMid"
                                           ClipToBounds="False"
-                                          materialDesign:ElevationAssist.Elevation="Dp4">
+                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                              MouseDown="ColorZone_MouseDown">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
@@ -110,6 +115,41 @@ FontSize="22">
                                             />
                                 </StackPanel>
                             </materialDesign:PopupBox>
+
+
+                            <Button Grid.Column="3"  
+                            Width="25"
+                            Margin="10,10,5,10"
+                            Height="25"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource MaterialDesignFlatLightBgButton}"
+                            Click="MinimizeButton_Click">
+                                <Button.Content>
+                                    <materialDesign:PackIcon Kind="WindowMinimize" 
+                                 Height="15"
+                                 Width="15"
+                                 Foreground="White"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button Grid.Column="5"  
+                            Width="25"
+                            Margin="5,10,10,10"
+                            Height="25"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Click="Close_Click"
+                            Style="{StaticResource MaterialDesignFlatDarkBgButton}">
+                                <Button.Content>
+                                    <materialDesign:PackIcon Kind="Close" 
+                                                 Height="15"
+                                                 Width="15"
+                                                 Margin="0"/>
+                                </Button.Content>
+                            </Button>
                         </Grid>
                     </materialDesign:ColorZone>
 
