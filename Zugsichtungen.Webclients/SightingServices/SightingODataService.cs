@@ -29,7 +29,7 @@ namespace Zugsichtungen.Webclients.SightingService
                 Sighting = sighting
             };
 
-            var response = await this.httpClient.PostAsJsonAsync("odata/SightingWithPicture", sightingWithPictureDto);
+            var response = await this.httpClient.PostAsJsonAsync("odata/Sighting", sightingWithPictureDto);
             int statusCode = Convert.ToInt32(response.StatusCode);
             return statusCode;
         }
