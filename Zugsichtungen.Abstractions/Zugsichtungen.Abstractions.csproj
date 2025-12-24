@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\Zugsichtungen.Publish.props" />
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" />
+	  <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" >
+		  <TargetFramework>net8.0</TargetFramework>
+	  </ProjectReference>
   </ItemGroup>
 
 </Project>

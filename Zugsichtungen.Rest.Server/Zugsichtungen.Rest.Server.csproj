@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<Import Project="..\Zugsichtungen.Publish.props" />
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -10,15 +10,23 @@
     <PackageReference Include="AutoMapper" Version="16.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" />
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" />
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" >
+		  <TargetFramework>net8.0</TargetFramework>
+	  </ProjectReference>
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" >
+		<TargetFramework>net8.0</TargetFramework>
+	</ProjectReference>
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" >
+		<TargetFramework>net8.0</TargetFramework>
+	</ProjectReference>
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" >
+		<TargetFramework>net8.0</TargetFramework>
+	</ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
