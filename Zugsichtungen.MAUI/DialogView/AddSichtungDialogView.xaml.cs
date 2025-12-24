@@ -10,13 +10,13 @@ public partial class AddSichtungDialogView : Popup
 		InitializeComponent();
 	}
 
-    private void AbortButtonView_Tapped(object sender, EventArgs e)
-    {
-        Close(DialogResult.Abort);
-    }
+    //private void AbortButtonView_Tapped(object sender, EventArgs e)
+    //{
+    //    Close(DialogResult.Abort);
+    //}
 
-    private void SaveButtonView_Tapped(object sender, EventArgs e)
-    {
-        Close(DialogResult.Yes);
-    }
+    //private void SaveButtonView_Tapped(object sender, EventArgs e)
+    //{
+    //    Close(DialogResult.Yes);
+    //}
 }

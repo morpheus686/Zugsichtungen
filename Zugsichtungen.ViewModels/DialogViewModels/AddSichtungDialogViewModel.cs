@@ -19,6 +19,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
 
             this.AddImageCommand = new AsyncRelayCommand(ExecuteAddImageCommand);
             this.RemoveImageCommand = new RelayCommand(ExecuteRemoveImageCommand);
+            this.DropImageCommand = new RelayCommand<string>(ExecuteDropImageCommand, CanExecuteDropImageCommand);
         }
 
         private DateTime selectedDate;
@@ -90,6 +91,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         }
         public ICommand AddImageCommand { get; }
         public ICommand RemoveImageCommand { get; }
+        public ICommand DropImageCommand { get; }
 
         public bool PlaceIsInvalid { get; private set; }
 
@@ -159,6 +161,34 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             {
                 ClearErrors(propertyName);
             }
+        }
+
+        private bool CanExecuteDropImageCommand(string? file)
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            var isNotEmpty = !string.IsNullOrWhiteSpace(file);
+
+            if (isNotEmpty)
+            {
+                var isValidExtension = file.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
+                                file.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase);
+
+                if (isValidExtension)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void ExecuteDropImageCommand(string? obj)
+        {
+            this.ImagePath = obj;
         }
     }
 }

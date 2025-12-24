@@ -160,9 +160,9 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             }
 
             var groups = Sichtungsliste
-                .GroupBy(x => x.Date)
+                .GroupBy(x => x.Number)
                 .Select(g => new SightingGroupViewModel(g.Key, g))
-                .OrderByDescending(g => g.Date);
+                .OrderByDescending(g => g.Number);
 
             GroupedSightings.Clear();
 

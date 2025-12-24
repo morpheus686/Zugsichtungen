@@ -87,7 +87,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         {
             var sightingViewEntryList = await GetAllWithLoggingAsync<Sichtungsview, List<SightingViewEntry>>(async () =>
             {
-                var fetchedSightings = await context.Sichtungsviews.ToListAsync();
+                var fetchedSightings = await context.Sichtungsviews.OrderBy(k => k.Loknummer).ThenBy(k => k.Datum).ToListAsync();
                 var sightingViewEntries = new List<SightingViewEntry>();
 
                 foreach (var item in fetchedSightings)
@@ -111,7 +111,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         {
             var contextList = await GetAllWithLoggingAsync<Kontexte, List<Context>>(async () =>
             {
-                var contextEntities = await context.Kontextes.ToListAsync();
+                var contextEntities = await context.Kontextes.OrderBy(k => k.Name).ToListAsync();
                 var contexts = new List<Context>();
 
                 foreach (var entity in contextEntities)
@@ -134,7 +134,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         {
             var vehicleViewEntryList = await GetAllWithLoggingAsync<Fahrzeugliste, List<VehicleViewEntry>>(async () =>
             {
-                var vehicleEntities = await context.Fahrzeuglistes.ToListAsync();
+                var vehicleEntities = await context.Fahrzeuglistes.OrderBy(k => k.Fahrzeug).ToListAsync();
                 var vehicles = new List<VehicleViewEntry>();
 
                 foreach (var entity in vehicleEntities)

@@ -29,7 +29,7 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
                 var itemViewModel = new SichtungItemViewModel(s, dialogService);
                 this.Sichtungsliste.Add(itemViewModel);
 
-                var group = this.GroupedSightings.FirstOrDefault(g => g.Date == s.Date);
+                var group = this.GroupedSightings.FirstOrDefault(g => g.Number == s.VehicleNumber);
 
                 if (group != null)
                 {
@@ -37,7 +37,7 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
                 }
                 else
                 {
-                    var newGroup = new SightingGroupViewModel(s.Date, [itemViewModel]);
+                    var newGroup = new SightingGroupViewModel(s.VehicleNumber, [itemViewModel]);
                     this.GroupedSightings.Add(newGroup);
                 }
 

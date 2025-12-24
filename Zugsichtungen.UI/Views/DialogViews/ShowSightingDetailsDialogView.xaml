@@ -13,7 +13,7 @@
                        DialogViewType="Close"
                        Header="{Binding Title, Mode=OneWay}">
     <components:DialogView.Resources>
-        <converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+        <converter:ImageConverter x:Key="ImageConverter"/>
     </components:DialogView.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -34,7 +34,7 @@
                Grid.RowSpan="5"
                Width="600"
                Height="400" 
-                Source="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+                Source="{Binding Image, Converter={StaticResource ImageConverter}}"/>
         
         <TextBlock Text="Triebfahrzeug"
                    Grid.Column="1" />

@@ -14,8 +14,8 @@
         <converter:MultiSourceImageConverter x:Key="MultiSourceImageConverter" />
     </toolkit:Popup.Resources>
 
-    
-<Border Padding="20">
+
+    <Border Padding="20">
 
         <!-- Inhalt hier rein -->
         <Grid>
@@ -58,7 +58,7 @@
             <VerticalStackLayout Grid.Row="2"
                                  Grid.Column="1"
                                  Margin="5">
-               <material:TextField Text="{Binding Place, Mode=TwoWay}"/>
+                <material:TextField Text="{Binding Place, Mode=TwoWay}"/>
                 <Label Text="Ort ist ungültig"
                        TextColor="Red"
                        IsVisible="{Binding HasErrors}" />
@@ -134,21 +134,19 @@
             <HorizontalStackLayout Grid.Row="7" Grid.Column="1">
                 <material:ButtonView WidthRequest="100"
                                      Margin="5"
-                                     x:Name="SaveButtonView"
-                                     Tapped="SaveButtonView_Tapped"
-                                     IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}">
+                                     x:Name="SaveButtonView"                                     
+                                     IsEnabled="{Binding HasErrors, Converter={x:StaticResource InverseBooleanConverter}}"><!--Tapped="SaveButtonView_Tapped"-->
                     <Label Text="Speichern" 
                            HorizontalTextAlignment="Center"/>
                 </material:ButtonView>
                 <material:ButtonView WidthRequest="100"
                                      x:Name="AbortButtonView"
                         Margin="5"
-                                     Tapped="AbortButtonView_Tapped">
+                                     ><!--Tapped="AbortButtonView_Tapped"-->
                     <Label Text="Abbrechen"
                            HorizontalTextAlignment="Center" />
                 </material:ButtonView>
             </HorizontalStackLayout>
-
         </Grid>
     </Border>
 </toolkit:Popup>

@@ -4,11 +4,11 @@ namespace Zugsichtungen.ViewModels.Grouping
 {
     public class SightingGroupViewModel : ObservableCollection<SichtungItemViewModel>
     {     
-        public DateOnly? Date { get; }
+        public string? Number { get; }
 
-        public SightingGroupViewModel(DateOnly? date, IEnumerable<SichtungItemViewModel> items) : base(items)
+        public SightingGroupViewModel(string? number, IEnumerable<SichtungItemViewModel> items) : base(items)
         {
-            Date = date;
+            Number = number;
         }
     }
 }

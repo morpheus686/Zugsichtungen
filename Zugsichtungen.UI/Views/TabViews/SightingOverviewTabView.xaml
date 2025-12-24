@@ -17,14 +17,14 @@
         <CollectionViewSource x:Key="SichtungenGrouped"
                               Source="{Binding Sichtungsliste}">
             <CollectionViewSource.GroupDescriptions>
-                <!-- Gruppieren nach Date -->
-                <PropertyGroupDescription PropertyName="Date" />
+                <PropertyGroupDescription PropertyName="Number" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </customControls:TabView.Resources>
 
     <Grid>
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Source={StaticResource SichtungenGrouped}}"
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding Source={StaticResource SichtungenGrouped}}"
                       SelectedItem="{Binding SelectedItem}" 
                       Grid.Row="1"
                       Margin="10">
@@ -33,7 +33,8 @@
                       Command="{Binding ShowSightingDetailsCommand, Mode=OneTime}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Datum" Binding="{Binding Date,Converter={StaticResource DateOnlyToGermanDateConverter}, Mode=OneWay}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Fahrzeug" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True" Visibility="Collapsed"/>
                 <DataGridTextColumn Header="Ort" Binding="{Binding Location, Mode=OneWay}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Thema" Binding="{Binding Context, Mode=OneWay}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Bemerkung" Binding="{Binding Note, Mode=OneWay}" IsReadOnly="True" />
@@ -43,7 +44,7 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name, Converter={StaticResource DateOnlyToGermanDateConverter}}"
+                            <TextBlock Text="{Binding Name}"
                                        FontWeight="Bold"
                                        Background="LightGray"
                                        Padding="5"/>

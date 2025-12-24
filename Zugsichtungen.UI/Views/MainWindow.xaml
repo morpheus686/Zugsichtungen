@@ -16,108 +16,110 @@
         Background="{StaticResource MaterialDesignPaper}"
         FontFamily="{StaticResource MaterialDesignFont}"
         Style="{StaticResource MaterialDesignWindow}"
-        materialDesign:ElevationAssist.Elevation="Dp3">
+        >
 
     <Window.Resources>
         <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter" />
         <converter:ReferenceEqualityMultiConverter x:Key="ReferenceEqualityMultiConverter" />
     </Window.Resources>
 
-    <Grid>
-        <materialDesign:DialogHost
+    <Border BorderBrush="Black"
+            BorderThickness="1">
+        <Grid>
+            <materialDesign:DialogHost
             Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
             Identifier="DialogHost"
             x:Name="DialogHost"
             Panel.ZIndex="1">
-            <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-                <materialDesign:DrawerHost.LeftDrawerContent >
-                    <DockPanel Width="300">
-                        <ToggleButton
+                <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                    <materialDesign:DrawerHost.LeftDrawerContent >
+                        <DockPanel Width="300">
+                            <ToggleButton
                             Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                             DockPanel.Dock="Top"
                             HorizontalAlignment="Right"
                             Margin="16"
                             IsChecked="{Binding IsDrawerOpen}" />
 
-                        <StackPanel Orientation="Vertical">
-                            <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
+                            <StackPanel Orientation="Vertical">
+                                <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
                                          Content="Sichtungen"
                                          Command="{Binding SelectTabCommand, Mode=OneTime}"
                                          CommandParameter="{Binding SightingOverviewTabViewModel}"
                                           Margin="10, 0"
 FontSize="22">
-                                <RadioButton.IsChecked>
-                                    <MultiBinding Mode="OneWay" Converter="{StaticResource ReferenceEqualityMultiConverter}">
-                                        <Binding Path="SelectedTab" />
-                                        <Binding Path="SightingOverviewTabViewModel" />
-                                    </MultiBinding>
-                                </RadioButton.IsChecked>
-                            </RadioButton>
-                            <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
+                                    <RadioButton.IsChecked>
+                                        <MultiBinding Mode="OneWay" Converter="{StaticResource ReferenceEqualityMultiConverter}">
+                                            <Binding Path="SelectedTab" />
+                                            <Binding Path="SightingOverviewTabViewModel" />
+                                        </MultiBinding>
+                                    </RadioButton.IsChecked>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}"
                                          Content="Galerie"
                                          Command="{Binding SelectTabCommand, Mode=OneTime}"
                                          CommandParameter="{Binding GalleryTabViewModel}"
                                           Margin="10, 0"
 FontSize="22">
-                                <RadioButton.IsChecked>
-                                    <MultiBinding Mode="OneWay" Converter="{StaticResource ReferenceEqualityMultiConverter}">
-                                        <Binding Path="SelectedTab" />
-                                        <Binding Path="GalleryTabViewModel" />
-                                    </MultiBinding>
-                                </RadioButton.IsChecked>
-                            </RadioButton>
-                        </StackPanel>
-                    </DockPanel>
-                </materialDesign:DrawerHost.LeftDrawerContent>
+                                    <RadioButton.IsChecked>
+                                        <MultiBinding Mode="OneWay" Converter="{StaticResource ReferenceEqualityMultiConverter}">
+                                            <Binding Path="SelectedTab" />
+                                            <Binding Path="GalleryTabViewModel" />
+                                        </MultiBinding>
+                                    </RadioButton.IsChecked>
+                                </RadioButton>
+                            </StackPanel>
+                        </DockPanel>
+                    </materialDesign:DrawerHost.LeftDrawerContent>
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <materialDesign:ColorZone Grid.Row="0"
+                        <materialDesign:ColorZone Grid.Row="0"
                                           Padding="0"
                                           Mode="PrimaryMid"
                                           ClipToBounds="False"
                                           materialDesign:ElevationAssist.Elevation="Dp4"
                                               MouseDown="ColorZone_MouseDown">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <ToggleButton x:Name="MenuToggleButton"
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="MenuToggleButton"
                                       Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                                       IsChecked="{Binding IsDrawerOpen}"
                                       AutomationProperties.Name="HamburgerToggleButton"
                                       HorizontalAlignment="Left"
                                       Margin="16" />
-                            <TextBlock Text="Zugsichtungen" 
+                                <TextBlock Text="Zugsichtungen" 
                                    Margin="10"
                                    FontSize="25"
                                    FontWeight="Bold"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                            <materialDesign:PopupBox Grid.Column="2"
+                                <materialDesign:PopupBox Grid.Column="2"
                                                  Width="75"
                                                  HorizontalContentAlignment="Center"
                                                  Visibility="Visible"
                                                      >
-                                <StackPanel Orientation="Vertical">
-                                    <Button Content="Einstellungen" 
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Content="Einstellungen" 
                                         Command="{Binding OpenSettingsCommand, Mode=OneTime}"/>
-                                    <Button Content="Daten verwalten"
+                                        <Button Content="Daten verwalten"
                                             />
-                                </StackPanel>
-                            </materialDesign:PopupBox>
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
 
 
-                            <Button Grid.Column="3"  
+                                <Button Grid.Column="3"  
                             Width="25"
                             Margin="10,10,5,10"
                             Height="25"
@@ -126,15 +128,15 @@ FontSize="22">
                             HorizontalAlignment="Center"
                             Style="{StaticResource MaterialDesignFlatLightBgButton}"
                             Click="MinimizeButton_Click">
-                                <Button.Content>
-                                    <materialDesign:PackIcon Kind="WindowMinimize" 
+                                    <Button.Content>
+                                        <materialDesign:PackIcon Kind="WindowMinimize" 
                                  Height="15"
                                  Width="15"
                                  Foreground="White"/>
-                                </Button.Content>
-                            </Button>
+                                    </Button.Content>
+                                </Button>
 
-                            <Button Grid.Column="5"  
+                                <Button Grid.Column="5"  
                             Width="25"
                             Margin="5,10,10,10"
                             Height="25"
@@ -143,32 +145,33 @@ FontSize="22">
                             HorizontalAlignment="Center"
                             Click="Close_Click"
                             Style="{StaticResource MaterialDesignFlatDarkBgButton}">
-                                <Button.Content>
-                                    <materialDesign:PackIcon Kind="Close" 
+                                    <Button.Content>
+                                        <materialDesign:PackIcon Kind="Close" 
                                                  Height="15"
                                                  Width="15"
                                                  Margin="0"/>
-                                </Button.Content>
-                            </Button>
-                        </Grid>
-                    </materialDesign:ColorZone>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </materialDesign:ColorZone>
 
-                    <ContentControl Grid.Row="1"
+                        <ContentControl Grid.Row="1"
                                     Content="{Binding SelectedTab, Mode=OneWay}" />
-                </Grid>
-            </materialDesign:DrawerHost>
-        </materialDesign:DialogHost>
+                    </Grid>
+                </materialDesign:DrawerHost>
+            </materialDesign:DialogHost>
 
-        <materialDesign:DialogHost
+            <materialDesign:DialogHost
             Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
             Identifier="ProgressDialogHost"
             x:Name="ProgressDialogHost"
             Panel.ZIndex="2"/>
 
-        <materialDesign:Snackbar x:Name="MainSnackbar"
+            <materialDesign:Snackbar x:Name="MainSnackbar"
                                  VerticalAlignment="Bottom"
                                  HorizontalAlignment="Center" 
                                  Panel.ZIndex="999"
                                  MessageQueue="{Binding SnackbarService.SnackbarMessageQueue}"/>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>
