@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" >
-		  <TargetFramework>net8.0</TargetFramework>
-	  </ProjectReference>
+	  <ProjectReference Include="..\Zugsichtungen.Domain\Zugsichtungen.Domain.csproj" />
   </ItemGroup>
 
 </Project>
