@@ -23,7 +23,7 @@ jobs:
 
       # Publish Server
       - name: Publish Server Project
-        run: dotnet publish Zugsichtungen.Rest.Server/Zugsichtungen.Rest.Server.csproj -c Release -r win-x64 --self-contained=false -o /app
+        run: dotnet publish Zugsichtungen.Rest.Server/Zugsichtungen.Rest.Server.csproj -c Release -f net8.0 -r win-x64 --self-contained=false -o /app
 
       # Docker Image bauen
       - name: Build Docker Image
