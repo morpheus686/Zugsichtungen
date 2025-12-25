@@ -15,18 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" >
-		  <TargetFramework>net8.0</TargetFramework>
-	  </ProjectReference>
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" >
-		<TargetFramework>net8.0</TargetFramework>
-	</ProjectReference>
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" >
-		<TargetFramework>net8.0</TargetFramework>
-	</ProjectReference>
-    <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" >
-		<TargetFramework>net8.0</TargetFramework>
-	</ProjectReference>
+	  <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLite\Zugsichtungen.Infrastructure.SQLite.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure.SQLServer\Zugsichtungen.Infrastructure.SQLServer.csproj" />
+    <ProjectReference Include="..\Zugsichtungen.Infrastructure\Zugsichtungen.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
