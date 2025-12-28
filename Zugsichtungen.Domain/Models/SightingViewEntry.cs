@@ -18,6 +18,7 @@
         public string? Context { get; private set; }
 
         public string? Note { get; private set; }
+        public byte[]? Image { get; private set; }
         public byte[]? Thumbnail { get; private set; }
 
         public static SightingViewEntry Create(int? id,
@@ -26,6 +27,7 @@
             string? location,
             string? context,
             string? note,
+            byte[]? image,
             byte[]? thumbnail)
         {
             return new SightingViewEntry
@@ -36,6 +38,7 @@
                 Location = location,
                 Context = context,
                 Note = note,
+                Image = image,
                 Thumbnail = thumbnail
             };
         }

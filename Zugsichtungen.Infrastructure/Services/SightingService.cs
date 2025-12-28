@@ -54,6 +54,49 @@ namespace Zugsichtungen.Infrastructure.Services
             }
         }
 
+        public async Task<int> AddSightingAsync(SightingWithPictureDto sightingWithPicture)
+        {
+            try
+            {
+                logger.LogInformation("Adding new sighting in {Location} for {VehicleId} at {Date}.",
+                               sightingWithPicture.Sighting.Location,
+                               sightingWithPicture.Sighting.VehicleId,
+                               sightingWithPicture.Sighting.Date);
+
+                var newSighting = Sighting.Create(
+                    sightingWithPicture.Sighting.Id, 
+                    sightingWithPicture.Sighting.VehicleId,
+                    sightingWithPicture.Sighting.Date,
+                    sightingWithPicture.Sighting.Location,
+                    sightingWithPicture.Sighting.ContextId,
+                    sightingWithPicture.Sighting.Note);
+                SightingPicture? newSightingPicture = null;
+
+                if (sightingWithPicture.Picture != null)
+                {
+                    newSightingPicture = SightingPicture.Create(
+                        sightingWithPicture.Picture.Id, 
+                        newSighting.Id, 
+                        sightingWithPicture.Picture.Image,
+                        null,
+                        sightingWithPicture.Picture.Filename);
+                    newSighting.AddPicture(newSightingPicture);
+                }
+
+                var id = await dataService.AddAsync(newSighting);
+                logger.LogInformation("SightingAdded with Id {SightingId}.", id);
+
+                return id;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, 
+                    "Failed to add sighting for VehicleId {VehicleId}",
+                    sightingWithPicture.Sighting.VehicleId);
+                throw;
+            }
+        }
+
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
         {
             try

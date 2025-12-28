@@ -28,7 +28,7 @@ namespace Zugsichtungen.Rest.Server.Controller.OData
 
         public async Task<ActionResult> Post([FromBody] SightingWithPictureDto input)
         {
-            var newSightingId = await sightingService.AddSightingAsync(input.Sighting, input.Picture);
+            var newSightingId = await sightingService.AddSightingAsync(input);
             var savedDto = await sightingService.GetSightingViewEntryBySightingIdAsync(newSightingId);
             await this.sightingHub.Clients.All.SendAsync("SightingAdded", savedDto);
             return Ok();

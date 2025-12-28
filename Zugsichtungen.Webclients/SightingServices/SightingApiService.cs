@@ -21,6 +21,13 @@ namespace Zugsichtungen.Webclients.SightingService
             return statusCode;
         }
 
+        public async Task<int> AddSightingAsync(SightingWithPictureDto sightingWithPicture)
+        {
+            var response = await this.httpClient.PostAsJsonAsync("api/addsightingwithpicture", sightingWithPicture);
+            int statusCode = Convert.ToInt32(response.StatusCode);
+            return statusCode;
+        }
+
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
         {
             var result = await this.httpClient.GetFromJsonAsync<List<SightingViewEntryDto>>("api/sightings");

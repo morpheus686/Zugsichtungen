@@ -104,7 +104,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
 
         private static SightingViewEntry MapFromEntity(Sichtungsview entity)
         {
-            return SightingViewEntry.Create(entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, null);
+            return SightingViewEntry.Create(entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, null, null);
         }
 
         public async override Task<List<Context>> GetContextsAsync()

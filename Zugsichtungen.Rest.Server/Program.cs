@@ -100,6 +100,13 @@ static void MapMinimalApi(WebApplication app)
         await hub.Clients.All.SendAsync("SightingAdded", savedDto);
     });
 
+    app.MapPost("api/addsightingwithpicture", async (SightingWithPictureDto sightingWithPicture, ISightingService service, IHubContext<SightingHub> hub) =>
+    {
+        var newSightingId = await service.AddSightingAsync(sightingWithPicture);
+        var savedDto = await service.GetSightingViewEntryBySightingIdAsync(newSightingId);
+        await hub.Clients.All.SendAsync("SightingAdded", savedDto);
+    });
+
     app.MapGet("api/vehicleview", async (ISightingService service) =>
     {
         var entries = await service.GetVehicleViewEntriesAsync();

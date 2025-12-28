@@ -23,13 +23,21 @@ namespace Zugsichtungen.Webclients.SightingService
 
         public async Task<int> AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
         {
-            var sightingWithPictureDto = new SightingWithPictureDto()
-            {
-                Picture = sightingPicture,
-                Sighting = sighting
-            };
+            var sightingWithPictureDto = new SightingWithPictureDto
+            (
+                sighting,
+                sightingPicture
+
+            );
 
             var response = await this.httpClient.PostAsJsonAsync("odata/Sighting", sightingWithPictureDto);
+            int statusCode = Convert.ToInt32(response.StatusCode);
+            return statusCode;
+        }
+
+        public async Task<int> AddSightingAsync(SightingWithPictureDto sightingWithPicture)
+        {
+            var response = await this.httpClient.PostAsJsonAsync("odata/Sighting", sightingWithPicture);
             int statusCode = Convert.ToInt32(response.StatusCode);
             return statusCode;
         }
