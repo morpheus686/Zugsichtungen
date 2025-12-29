@@ -141,8 +141,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                         );
 
                         await this.sightingService.AddSightingAsync(sightingWithPictureDto);
-                        //await this.sightingService.AddSightingAsync(newSightingDto, sightingPictureDto);
-
                     });
 
                     await this.UpdateSightingsAsync();

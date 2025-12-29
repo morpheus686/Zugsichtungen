@@ -17,8 +17,9 @@
         <converter:ImageConverter x:Key="ImageConverter"
                                   PixelWidth="300"/>
     </controls:DialogView.Resources>
-    <Grid Margin="10" Name="DialogGrid">
+    <Grid Margin="10" Name="DialogGrid" Background="Wheat">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -60,7 +61,7 @@
                      Width="200"
                      FontSize="16"
                      Text="{Binding Place, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"/>
-            <TextBlock Text="Fahrzeug"
+            <TextBlock Text="Baureihe"
                        Grid.Row="1"
                        Grid.Column="0" 
                        FontSize="20"
@@ -68,12 +69,11 @@
             <ComboBox Grid.Row="1"
                       Grid.Column="1" 
                       Margin="10"
-                      FontSize="16"
-                      Width="100"
-                      ItemsSource="{Binding VehicleList, Mode=OneTime}"
-                      DisplayMemberPath="Vehicle"
-                      SelectedItem="{Binding SelectedFahrzeug, Mode=TwoWay}"/>
-            <TextBlock Text="Thema"
+                      FontSize="16"/>                    
+                      <!--ItemsSource="{Binding TrainTypeList, Mode=OneTime}"
+                      DisplayMemberPath="TrainType"
+                      SelectedItem="{Binding SelectedBaureihe, Mode=TwoWay}"-->
+            <TextBlock Text="Fahrzeug"
                        Grid.Row="1"
                        Grid.Column="2" 
                        FontSize="20"
@@ -82,19 +82,31 @@
                       Grid.Column="3" 
                       Margin="10"
                       FontSize="16"
+                      ItemsSource="{Binding VehicleList, Mode=OneTime}"
+                      DisplayMemberPath="Vehicle"
+                      SelectedItem="{Binding SelectedFahrzeug, Mode=TwoWay}"/>
+            <TextBlock Text="Thema"
+                       Grid.Row="2"
+                       Grid.Column="0" 
+                       FontSize="20"
+                       Margin="10"/>
+            <ComboBox Grid.Row="2"
+                      Grid.Column="1" 
+                      Grid.ColumnSpan="3"
+                      Margin="10"
+                      FontSize="16"
                       ItemsSource="{Binding ContextList, Mode=OneTime}"
                       DisplayMemberPath="Name"
                       SelectedItem="{Binding SelectedKontext, Mode=TwoWay}"/>
             <TextBlock Text="Bemerkung"
-                       Grid.Row="2"
+                       Grid.Row="3"
                        Grid.Column="0" 
-                       Grid.ColumnSpan="3"
                        FontSize="20"
                        Margin="10"/>
-            <TextBox Grid.Row="2" 
-                        Grid.Column="1"
+            <TextBox Grid.Row="3" 
+                     Grid.Column="1"
                      Grid.ColumnSpan="3"
-                        Margin="10"
+                     Margin="10"
                      FontSize="16"
                      Text="{Binding Note, Mode=TwoWay}"/>
             <Border Grid.Row="0"
@@ -105,7 +117,8 @@
                    AllowDrop="True"
                    DragEnter="Image_DragEnter"
                    Drop="Image_Drop"
-                    Background="Transparent">
+                   Background="Transparent"
+                   HorizontalAlignment="Right">
                 <Image Source="{Binding ImagePath, Converter={StaticResource ImageConverter}, Mode=OneWay}"/>
             </Border>
             <Button Content="{materialDesign:PackIcon Kind=Edit}" 

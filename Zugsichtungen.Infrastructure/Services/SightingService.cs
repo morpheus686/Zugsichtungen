@@ -29,29 +29,13 @@ namespace Zugsichtungen.Infrastructure.Services
 
         public async Task<int> AddSightingAsync(SightingDto sighting, SightingPictureDto? sightingPicture)
         {
-            try
-            {
-                logger.LogInformation("Adding new sighting in {Location} for {VehicleId} at {Date}.", sighting.Location, sighting.VehicleId, sighting.Date);
+            var sightingWithPicture = new SightingWithPictureDto
+            (
+                sighting,
+                sightingPicture
+            );
 
-                var newSighting = Sighting.Create(-1, sighting.VehicleId, sighting.Date, sighting.Location, sighting.ContextId, sighting.Note);
-                SightingPicture? newSightingPicture = null;
-
-                if (sightingPicture != null)
-                {
-                    newSightingPicture = SightingPicture.Create(-1, newSighting.Id, sightingPicture.Image, null, sightingPicture.Filename);
-                    newSighting.AddPicture(newSightingPicture);
-                }
-
-                var id = await dataService.AddAsync(newSighting);
-                logger.LogInformation("SightingAdded with Id {SightingId}.", id);
-
-                return id;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to add sighting for VehicleId {VehicleId}", sighting.VehicleId);
-                throw;
-            }
+            return await AddSightingAsync(sightingWithPicture);
         }
 
         public async Task<int> AddSightingAsync(SightingWithPictureDto sightingWithPicture)

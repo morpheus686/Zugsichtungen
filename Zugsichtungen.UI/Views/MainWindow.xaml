@@ -156,16 +156,22 @@ FontSize="22">
                         </materialDesign:ColorZone>
 
                         <ContentControl Grid.Row="1"
-                                    Content="{Binding SelectedTab, Mode=OneWay}" />
+                                        Content="{Binding SelectedTab, Mode=OneWay}" />
                     </Grid>
                 </materialDesign:DrawerHost>
             </materialDesign:DialogHost>
 
             <materialDesign:DialogHost
+                Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+                Identifier="MiniDialogHost"
+                x:Name="MiniDialogHost"
+                Panel.ZIndex="2" />
+
+            <materialDesign:DialogHost
             Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
             Identifier="ProgressDialogHost"
             x:Name="ProgressDialogHost"
-            Panel.ZIndex="2"/>
+            Panel.ZIndex="3"/>
 
             <materialDesign:Snackbar x:Name="MainSnackbar"
                                  VerticalAlignment="Bottom"

@@ -69,6 +69,11 @@ namespace Zugsichtungen.MAUI.Services
             }
         }
 
+        public Task<object?> ShowMiniDialogAsync(ILoadable viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string?> ShowOpenFileDialogAsync(string filter = "Alle Dateien (*.*)|*.*")
         {
             var file = await FilePicker.PickAsync(new PickOptions

@@ -9,12 +9,24 @@ namespace Zugsichtungen.Services
     public class DialogService : IDialogService
     {
         private const string DialogIdentifier = "DialogHost";
+        private const string MiniDialogIdentifier = "MiniDialogHost";
         private const string ProgressDialogIdentifier = "ProgressDialogHost";
 
         public Task<object?> ShowDialogAsync(ILoadable viewModel)
         {
+            return OpenDialogAsync(viewModel, DialogIdentifier);
+        }
+
+
+        public Task<object?> ShowMiniDialogAsync(ILoadable viewModel)
+        {
+            return OpenDialogAsync(viewModel, MiniDialogIdentifier);
+        }
+
+        private static Task<object?> OpenDialogAsync(ILoadable viewModel, string dialogIdentifier)
+        {
             viewModel.Initialize();
-            return DialogHost.Show(viewModel, DialogIdentifier);
+            return DialogHost.Show(viewModel, dialogIdentifier);
         }
 
         public async Task ShowIndeterminateDialogAsync(Func<Action<string, IndeterminateState>, object?, Task> progressTask, object? parameter = null)

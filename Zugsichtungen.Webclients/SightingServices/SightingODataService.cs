@@ -30,9 +30,7 @@ namespace Zugsichtungen.Webclients.SightingService
 
             );
 
-            var response = await this.httpClient.PostAsJsonAsync("odata/Sighting", sightingWithPictureDto);
-            int statusCode = Convert.ToInt32(response.StatusCode);
-            return statusCode;
+            return await AddSightingAsync(sightingWithPictureDto);
         }
 
         public async Task<int> AddSightingAsync(SightingWithPictureDto sightingWithPicture)
