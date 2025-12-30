@@ -46,6 +46,7 @@
     <ProjectReference Include="..\Zugsichtungen.UI\Zugsichtungen.UI.csproj" />
     <ProjectReference Include="..\Zugsichtungen.ViewModels\Zugsichtungen.ViewModels.csproj" />
 	<ProjectReference Include="..\Zugsichtungen.Styles\Zugsichtungen.Styles.csproj" />
+	<ProjectReference Include="..\Zugsichtungen.Wpf.ViewModels\Zugsichtungen.Wpf.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

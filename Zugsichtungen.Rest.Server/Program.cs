@@ -77,7 +77,9 @@ static void AddOData(WebApplicationBuilder builder)
     modelBuilder.EntitySet<SightingViewEntryDto>("Sighting");
     modelBuilder.EntitySet<SightingPictureDto>("SightingPicture");
     modelBuilder.EntitySet<ContextDto>("Context");
-    modelBuilder.EntitySet<VehicleViewEntryDto>("Vehicle");
+    modelBuilder.EntitySet<VehicleViewEntryDto>("VehicleView");
+    modelBuilder.EntitySet<VehicleDto>("Vehicle");
+    modelBuilder.EntitySet<SeriesDto>("Series");
 
     builder.Services.AddControllers().AddOData(
         options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(

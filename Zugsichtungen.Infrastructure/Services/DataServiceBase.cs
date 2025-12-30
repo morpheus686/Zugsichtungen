@@ -36,6 +36,8 @@ namespace Zugsichtungen.Infrastructure.Services
         public abstract Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync();
         public abstract Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
         public abstract Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId);
+        public abstract Task<List<Series>> GetAllSeriesAsync();
+        public abstract Task<List<Vehicle>> GetAllVehiclesAsync();
 
         protected async Task<int> AddWithLoggingAsync<TEntity>(Func<Task<int>> addFunc)
         {
@@ -61,5 +63,6 @@ namespace Zugsichtungen.Infrastructure.Services
             logger.LogDebug("Fetched all {Entity} from database", nameof(TEntity));
             return domain;
         }
+
     }
 }

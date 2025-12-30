@@ -28,10 +28,20 @@ namespace Zugsichtungen.Webclients.SightingService
             return statusCode;
         }
 
+        public Task<List<SeriesDto>> GetAllSeriesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
         {
             var result = await this.httpClient.GetFromJsonAsync<List<SightingViewEntryDto>>("api/sightings");
             return result ?? new List<SightingViewEntryDto>();
+        }
+
+        public Task<List<VehicleDto>> GetAllVehiclesAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<List<ContextDto>> GetContextsAsync()

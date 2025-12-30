@@ -66,7 +66,7 @@ namespace Zugsichtungen.MAUI
             builder.Services.AddScoped<ISightingService, SightingService>();
 
             builder.Services.AddSingleton<MainPage>();
-            builder.Services.AddSingleton<SightingOverviewTabViewModelBase, SightingOverviewTabViewModel>();
+            builder.Services.AddSingleton<SightingOverviewTabViewModel, SightingOverviewTabViewModel>();
             builder.Services.AddSingleton<GalleryTabViewModel>();
 
             builder.Services.AddSingleton<IDialogService, DialogService>();

@@ -14,5 +14,7 @@ namespace Zugsichtungen.Abstractions.Services
         Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync();
         Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId);
         Task<SightingViewEntryDto> GetSightingViewEntryBySightingIdAsync(int sightingId);
+        Task<List<SeriesDto>> GetAllSeriesAsync();
+        Task<List<VehicleDto>> GetAllVehiclesAsync();
     }
 }

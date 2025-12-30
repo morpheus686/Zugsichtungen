@@ -160,5 +160,37 @@ namespace Zugsichtungen.Infrastructure.Services
                 throw;
             }
         }
+
+        public async Task<List<SeriesDto>> GetAllSeriesAsync()
+        {
+            try
+            {
+                logger.LogInformation("Fetching all series entities.");
+                var sightingViewEntry = await this.dataService.GetAllSeriesAsync();
+                logger.LogInformation($"Fetched {sightingViewEntry.Count} series entities.");
+                return mapper.MapList<Series, SeriesDto>(sightingViewEntry);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to fetch all series entities");
+                throw;
+            }
+        }
+
+        public async Task<List<VehicleDto>> GetAllVehiclesAsync()
+        {
+            try
+            {
+                logger.LogInformation("Fetching all vehicle entities.");
+                var vehicles = await this.dataService.GetAllVehiclesAsync();
+                logger.LogInformation($"Fetched {vehicles.Count} vehicle entities.");
+                return mapper.MapList<Vehicle, VehicleDto>(vehicles);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to fetch all vehicle entities");
+                throw;
+            }
+        }
     }
 }

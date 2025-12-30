@@ -46,7 +46,7 @@ namespace Zugsichtungen.SignalR
             }
 
             services.AddSingleton<ISignalRClient, SignalRClient>();
-            services.AddSingleton<SightingOverviewTabViewModelBase, SightingOverviewSignalRTabViewModel>();
+            services.AddSingleton<SightingOverviewTabViewModel, SightingOverviewSignalRTabViewModel>();
         }
 
         protected override async void OnExit(ExitEventArgs e)

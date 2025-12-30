@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35004.147
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen", "Zugsichtungen\Zugsichtungen.csproj", "{5704AD7B-FDEC-4EC0-A61B-78079C0F2ACF}"
 EndProject
@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Pr
 	ProjectSection(SolutionItems) = preProject
 		Zugsichtungen.Publish.props = Zugsichtungen.Publish.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zugsichtungen.Wpf.ViewModels", "Zugsichtungen.Wpf.ViewModels\Zugsichtungen.Wpf.ViewModels.csproj", "{56A11345-E926-4D1D-BBA7-1F5D11E15FB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12556E24-CA2C-4C6E-A9F5-239C355345C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A11345-E926-4D1D-BBA7-1F5D11E15FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A11345-E926-4D1D-BBA7-1F5D11E15FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A11345-E926-4D1D-BBA7-1F5D11E15FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A11345-E926-4D1D-BBA7-1F5D11E15FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

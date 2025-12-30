@@ -3,6 +3,7 @@ using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels.DialogViewModels.ItemViewModel
 {
+    [Obsolete("Use VehicleItemViewModel instead.")]
     public class VehicleViewEntryItemViewModel : ViewModelBase
     {
         private readonly VehicleViewEntryDto entry;

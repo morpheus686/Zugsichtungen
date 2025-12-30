@@ -17,7 +17,7 @@
         <converter:ImageConverter x:Key="ImageConverter"
                                   PixelWidth="300"/>
     </controls:DialogView.Resources>
-    <Grid Margin="10" Name="DialogGrid" Background="Wheat">
+    <Grid Margin="10" Name="DialogGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -69,10 +69,11 @@
             <ComboBox Grid.Row="1"
                       Grid.Column="1" 
                       Margin="10"
-                      FontSize="16"/>                    
-                      <!--ItemsSource="{Binding TrainTypeList, Mode=OneTime}"
-                      DisplayMemberPath="TrainType"
-                      SelectedItem="{Binding SelectedBaureihe, Mode=TwoWay}"-->
+                      FontSize="16"
+                      ItemsSource="{Binding SeriesList, Mode=OneTime}"
+                      DisplayMemberPath="Number"
+                      SelectedItem="{Binding SelectedSeries, Mode=TwoWay}"/>                    
+                      <!---->
             <TextBlock Text="Fahrzeug"
                        Grid.Row="1"
                        Grid.Column="2" 
@@ -82,9 +83,9 @@
                       Grid.Column="3" 
                       Margin="10"
                       FontSize="16"
-                      ItemsSource="{Binding VehicleList, Mode=OneTime}"
-                      DisplayMemberPath="Vehicle"
-                      SelectedItem="{Binding SelectedFahrzeug, Mode=TwoWay}"/>
+                      ItemsSource="{Binding VehicleView, Mode=OneTime}"
+                      DisplayMemberPath="Number"
+                      SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"/>
             <TextBlock Text="Thema"
                        Grid.Row="2"
                        Grid.Column="0" 

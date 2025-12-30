@@ -1,20 +1,190 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AsyncAwaitBestPractices.MVVM;
+using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Input;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Foundation.Enumerations;
+using Zugsichtungen.Foundation.ViewModel;
+using Zugsichtungen.Infrastructure.Services;
+using Zugsichtungen.ViewModels.DialogViewModels;
+using Zugsichtungen.ViewModels.Enumerations;
+using Zugsichtungen.ViewModels.Grouping;
 
 namespace Zugsichtungen.ViewModels.TabViewModels
 {
-    public class SightingOverviewTabViewModel : SightingOverviewTabViewModelBase
+    public abstract class SightingOverviewTabViewModel : TabViewModelBase
     {
+        private readonly ObservableCollection<SichtungItemViewModel> sichtungenList;
+        private readonly IDialogService dialogService;
+        private readonly ILogger<SightingOverviewTabViewModel> logger;
+        private readonly ISightingService sightingService;
+        private readonly ISnackbarService snackbarService;
+
+        protected IDialogService DialogService => this.dialogService;
+        protected ISightingService SightingService => this.sightingService;
+
+        public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
+        public ObservableCollection<SightingGroupViewModel> GroupedSightings { get; }
+        public SichtungItemViewModel? SelectedItem { get; set; }
+
+        public ICommand AddSichtungCommand { get; }
+        public ICommand EditContextesCommand { get; }
+        public ICommand ShowSightingDetailsCommand { get; }
+
         public SightingOverviewTabViewModel(IDialogService dialogService,
-            ILogger<SightingOverviewTabViewModelBase> logger, 
+            ILogger<SightingOverviewTabViewModel> logger,
             ISightingService sightingService,
-            ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
+            ISnackbarService snackbarService)
         {
+            this.Title = "Sichtungen";
+
+            AddSichtungCommand = new AsyncCommand(execute: ExecuteAddSichtung, canExecute: CanExecuteAddSichtung);
+            EditContextesCommand = new AsyncCommand(execute: ExecuteEditContextes, canExecute: CanExecuteEditContextes);
+            ShowSightingDetailsCommand = new AsyncCommand(execute: ExecuteShowSightingDetails, canExecute: CanExecuteShowSightingsDetails);
+
+            this.sichtungenList = [];
+            this.GroupedSightings = [];
+            this.dialogService = dialogService;
+            this.logger = logger;
+            this.sightingService = sightingService;
+            this.snackbarService = snackbarService;
         }
 
-        protected override Task UpdateSightingsAsync()
+        private bool CanExecuteShowSightingsDetails(object? arg) => this.SelectedItem != null && !this.IsBusy;
+
+        private async Task ExecuteShowSightingDetails()
         {
-            return base.ReloadAllSightings();
+            IsBusy = true;
+
+            if (this.SelectedItem != null)
+            {
+                var showDetailsViewModel = new ShowSightingDetailsDialogViewModel(this.sightingService, this.SelectedItem.Sichtung, this.dialogService);
+                await this.dialogService.ShowDialogAsync(showDetailsViewModel);
+            }
+
+
+            IsBusy = false;
         }
+
+        protected async override Task InitializeInternalAsync()
+        {
+            try
+            {
+                await ReloadAllSightings();
+                this.IsInitializing = false;
+                RaisePropertyChanged(nameof(this.IsInitializing));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+                throw;
+            }
+        }
+
+        private bool CanExecuteEditContextes(object? arg) => !this.IsBusy && this.SelectedItem != null;
+
+        private async Task ExecuteEditContextes()
+        {
+            await Task.CompletedTask;
+        }
+
+        private bool CanExecuteAddSichtung(object? parameter) => !this.IsBusy;
+
+        private async Task ExecuteAddSichtung()
+        {
+            IsBusy = true;
+            var addSichtungDialogViewModel = CreateAddSichtungDialogViewModel();
+            var result = await this.dialogService.ShowDialogAsync(addSichtungDialogViewModel);
+
+            if (result == null)
+            {
+                throw new InvalidOperationException("Dialog konnte kein gültiges Ergebnis zurückliefern!");
+            }
+
+            if ((DialogResult)result == DialogResult.Yes)
+            {
+                try
+                {
+                    await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
+                    {
+                        updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
+
+                        var newSightingDto = new SightingDto
+                        (
+                            -1,
+                            addSichtungDialogViewModel.SelectedVehicle.Id,
+                            DateOnly.FromDateTime(addSichtungDialogViewModel.SelectedDate),
+                            addSichtungDialogViewModel.Place,
+                            addSichtungDialogViewModel.SelectedKontext.Id,
+                            addSichtungDialogViewModel.Note
+                        );
+
+                        var filePath = addSichtungDialogViewModel.ImagePath;
+                        SightingPictureDto? sightingPictureDto = null;
+
+                        if (filePath != null)
+                        {
+                            var picture = await File.ReadAllBytesAsync(filePath);
+
+                            sightingPictureDto = new SightingPictureDto
+                            (
+                                -1,
+                                -1,
+                                picture,
+                                ImageHelper.CreateThumbnail(picture),
+                                new FileInfo(filePath).Name
+                            );
+                        }
+
+                        var sightingWithPictureDto = new SightingWithPictureDto
+                        (
+                            newSightingDto,
+                            sightingPictureDto
+                        );
+
+                        await this.sightingService.AddSightingAsync(sightingWithPictureDto);
+                    });
+
+                    await this.UpdateSightingsAsync();
+                    this.snackbarService.Show("Neue Sichtung wurde angelegt.");
+                }
+                catch (Exception ex)
+                {
+                    this.snackbarService.Show(ex.Message);
+                    throw;
+                }
+
+            }
+
+            IsBusy = false;
+        }
+
+        protected async Task ReloadAllSightings()
+        {
+            this.Sichtungsliste.Clear();
+            var sichtungen = await this.sightingService.GetAllSightingViewEntriesAsync();
+
+            foreach (var item in sichtungen)
+            {
+                Sichtungsliste.Add(new SichtungItemViewModel(item, this.dialogService));
+            }
+
+            var groups = Sichtungsliste
+                .GroupBy(x => x.Number)
+                .Select(g => new SightingGroupViewModel(g.Key, g))
+                .OrderByDescending(g => g.Number);
+
+            GroupedSightings.Clear();
+
+            foreach (var group in groups)
+            {
+                GroupedSightings.Add(group);
+            }
+        }
+
+        protected abstract Task UpdateSightingsAsync();
+        protected abstract AddSichtungDialogViewModel CreateAddSichtungDialogViewModel();
     }
 }

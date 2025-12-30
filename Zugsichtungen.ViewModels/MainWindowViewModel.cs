@@ -17,7 +17,7 @@ namespace Zugsichtungen.ViewModels
         public ICommand? ToggleDrawerCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public SichtungItemViewModel? SelectedItem { get; set; }
-        public SightingOverviewTabViewModelBase SightingOverviewTabViewModel { get; }
+        public SightingOverviewTabViewModel SightingOverviewTabViewModel { get; }
         public GalleryTabViewModel GalleryTabViewModel { get; }
         public ISnackbarService SnackbarService { get; }
 
@@ -46,7 +46,7 @@ namespace Zugsichtungen.ViewModels
             }
         }
 
-        public MainWindowViewModel(SightingOverviewTabViewModelBase sightingOverviewTabViewModel, 
+        public MainWindowViewModel(SightingOverviewTabViewModel sightingOverviewTabViewModel, 
             GalleryTabViewModel galleryTabViewModel,
             IDialogService dialogService,
             ISnackbarService snackbarService)

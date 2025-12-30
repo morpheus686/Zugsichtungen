@@ -17,10 +17,7 @@
     <ProjectReference Include="..\Zugsichtungen.Abstractions\Zugsichtungen.Abstractions.csproj" />
     <ProjectReference Include="..\Zugsichtungen.Services\Zugsichtungen.Services.csproj" />
     <ProjectReference Include="..\Zugsichtungen.UI\Zugsichtungen.UI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\Zugsichtungen.Wpf.ViewModels\Zugsichtungen.Wpf.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

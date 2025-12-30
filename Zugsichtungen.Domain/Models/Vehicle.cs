@@ -6,7 +6,7 @@
 
         public string? Number { get; set; }
 
-        public int SeriesId { get; set; }
+        public int? SeriesId { get; set; }
 
         public string? Comment { get; set; }
 
@@ -14,7 +14,7 @@
         {
         }
 
-        public Vehicle Create(int id, string? number, int seriesId, string? comment)
+        public static Vehicle Create(int id, string? number, int? seriesId, string? comment)
         {
             return new Vehicle()
             {

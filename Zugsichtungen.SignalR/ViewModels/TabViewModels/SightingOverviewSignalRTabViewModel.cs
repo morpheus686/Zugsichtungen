@@ -3,17 +3,19 @@ using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.SignalR.Services;
 using Zugsichtungen.ViewModels;
+using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.Grouping;
 using Zugsichtungen.ViewModels.TabViewModels;
+using Zugsichtungen.Wpf.ViewModels.DialogViewModels;
 
 namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
 {
-    public class SightingOverviewSignalRTabViewModel : SightingOverviewTabViewModelBase
+    public class SightingOverviewSignalRTabViewModel : SightingOverviewTabViewModel
     {
         private readonly ISnackbarService snackbarService;
 
         public SightingOverviewSignalRTabViewModel(IDialogService dialogService,
-            ILogger<SightingOverviewTabViewModelBase> logger,
+            ILogger<SightingOverviewTabViewModel> logger,
             ISightingService sightingService,
             ISignalRClient signalRClient,
             ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
@@ -26,7 +28,7 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
         {
             App.Current.Dispatcher.Invoke(() =>
             {
-                var itemViewModel = new SichtungItemViewModel(s, dialogService);
+                var itemViewModel = new SichtungItemViewModel(s, this.DialogService);
                 this.Sichtungsliste.Add(itemViewModel);
 
                 var group = this.GroupedSightings.FirstOrDefault(g => g.Number == s.VehicleNumber);
@@ -48,6 +50,11 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
         protected override Task UpdateSightingsAsync()
         {
             return Task.CompletedTask;
+        }
+
+        protected override AddSichtungDialogViewModel CreateAddSichtungDialogViewModel()
+        {
+            return new AddSichtungWpfDialogViewModel(this.SightingService, this.DialogService);
         }
     }
 }

@@ -43,13 +43,13 @@ namespace Zugsichtungen.Webclients.SightingService
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
         {
             var response = await httpClient.GetFromJsonAsync<ODataResponse<SightingViewEntryDto>>("odata/Sighting");
-            return response?.Value ?? new List<SightingViewEntryDto>();
+            return response?.Value ?? [];
         }
 
         public async Task<List<ContextDto>> GetContextsAsync()
         {
             var response = await httpClient.GetFromJsonAsync<ODataResponse<ContextDto>>("odata/Context");
-            return response?.Value ?? new List<ContextDto>();
+            return response?.Value ?? [];
         }
 
         public async Task<SightingPictureDto?> GetSightingPictureBySightingIdAsync(int sightingId)
@@ -59,8 +59,8 @@ namespace Zugsichtungen.Webclients.SightingService
 
         public async Task<List<VehicleViewEntryDto>> GetVehicleViewEntriesAsync()
         {
-            var response = await httpClient.GetFromJsonAsync<ODataResponse<VehicleViewEntryDto>>("odata/Vehicle");
-            return response?.Value ?? new List<VehicleViewEntryDto>();
+            var response = await httpClient.GetFromJsonAsync<ODataResponse<VehicleViewEntryDto>>("odata/VehicleView");
+            return response?.Value ?? [];
         }
 
         public Task UpdateContextes(List<Context> contextes)
@@ -71,6 +71,18 @@ namespace Zugsichtungen.Webclients.SightingService
         public Task<SightingViewEntryDto> GetSightingViewEntryBySightingIdAsync(int sightingId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<SeriesDto>> GetAllSeriesAsync()
+        {
+            var response = await httpClient.GetFromJsonAsync<ODataResponse<SeriesDto>>("odata/Series");
+            return response?.Value ?? [];
+        }
+
+        public async Task<List<VehicleDto>> GetAllVehiclesAsync()
+        {
+            var response = await httpClient.GetFromJsonAsync<ODataResponse<VehicleDto>>("odata/Vehicle");
+            return response?.Value ?? [];
         }
     }
 }

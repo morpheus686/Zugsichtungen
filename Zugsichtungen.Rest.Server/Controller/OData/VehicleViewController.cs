@@ -6,19 +6,19 @@ using Zugsichtungen.Abstractions.Services;
 
 namespace Zugsichtungen.Rest.Server.Controller.OData
 {
-    public class VehicleController : ODataController
+    public class VehicleViewController : ODataController
     {
         private readonly ISightingService sightingService;
 
-        public VehicleController(ISightingService sightingService)
+        public VehicleViewController(ISightingService sightingService)
         {
             this.sightingService = sightingService;
         }
 
         [EnableQuery]
-        public async Task<ActionResult<IQueryable<VehicleDto>>> Get()
+        public async Task<ActionResult<IQueryable<VehicleViewEntryDto>>> Get()
         {
-            var entries = await sightingService.GetAllVehiclesAsync();
+            var entries = await sightingService.GetVehicleViewEntriesAsync();
             return Ok(entries.AsQueryable());
         }
     }

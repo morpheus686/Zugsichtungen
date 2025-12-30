@@ -177,5 +177,51 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
 
             return domain;
         }
+
+        public async override Task<List<Series>> GetAllSeriesAsync()
+        {
+            var seriesList = await GetAllWithLoggingAsync<Baureihen, List<Series>>(async () =>
+            {
+                var vehicleEntities = await context.Baureihens.OrderBy(k => k.Nummer).ToListAsync();
+                var series = new List<Series>();
+
+                foreach (var entity in vehicleEntities)
+                {
+                    series.Add(MapFromEntity(entity));
+                }
+
+                return series;
+            });
+
+            return seriesList;
+        }
+
+        private static Series MapFromEntity(Baureihen entity)
+        {
+            return Series.Create(entity.Id, entity.Nummer, null, entity.ModellId);
+        }
+
+        public async override Task<List<Vehicle>> GetAllVehiclesAsync()
+        {
+            var vehicleList = await GetAllWithLoggingAsync<Fahrzeuge, List<Vehicle>>(async () =>
+            {
+                var vehicleEntities = await context.Fahrzeuges.OrderBy(k => k.Baureihe).ToListAsync();
+                var vehicles = new List<Vehicle>();
+
+                foreach (var entity in vehicleEntities)
+                {
+                    vehicles.Add(MapFromEntity(entity));
+                }
+
+                return vehicles;
+            });
+
+            return vehicleList;
+        }
+
+        private static Vehicle MapFromEntity(Fahrzeuge entity)
+        {
+            return Vehicle.Create(entity.Id, entity.Nummer, entity.BaureiheId, null);
+        }
     }
 }

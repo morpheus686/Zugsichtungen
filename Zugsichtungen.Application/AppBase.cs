@@ -7,6 +7,7 @@ using Zugsichtungen.UI.Views;
 using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.TabViewModels;
+using Zugsichtungen.Wpf.ViewModels.TabViewModels;
 
 namespace Zugsichtungen.ApplicationBase
 {
@@ -30,7 +31,7 @@ namespace Zugsichtungen.ApplicationBase
 
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainWindowViewModel>();
-            services.AddSingleton<SightingOverviewTabViewModelBase, SightingOverviewTabViewModel>();
+            services.AddSingleton<SightingOverviewTabViewModel, SightingOverviewWpfTabViewModel>();
             services.AddSingleton<GalleryTabViewModel>();
 
             services.AddSingleton<IDialogService, DialogService>();

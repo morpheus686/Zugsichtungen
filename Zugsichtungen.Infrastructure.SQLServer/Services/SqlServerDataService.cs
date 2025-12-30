@@ -160,5 +160,51 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
 
             return sightingViewEntry;
         }
+
+        public async override Task<List<Domain.Models.Series>> GetAllSeriesAsync()
+        {
+            var seriesList = await GetAllWithLoggingAsync<Zugsichtungen.Infrastructure.SQLServer.Models.Series, List<Domain.Models.Series>>(async () =>
+            {
+                var seriesEntities = await context.Series.OrderBy(e => e.Number).ToListAsync();
+                var series = new List<Domain.Models.Series>();
+
+                foreach (var entity in seriesEntities)
+                {
+                    series.Add(MapFromEntity(entity));
+                }
+
+                return series;
+            });
+
+            return seriesList;
+        }
+
+        private static Zugsichtungen.Domain.Models.Series MapFromEntity(Zugsichtungen.Infrastructure.SQLServer.Models.Series entity)
+        {
+            return Zugsichtungen.Domain.Models.Series.Create(entity.Id, entity.Number, entity.Comment, entity.ModelId);
+        }
+
+        public async override Task<List<Domain.Models.Vehicle>> GetAllVehiclesAsync()
+        {
+            var vehicleList = await GetAllWithLoggingAsync<Zugsichtungen.Infrastructure.SQLServer.Models.Vehicle, List<Domain.Models.Vehicle>>(async () =>
+            {
+                var vehicleEntities = await context.Vehicles.OrderBy(e => e.Number).ToListAsync();
+                var vehicles = new List<Domain.Models.Vehicle>();
+
+                foreach (var entity in vehicleEntities)
+                {
+                    vehicles.Add(MapFromEntity(entity));
+                }
+
+                return vehicles;
+            });
+
+            return vehicleList;
+        }
+
+        private static Zugsichtungen.Domain.Models.Vehicle MapFromEntity(Zugsichtungen.Infrastructure.SQLServer.Models.Vehicle entity)
+        {
+            return Zugsichtungen.Domain.Models.Vehicle.Create(entity.Id, entity.Number, entity.SeriesId, entity.Comment);
+        }
     }
 }

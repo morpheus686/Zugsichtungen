@@ -14,6 +14,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             SelectedDate = DateTime.Now;
             this.sightingService = sightingService;
             this.dialogService = dialogService;
+            this.SeriesList = [];
             this.VehicleList = [];
             this.ContextList = [];
 
@@ -25,21 +26,34 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private DateTime selectedDate;
         private string? imagePath = null;
         private string place = string.Empty;
-        private VehicleViewEntryItemViewModel selectedFahrzeug = null!;
-        private ContextItemViewModel selectedKontext = null!;
+        private SeriesItemViewModel? seriesItemViewModel = null;
+        private VehicleItemViewModel? selectedVehicle = null!;
+        private ContextItemViewModel? selectedKontext = null!;
         private readonly ISightingService sightingService;
         private readonly IDialogService dialogService;
 
-        public VehicleViewEntryItemViewModel SelectedFahrzeug
+        public virtual SeriesItemViewModel? SelectedSeries
         {
-            get => selectedFahrzeug;
+            get => seriesItemViewModel;
             set
             {
-                selectedFahrzeug = value;
-                RaisePropertyChanged(nameof(SelectedFahrzeug));
+                seriesItemViewModel = value;
+                RaisePropertyChanged(nameof(SelectedSeries));
             }
         }
-        public ContextItemViewModel SelectedKontext
+
+        public VehicleItemViewModel? SelectedVehicle
+        {
+            get => selectedVehicle;
+            set
+            {
+                selectedVehicle = value;
+                RaisePropertyChanged(nameof(SelectedVehicle));
+                ValidateVehicle();
+                RaisePropertyChanged(nameof(HasErrors));
+            }
+        }
+        public ContextItemViewModel? SelectedKontext
         {
             get => selectedKontext;
             set
@@ -59,8 +73,9 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             }
         }
 
-        public ObservableCollection<VehicleViewEntryItemViewModel> VehicleList { get; private set; }
-        public ObservableCollection<ContextItemViewModel> ContextList { get; private set; }
+        public ObservableCollection<SeriesItemViewModel> SeriesList { get; }
+        public ObservableCollection<VehicleItemViewModel> VehicleList { get; }
+        public ObservableCollection<ContextItemViewModel> ContextList { get; }
 
         public string Note { get; set; } = string.Empty;
         public string Place
@@ -93,15 +108,19 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         public ICommand RemoveImageCommand { get; }
         public ICommand DropImageCommand { get; }
 
-        public bool PlaceIsInvalid { get; private set; }
-
         protected override async Task InitializeInternalAsync()
         {
             await LoadAndSelectFirstAsync(
-                this.sightingService.GetVehicleViewEntriesAsync,
-                this.VehicleList,
-                item => this.SelectedFahrzeug = item,
-                item => new VehicleViewEntryItemViewModel(item));
+                    this.sightingService.GetAllVehiclesAsync,
+                    this.VehicleList,
+                    item => this.SelectedVehicle = item,
+                    item => new VehicleItemViewModel(item));
+
+            await LoadAndSelectFirstAsync(
+                this.sightingService.GetAllSeriesAsync,
+                this.SeriesList,
+                item => this.SelectedSeries = item,
+                item => new SeriesItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
                 this.sightingService.GetContextsAsync,
@@ -110,6 +129,8 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 item => new ContextItemViewModel(item));
 
             ValidatePlace();
+            ValidateVehicle();
+            RaisePropertyChanged(nameof(HasErrors));
         }
 
         private async Task LoadAndSelectFirstAsync<T, TVM>(
@@ -156,6 +177,19 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             if (string.IsNullOrWhiteSpace(Place))
             {
                 AddError(propertyName, "Der Ort darf nicht leer sein!");
+            }
+            else
+            {
+                ClearErrors(propertyName);
+            }
+        }
+
+        private void ValidateVehicle()
+        {
+            const string propertyName = nameof(SelectedVehicle);
+            if (SelectedVehicle == null)
+            {
+                AddError(propertyName, "Es muss ein Fahrzeug ausgewählt werden!");
             }
             else
             {

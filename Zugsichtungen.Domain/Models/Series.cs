@@ -12,9 +12,9 @@
 
         public string? Comment { get; set; }
 
-        public int ModelId { get; set; }
+        public int? ModelId { get; set; }
 
-        public Series Create(int id, string? number, string? comment, int modelId)
+        public static Series Create(int id, string? number, string? comment, int? modelId)
         {
             return new Series()
             {
