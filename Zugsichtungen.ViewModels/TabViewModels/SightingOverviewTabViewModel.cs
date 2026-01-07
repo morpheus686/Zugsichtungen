@@ -1,7 +1,6 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows.Input;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;

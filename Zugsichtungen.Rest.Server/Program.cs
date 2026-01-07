@@ -126,13 +126,24 @@ static void MapMinimalApi(WebApplication app)
         var picture = await service.GetSightingPictureBySightingIdAsync(sightingId);
         return picture is not null ? Results.Ok(picture) : Results.NotFound();
     });
+
+    app.MapGet("api/allseries", async (ISightingService service) =>
+    {
+        var entries = await service.GetAllSeriesAsync();
+        return Results.Ok(entries);
+    });
+
+    app.MapGet("api/allvehicles", async (ISightingService service) =>
+    {
+        var entries = await service.GetAllVehiclesAsync();
+        return Results.Ok(entries);
+    });
 }
 
 static void UseSqlite(WebApplicationBuilder builder)
 {
     var dbPath = SqliteHelper.CopyDatabaseIfNotExits();
     var sqliteConnectionString = $"Data Source={dbPath}";
-
 
     builder.Services.AddDbContext<ZugbeobachtungenContext>(options =>
     {

@@ -28,9 +28,10 @@ namespace Zugsichtungen.Webclients.SightingService
             return statusCode;
         }
 
-        public Task<List<SeriesDto>> GetAllSeriesAsync()
+        public async Task<List<SeriesDto>> GetAllSeriesAsync()
         {
-            throw new NotImplementedException();
+            var result = await this.httpClient.GetFromJsonAsync<List<SeriesDto>>("api/allseries");
+            return result ?? new List<SeriesDto>();
         }
 
         public async Task<List<SightingViewEntryDto>> GetAllSightingViewEntriesAsync()
@@ -39,9 +40,10 @@ namespace Zugsichtungen.Webclients.SightingService
             return result ?? new List<SightingViewEntryDto>();
         }
 
-        public Task<List<VehicleDto>> GetAllVehiclesAsync()
+        public async Task<List<VehicleDto>> GetAllVehiclesAsync()
         {
-            throw new NotImplementedException();
+            var result = await this.httpClient.GetFromJsonAsync<List<VehicleDto>>("api/allvehicles");
+            return result ?? new List<VehicleDto>();
         }
 
         public async Task<List<ContextDto>> GetContextsAsync()
