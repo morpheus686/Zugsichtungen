@@ -26,6 +26,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
         public ObservableCollection<SichtungItemViewModel> Sichtungsliste => this.sichtungenList;
         public ObservableCollection<SightingGroupViewModel> GroupedSightings { get; }
+
         public SichtungItemViewModel? SelectedItem { get; set; }
 
         public ICommand AddSichtungCommand { get; }
@@ -45,6 +46,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
             this.sichtungenList = [];
             this.GroupedSightings = [];
+
             this.dialogService = dialogService;
             this.logger = logger;
             this.sightingService = sightingService;
@@ -108,6 +110,16 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                 {
                     await this.dialogService.ShowIndeterminateDialogAsync(async (updateMessage, parameter) =>
                     {
+                        if (addSichtungDialogViewModel.SelectedKontext == null)
+                        {
+                            throw new InvalidOperationException("Es wurde kein Kontext ausgewählt.");
+                        }
+
+                        if (addSichtungDialogViewModel.SelectedVehicle == null)
+                        {
+                            throw new InvalidOperationException("Es wurde kein Fahrzeug ausgewählt.");
+                        }
+
                         updateMessage("Neue Sichtung wird gespeichert.", IndeterminateState.Working);
 
                         var newSightingDto = new SightingDto

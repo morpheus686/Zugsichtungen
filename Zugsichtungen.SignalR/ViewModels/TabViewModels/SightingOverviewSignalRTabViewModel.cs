@@ -7,15 +7,16 @@ using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.Grouping;
 using Zugsichtungen.ViewModels.TabViewModels;
 using Zugsichtungen.Wpf.ViewModels.DialogViewModels;
+using Zugsichtungen.Wpf.ViewModels.TabViewModels;
 
 namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
 {
-    public class SightingOverviewSignalRTabViewModel : SightingOverviewTabViewModel
+    public class SightingOverviewSignalRTabViewModel : SightingOverviewWpfTabViewModel
     {
         private readonly ISnackbarService snackbarService;
 
         public SightingOverviewSignalRTabViewModel(IDialogService dialogService,
-            ILogger<SightingOverviewTabViewModel> logger,
+            ILogger<SightingOverviewSignalRTabViewModel> logger,
             ISightingService sightingService,
             ISignalRClient signalRClient,
             ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
@@ -50,11 +51,6 @@ namespace Zugsichtungen.SignalR.ViewModels.TabViewModels
         protected override Task UpdateSightingsAsync()
         {
             return Task.CompletedTask;
-        }
-
-        protected override AddSichtungDialogViewModel CreateAddSichtungDialogViewModel()
-        {
-            return new AddSichtungWpfDialogViewModel(this.SightingService, this.DialogService);
         }
     }
 }

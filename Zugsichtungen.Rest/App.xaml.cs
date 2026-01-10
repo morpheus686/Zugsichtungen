@@ -12,7 +12,7 @@ namespace Zugsichtungen.Rest
     {
         protected override void ConfigureSpecificServices(IServiceCollection services)
         {
-            var useOData = true; // Ersetzen durch appsettings.json
+            var useOData = false; // Ersetzen durch appsettings.json
 
             if (useOData)
             {
