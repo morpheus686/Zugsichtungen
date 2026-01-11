@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Zugsichtungen.Abstractions.DTO;
+﻿using Zugsichtungen.Abstractions.DTO;
 
 namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
 {
@@ -12,5 +9,7 @@ namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
         }
 
         public override string? Text => Item.Vehicle;
+        public int Id => Item.Id;
+        public int SeriesId => Item.SeriesId;
     }
 }

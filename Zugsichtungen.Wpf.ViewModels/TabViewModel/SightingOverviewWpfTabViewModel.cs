@@ -35,7 +35,21 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
 
         private bool FilterVehicles(object obj)
         {
-            return true;
+            if (obj is not VehicleViewCheckedItemViewModel vehicleViewItem)
+            {
+                return false;
+            }
+
+            foreach (var item in this.SeriesFilterList)
+            {
+                if (item.Id == vehicleViewItem.SeriesId
+                    && item.IsChecked)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public ICollectionView SightingsView { get; }
@@ -60,9 +74,7 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
         }
 
         protected override async Task InitializeInternalAsync()
-        {
-            await base.InitializeInternalAsync();
-
+        {    
             await LoadFilterAsync(
                 this.SightingService.GetAllSeriesAsync,
                 this.SeriesFilterList,
@@ -74,6 +86,8 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
                 this.VehicleViewFilterList,
                 dto => new VehicleViewCheckedItemViewModel(dto),
                 this.SightingsView.Refresh);
+
+            await base.InitializeInternalAsync();
         }
 
         private async Task LoadFilterAsync<TDto, TItemViewModel>(
