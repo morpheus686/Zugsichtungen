@@ -4,13 +4,14 @@ using Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels;
 
 namespace Zugsichtungen.ViewModels.ListBoxViewModels
 {
-    public class CheckedListBoxViewModel<T> : ViewModelBase
+    public class CheckedListViewModel<T, T2> : ViewModelBase where T : CheckedItemViewModelBase<T2>
     {
-        public CheckedListBoxViewModel()
+        public CheckedListViewModel()
         {
             Items = [];
         }
 
-        public ObservableCollection<CheckedItemViewModelBase<T>> Items { get; }
+        public ObservableCollection<T> Items { get; }
+        public bool HasCheckedItems => Items.Any(i => i.IsChecked);
     }
 }

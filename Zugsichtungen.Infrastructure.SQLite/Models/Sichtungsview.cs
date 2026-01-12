@@ -16,4 +16,6 @@ public partial class Sichtungsview
     public string? Thema { get; set; }
 
     public string? Bemerkung { get; set; }
+
+    public int? FahrzeugId { get; set; }
 }

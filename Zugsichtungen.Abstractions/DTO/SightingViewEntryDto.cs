@@ -9,6 +9,7 @@
         string? Context,
         string? Note,
         byte[]? Image,
-        byte[]? Thumbnail
+        byte[]? Thumbnail,
+        int? VehicleId
     );
 }
