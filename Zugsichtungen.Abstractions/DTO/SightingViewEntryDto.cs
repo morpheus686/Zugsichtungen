@@ -10,6 +10,7 @@
         string? Note,
         byte[]? Image,
         byte[]? Thumbnail,
-        int? VehicleId
+        int? VehicleId,
+        int? SeriesId
     );
 }

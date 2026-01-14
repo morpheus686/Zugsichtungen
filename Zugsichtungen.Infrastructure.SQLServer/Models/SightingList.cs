@@ -18,4 +18,6 @@ public partial class SightingList
     public string? Comment { get; set; }
 
     public int VehicleId { get; set; }
+
+    public int SeriesId { get; set; }
 }

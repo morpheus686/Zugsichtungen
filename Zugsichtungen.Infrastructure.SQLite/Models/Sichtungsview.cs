@@ -18,4 +18,6 @@ public partial class Sichtungsview
     public string? Bemerkung { get; set; }
 
     public int? FahrzeugId { get; set; }
+
+    public int? BaureihenId { get; set; }
 }

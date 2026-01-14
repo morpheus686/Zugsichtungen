@@ -65,18 +65,32 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
         public CheckedObservableCollection VehicleViewFilterList { get; }
 
         private bool FilterSightings(object obj)
-        {
+        {    
             if (obj is not SichtungItemViewModel itemViewModel)
             {
                 return false;
             }
 
-            foreach (var item in this.VehicleViewFilterList)
+            if (this.VehicleViewFilterList.HasCheckedItems)
             {
-                if (item.Id == itemViewModel.VehicleId
-                    && item.IsChecked)
+                foreach (var vehicleItem in this.VehicleViewFilterList)
                 {
-                    return true;
+                    if (vehicleItem.Id == itemViewModel.VehicleId
+                        && vehicleItem.IsChecked)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var seriesItem in this.SeriesFilterList)
+                {
+                    if (seriesItem.IsChecked
+                        && seriesItem.Id == itemViewModel.SeriesId)
+                    {
+                        return true;
+                    }
                 }
             }
 

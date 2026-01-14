@@ -21,6 +21,7 @@
         public byte[]? Image { get; private set; }
         public byte[]? Thumbnail { get; private set; }
         public int? VehicleId { get; private set; }
+        public int? SeriesId { get; private set; }
 
         public static SightingViewEntry Create(
             int? id,
@@ -31,7 +32,8 @@
             string? note,
             byte[]? image,
             byte[]? thumbnail,
-            int? vehicleId)
+            int? vehicleId,
+            int? seriesId)
         {
             return new SightingViewEntry
             {
@@ -43,7 +45,8 @@
                 Note = note,
                 Image = image,
                 Thumbnail = thumbnail,
-                VehicleId = vehicleId
+                VehicleId = vehicleId,
+                SeriesId = seriesId
             };
         }
     }

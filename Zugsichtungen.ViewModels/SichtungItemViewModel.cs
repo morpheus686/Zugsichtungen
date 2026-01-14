@@ -20,6 +20,7 @@ namespace Zugsichtungen.ViewModels
         public string? Note => this.Sichtung.Note;
         public byte[]? Thumbnail => this.Sichtung.Thumbnail;
         public int? VehicleId => this.Sichtung.VehicleId;
+        public int? SeriesId => this.Sichtung.SeriesId;
 
         public ICommand DeleteSightingCommand { get; }
 

@@ -93,7 +93,9 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
 
         private static SightingViewEntry MapFromEntity(SightingList entity)
         {
-            return SightingViewEntry.Create(entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, null, entity.Comment, null, null, entity.VehicleId);
+            return SightingViewEntry.Create(
+                entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, null, entity.Comment, null, null,
+                entity.VehicleId, entity.SeriesId);
         }
 
         public async override Task<List<Domain.Models.Context>> GetContextsAsync()
