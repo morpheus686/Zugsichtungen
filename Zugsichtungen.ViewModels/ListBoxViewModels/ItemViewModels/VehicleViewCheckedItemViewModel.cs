@@ -1,4 +1,5 @@
-﻿using Zugsichtungen.Abstractions.DTO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Zugsichtungen.Abstractions.DTO;
 
 namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
 {
@@ -9,7 +10,7 @@ namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
         }
 
         public override string? Text => Item.Vehicle;
-        public int Id => Item.Id;
+        public override int Id => Item.Id;
         public int SeriesId => Item.SeriesId;
     }
 }

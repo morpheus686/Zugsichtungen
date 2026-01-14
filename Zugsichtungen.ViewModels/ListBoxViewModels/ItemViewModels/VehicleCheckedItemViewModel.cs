@@ -9,5 +9,8 @@ namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
         }
 
         public override string? Text => Item.Number;
+
+        public override int Id => Item.Id;
+        public int? SeriesId => Item.SeriesId;
     }
 }

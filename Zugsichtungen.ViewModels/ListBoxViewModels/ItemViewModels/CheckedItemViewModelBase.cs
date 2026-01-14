@@ -1,8 +1,9 @@
-﻿using Zugsichtungen.Foundation.ViewModel;
+﻿using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Foundation.ViewModel;
 
 namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
 {
-    public abstract class CheckedItemViewModelBase<T> : ViewModelBase
+    public abstract class CheckedItemViewModelBase<T> : ViewModelBase, ICheckable
     {
         protected CheckedItemViewModelBase(T item)
         {
@@ -13,7 +14,8 @@ namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
 
         private bool _isChecked;
 
-        public abstract string? Text { get; }
+        public abstract string? Text { get; }  
+        public abstract int Id { get; }
         public T Item { get; }
 
         public bool IsChecked
@@ -29,5 +31,7 @@ namespace Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels
                 }
             }
         }
+
+
     }
 }

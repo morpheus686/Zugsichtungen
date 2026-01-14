@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
-using System.Drawing.Text;
 using System.Windows.Data;
 using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
 using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.DialogViewModels;
 using Zugsichtungen.ViewModels.ListBoxViewModels;
 using Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels;
 using Zugsichtungen.ViewModels.TabViewModels;
+using Zugsichtungen.Wpf.ViewModels.Collections;
 using Zugsichtungen.Wpf.ViewModels.DialogViewModels;
 
 namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
@@ -23,10 +22,9 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
             ISightingService sightingService,
             ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
         {
+            //this.SeriesFilterList = [];
             this.SeriesFilterList = [];
-            this.SeriesFilterViewModel = new();
             this.VehicleViewFilterList = [];
-            this.VehicleFilterViewModel = new();
 
             this.SightingsView = CollectionViewSource.GetDefaultView(this.Sichtungsliste);
             this.SightingsView.Filter = FilterSightings;
@@ -63,10 +61,8 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
         public ICollectionView SeriesView { get; }
         public ICollectionView VehicleView { get; }
 
-        public ObservableCollection<SeriesCheckedItemViewModel> SeriesFilterList { get; }
-        public CheckedListViewModel<SeriesCheckedItemViewModel, SeriesDto> SeriesFilterViewModel { get; }
-        public ObservableCollection<VehicleViewCheckedItemViewModel> VehicleViewFilterList { get; }
-        public CheckedListViewModel<VehicleCheckedItemViewModel, VehicleDto> VehicleFilterViewModel { get; }
+        public CheckedObservableCollection SeriesFilterList { get; }
+        public CheckedObservableCollection VehicleViewFilterList { get; }
 
         private bool FilterSightings(object obj)
         {
@@ -117,7 +113,7 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
 
         private async Task LoadFilterAsync<TDto, TItemViewModel>(
             Func<Task<List<TDto>>> loadFunc,
-            ObservableCollection<TItemViewModel> targetCollection,
+            CheckedObservableCollection targetCollection,
             Func<TDto, TItemViewModel> createViewModel,
             EventHandler<EventArgs> onCheckedChanged)
             where TItemViewModel : CheckedItemViewModelBase<TDto>
@@ -137,8 +133,13 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
             if (sender is SeriesCheckedItemViewModel seriesCheckedItem
                 && !seriesCheckedItem.IsChecked)
             {
-                foreach (var vehicle in VehicleViewFilterList)
+                foreach (var vehicle in VehicleViewFilterList.Select(i => i as VehicleViewCheckedItemViewModel))
                 {
+                    if (vehicle == null)
+                    {
+                        continue;
+                    }
+
                     if (vehicle.SeriesId == seriesCheckedItem.Id && vehicle.IsChecked)
                     {
                         vehicle.IsChecked = false;
