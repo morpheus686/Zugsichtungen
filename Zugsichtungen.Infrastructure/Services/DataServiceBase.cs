@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Abstractions.Enumerations.Database;
-using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
-    public abstract class DataServiceBase : IDataService
+    public abstract class DataServiceBase
     {
         protected DataServiceBase(DbContext context, ILogger logger)
         {
@@ -19,8 +15,6 @@ namespace Zugsichtungen.Infrastructure.Services
         private readonly DbContext context;
         private readonly ILogger logger;
 
-        public abstract Task UpdateContext(ContextDto updateContext, UpdateMode updateMode);
-
         public async Task SaveChangesAsync()
         {
             var affected = await context.SaveChangesAsync();
@@ -28,16 +22,6 @@ namespace Zugsichtungen.Infrastructure.Services
             Debug.WriteLine(message);
             logger.LogDebug(message);
         }
-
-        public abstract Task<bool> DeleteSightingAsync(int sightingId);
-        public abstract Task<int> AddAsync(Sighting sighting);
-        public abstract Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync();
-        public abstract Task<List<Context>> GetContextsAsync();
-        public abstract Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync();
-        public abstract Task<SightingPicture?> GetPictureBySightingIdAsync(int sightingId);
-        public abstract Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId);
-        public abstract Task<List<Series>> GetAllSeriesAsync();
-        public abstract Task<List<Vehicle>> GetAllVehiclesAsync();
 
         protected async Task<int> AddWithLoggingAsync<TEntity>(Func<Task<int>> addFunc)
         {
@@ -63,6 +47,5 @@ namespace Zugsichtungen.Infrastructure.Services
             logger.LogDebug("Fetched all {Entity} from database", nameof(TEntity));
             return domain;
         }
-
     }
 }

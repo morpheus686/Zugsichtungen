@@ -2,21 +2,21 @@
 using Microsoft.Extensions.Logging;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Domain.Models.Sighting;
 using Zugsichtungen.Foundation.Mapping;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
     public class SightingService : ISightingService
     {
-        public SightingService(IDataService dataService, IMapper mapper, ILogger<SightingService> logger)
+        public SightingService(ISightingDataService dataService, IMapper mapper, ILogger<SightingService> logger)
         {
             this.dataService = dataService;
             this.mapper = mapper;
             this.logger = logger;
         }
 
-        private readonly IDataService dataService;
+        private readonly ISightingDataService dataService;
         private readonly IMapper mapper;
         private readonly ILogger<SightingService> logger;
 

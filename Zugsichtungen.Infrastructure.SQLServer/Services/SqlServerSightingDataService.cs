@@ -1,22 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Abstractions.Enumerations.Database;
 using Zugsichtungen.Abstractions.Interfaces;
-using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Domain.Models.Sighting;
 using Zugsichtungen.Infrastructure.Services;
 using Zugsichtungen.Infrastructure.SQLServer.Models;
 
 namespace Zugsichtungen.Infrastructure.SQLServer.Services
 {
-    public class SqlServerDataService : DataServiceBase
+    public class SqlServerSightingDataService : DataServiceBase, ISightingDataService
     {
         private readonly TrainspottingContext context;
-        private readonly ILogger<SqlServerDataService> logger;
+        private readonly ILogger<SqlServerSightingDataService> logger;
         private readonly IImageRepository imageRepository;
 
-        public SqlServerDataService(TrainspottingContext context,
-            ILogger<SqlServerDataService> logger,
+        public SqlServerSightingDataService(TrainspottingContext context,
+            ILogger<SqlServerSightingDataService> logger,
             IImageRepository imageRepository) : base(context, logger)
         {
             this.context = context;
@@ -24,17 +23,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             this.imageRepository = imageRepository;
         }
 
-        public override Task UpdateContext(ContextDto updateContext, UpdateMode updateMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<bool> DeleteSightingAsync(int sightingId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async override Task<int> AddAsync(Domain.Models.Sighting sighting)
+        public async Task<int> AddAsync(Domain.Models.Sighting.Sighting sighting)
         {
             var id = await AddWithLoggingAsync<Models.Sighting?>(async () =>
             {
@@ -48,7 +37,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return id;
         }
 
-        private static Models.Sighting MapToEntity(Domain.Models.Sighting sighting)
+        private static Models.Sighting MapToEntity(Domain.Models.Sighting.Sighting sighting)
         {
             var entity = new Models.Sighting
             {
@@ -73,7 +62,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return entity;
         }
 
-        public async override Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync()
+        public async Task<List<SightingViewEntry>> GetAllSightingViewEntriesAsync()
         {
             var sightingViewEntryList = await GetAllWithLoggingAsync<SightingList, List<SightingViewEntry>>(async () =>
             {
@@ -98,10 +87,10 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
                 entity.VehicleId, entity.SeriesId);
         }
 
-        public async override Task<List<Domain.Models.Context>> GetContextsAsync()
+        public async Task<List<Domain.Models.Sighting.Context>> GetContextsAsync()
         {
             var contextEntities = await context.Contexts.ToListAsync();
-            var contextes = new List<Domain.Models.Context>();
+            var contextes = new List<Domain.Models.Sighting.Context>();
 
             foreach (var entity in contextEntities)
             {
@@ -111,12 +100,12 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return contextes;
         }
 
-        private static Domain.Models.Context MapFromEntity(Models.Context entity)
+        private static Domain.Models.Sighting.Context MapFromEntity(Models.Context entity)
         {
-            return Domain.Models.Context.Create(entity.Id, entity.Description);
+            return Domain.Models.Sighting.Context.Create(entity.Id, entity.Description);
         }
 
-        public async override Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync()
+        public async Task<List<VehicleViewEntry>> GetVehicleViewEntriesAsync()
         {
             var vehicleViewEntryList = await GetAllWithLoggingAsync<Vehiclelist, List<VehicleViewEntry>>(async () =>
             {
@@ -139,15 +128,15 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return VehicleViewEntry.Create(entity.Id, entity.VehicleDesignation, entity.SeriesId);
         }
 
-        public override async Task<Domain.Models.SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
+        public async Task<Domain.Models.Sighting.SightingPicture?> GetPictureBySightingIdAsync(int sightingId)
         {
-            var sightingPicture = await GetWithLoggingAsync<Models.SightingPicture, Domain.Models.SightingPicture?>(
+            var sightingPicture = await GetWithLoggingAsync<Models.SightingPicture, Domain.Models.Sighting.SightingPicture?>(
                 sightingId,
                 this.imageRepository.GetImageBySightingIdAsync);
             return sightingPicture;
         }
 
-        public async override Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId)
+        public async Task<SightingViewEntry?> GetSightingViewEntryAsync(int sightingId)
         {
             var sightingViewEntry = await GetWithLoggingAsync<SightingList, SightingViewEntry?>(
                 sightingId,
@@ -163,12 +152,13 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return sightingViewEntry;
         }
 
-        public async override Task<List<Domain.Models.Series>> GetAllSeriesAsync()
+
+        public async Task<List<Domain.Models.Sighting.Series>> GetAllSeriesAsync()
         {
-            var seriesList = await GetAllWithLoggingAsync<Zugsichtungen.Infrastructure.SQLServer.Models.Series, List<Domain.Models.Series>>(async () =>
+            var seriesList = await GetAllWithLoggingAsync<Models.Series, List<Domain.Models.Sighting.Series>>(async () =>
             {
                 var seriesEntities = await context.Series.OrderBy(e => e.Number).ToListAsync();
-                var series = new List<Domain.Models.Series>();
+                var series = new List<Domain.Models.Sighting.Series>();
 
                 foreach (var entity in seriesEntities)
                 {
@@ -181,17 +171,17 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return seriesList;
         }
 
-        private static Zugsichtungen.Domain.Models.Series MapFromEntity(Zugsichtungen.Infrastructure.SQLServer.Models.Series entity)
+        private static Domain.Models.Sighting.Series MapFromEntity(Models.Series entity)
         {
-            return Zugsichtungen.Domain.Models.Series.Create(entity.Id, entity.Number, entity.Comment, entity.ModelId);
+            return Domain.Models.Sighting.Series.Create(entity.Id, entity.Number, entity.Comment, entity.ModelId);
         }
 
-        public async override Task<List<Domain.Models.Vehicle>> GetAllVehiclesAsync()
+        public async Task<List<Domain.Models.Sighting.Vehicle>> GetAllVehiclesAsync()
         {
-            var vehicleList = await GetAllWithLoggingAsync<Zugsichtungen.Infrastructure.SQLServer.Models.Vehicle, List<Domain.Models.Vehicle>>(async () =>
+            var vehicleList = await GetAllWithLoggingAsync<Models.Vehicle, List<Domain.Models.Sighting.Vehicle>>(async () =>
             {
                 var vehicleEntities = await context.Vehicles.OrderBy(e => e.Number).ToListAsync();
-                var vehicles = new List<Domain.Models.Vehicle>();
+                var vehicles = new List<Domain.Models.Sighting.Vehicle>();
 
                 foreach (var entity in vehicleEntities)
                 {
@@ -204,9 +194,9 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             return vehicleList;
         }
 
-        private static Zugsichtungen.Domain.Models.Vehicle MapFromEntity(Zugsichtungen.Infrastructure.SQLServer.Models.Vehicle entity)
+        private static Domain.Models.Sighting.Vehicle MapFromEntity(Models.Vehicle entity)
         {
-            return Zugsichtungen.Domain.Models.Vehicle.Create(entity.Id, entity.Number, entity.SeriesId, entity.Comment);
+            return Domain.Models.Sighting.Vehicle.Create(entity.Id, entity.Number, entity.SeriesId, entity.Comment);
         }
     }
 }

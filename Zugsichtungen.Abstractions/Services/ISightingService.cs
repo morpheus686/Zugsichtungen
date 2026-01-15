@@ -1,5 +1,5 @@
 ﻿using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Abstractions.Services
 {

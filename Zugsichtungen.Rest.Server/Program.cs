@@ -154,7 +154,7 @@ static void UseSqlite(WebApplicationBuilder builder)
         return new SQLiteImageRepository(sqliteConnectionString);
     });
 
-    builder.Services.AddScoped<IDataService, SQLiteDataService>();
+    builder.Services.AddScoped<ISightingDataService, SQLiteSightingDataService>();
 }
 
 //static void UseSqlServer(WebApplicationBuilder builder)

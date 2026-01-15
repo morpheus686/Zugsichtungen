@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
 using Zugsichtungen.Abstractions.Interfaces;
-using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Infrastructure.Repositories
 {

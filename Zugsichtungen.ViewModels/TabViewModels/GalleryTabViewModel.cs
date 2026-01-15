@@ -2,7 +2,7 @@
 
 namespace Zugsichtungen.ViewModels.TabViewModels
 {
-    public class GalleryTabViewModel : TabViewModelBase
+    public abstract class GalleryTabViewModel : TabViewModelBase
     {
         public GalleryTabViewModel()
         {

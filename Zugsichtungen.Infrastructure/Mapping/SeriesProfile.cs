@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Zugsichtungen.Domain.Models;
 using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Infrastructure.Mapping
 {

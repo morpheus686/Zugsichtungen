@@ -1,4 +1,4 @@
-﻿namespace Zugsichtungen.Domain.Models
+﻿namespace Zugsichtungen.Domain.Models.Sighting
 {
     public class Sighting
     {

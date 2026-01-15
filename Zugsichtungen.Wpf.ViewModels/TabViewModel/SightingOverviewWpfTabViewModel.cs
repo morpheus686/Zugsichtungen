@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
-using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.DialogViewModels;
-using Zugsichtungen.ViewModels.ListBoxViewModels;
 using Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels;
 using Zugsichtungen.ViewModels.TabViewModels;
 using Zugsichtungen.Wpf.ViewModels.Collections;
@@ -22,7 +18,6 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
             ISightingService sightingService,
             ISnackbarService snackbarService) : base(dialogService, logger, sightingService, snackbarService)
         {
-            //this.SeriesFilterList = [];
             this.SeriesFilterList = [];
             this.VehicleViewFilterList = [];
 
@@ -104,7 +99,7 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
 
         protected override async Task UpdateSightingsAsync()
         {
-            await base.ReloadAllSightings();
+            await ReloadAllSightings();
             this.SightingsView.Refresh();
         }
 

@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
-using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Webclients.SightingService
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Data.Common;
-using Zugsichtungen.Domain.Models;
+using Zugsichtungen.Domain.Models.Sighting;
 using Zugsichtungen.Infrastructure.Repositories;
 
 namespace Zugsichtungen.Infrastructure.SQLServer.Repositories

@@ -41,7 +41,8 @@ namespace Zugsichtungen
                         options.UseSqlite(sqliteConnectionString);
                     });
 
-                    services.AddScoped<IDataService, SQLiteDataService>();
+                    services.AddScoped<ISightingDataService, SQLiteSightingDataService>();
+                    services.AddScoped<IGalleryDataService, SQLiteGalleryDataService>();
 
                     services.AddScoped<IImageRepository, SQLiteImageRepository>(sp =>
                     {
@@ -56,7 +57,8 @@ namespace Zugsichtungen
                         options.UseSqlServer(sqlServerConnectionString);
                     });
 
-                    services.AddScoped<IDataService, SqlServerDataService>();
+                    services.AddScoped<ISightingDataService, SqlServerSightingDataService>();
+                    services.AddScoped<IGalleryDataService, SqlServerGalleryDataService>();
 
                     if (sqlServerConnectionString == null)
                     {
