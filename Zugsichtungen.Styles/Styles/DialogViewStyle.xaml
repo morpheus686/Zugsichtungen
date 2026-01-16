@@ -2,70 +2,85 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
                     xmlns:enumerations="clr-namespace:Zugsichtungen.Foundation.Enumerations;assembly=Zugsichtungen.Foundation"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:windowsControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Zugsichtungen.Styles;component/Styles/MaterialDesignSettings.xaml" />
+        
     </ResourceDictionary.MergedDictionaries>
+    
+    <windowsControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
     <Style TargetType="{x:Type controls:DialogView}" x:Key="DialogViewStyle">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:DialogView}">
-                    <Grid Margin="20">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid Margin="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{TemplateBinding Header}"
-                                   Margin="0,0,0,10"
-                                   x:Name="HeaderTextBlock"
-                                   VerticalAlignment="Center" 
-                                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
+                            <TextBlock Text="{TemplateBinding Header}"
+                                       Margin="0,0,0,10"
+                                       x:Name="HeaderTextBlock"
+                                       VerticalAlignment="Center" 
+                                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
 
-                        <Button Margin="0,0,0,10"
-                                Grid.Column="1"
-                                HorizontalAlignment="Right"
-                                Content="{materialDesign:PackIcon Kind=Close}"
-                                Style="{StaticResource MaterialDesignIconButton}"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                CommandParameter="{x:Static enumerations:DialogResult.Abort}"
-                                x:Name="CloseButton"
-                                Visibility="Collapsed" />
-
-                        <ContentPresenter Grid.Row="1"
-                                          Grid.ColumnSpan="2"
-                                          Margin="0,10" />
-
-                        <StackPanel Grid.Row="2"
-                                    Grid.ColumnSpan="2"
-                                    Margin="0,10,0,0"
-                                    Orientation="Horizontal"
+                            <Button Margin="0,0,0,10"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Right"
-                                    x:Name="ButtonBarStackPanel">
-                            <Button Content="Ja"
-                                    x:Name="YesButton"
-                                    Visibility="Collapsed"
+                                    Content="{materialDesign:PackIcon Kind=Close}"
+                                    Style="{StaticResource MaterialDesignIconButton}"
                                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                    CommandParameter="{x:Static enumerations:DialogResult.Yes}"
-                                    Width="100" />
-                            <Button Content="Nein"
-                                    x:Name="NoButton"
-                                    Visibility="Collapsed"
-                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                                    CommandParameter="{x:Static enumerations:DialogResult.No}"
-                                    Width="100" />
-                            <Button Content="OK"
-                                    x:Name="OKButton"
-                                    Visibility="Collapsed"
-                                    Width="100"
-                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
-                        </StackPanel>
+                                    CommandParameter="{x:Static enumerations:DialogResult.Abort}"
+                                    x:Name="CloseButton"
+                                    Visibility="Collapsed" />
+
+                            <ContentPresenter Grid.Row="1"
+                                              Grid.ColumnSpan="2"
+                                              Margin="0,10" />
+
+                            <StackPanel Grid.Row="2"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,10,0,0"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        x:Name="ButtonBarStackPanel">
+                                <Button Content="Ja"
+                                        x:Name="YesButton"
+                                        Visibility="Collapsed"
+                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                        CommandParameter="{x:Static enumerations:DialogResult.Yes}"
+                                        Width="100" />
+                                <Button Content="Nein"
+                                        x:Name="NoButton"
+                                        Visibility="Collapsed"
+                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                        CommandParameter="{x:Static enumerations:DialogResult.No}"
+                                        Width="100" />
+                                <Button Content="OK"
+                                        x:Name="OKButton"
+                                        Visibility="Collapsed"
+                                        Width="100"
+                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Background="#80FFFFFF" Visibility="{TemplateBinding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                                         IsIndeterminate="True"
+                                         Width="50" 
+                                         Height="50" 
+                                         HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center"/>
+                        </Grid>
                     </Grid>
 
                     <ControlTemplate.Triggers>

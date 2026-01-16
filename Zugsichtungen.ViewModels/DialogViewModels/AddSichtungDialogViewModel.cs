@@ -91,19 +91,31 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             await LoadAndSelectFirstAsync(
                     this.sightingService.GetAllVehiclesAsync,
                     this.VehicleList,
-                    item => this.SelectedVehicle = item,
+                    item =>
+                    {
+                        this.SelectedVehicle = item;
+                        RaisePropertyChanged(nameof(SelectedVehicle));
+                    },
                     item => new VehicleItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
                 this.sightingService.GetAllSeriesAsync,
                 this.SeriesList,
-                item => this.SelectedSeries = item,
+                item =>
+                {
+                    this.SelectedSeries = item;
+                    RaisePropertyChanged(nameof(SelectedSeries));
+                },
                 item => new SeriesItemViewModel(item));
 
             await LoadAndSelectFirstAsync(
                 this.sightingService.GetContextsAsync,
                 this.ContextList,
-                item => this.SelectedKontext = item,
+                item =>
+                {
+                    this.SelectedKontext = item;
+                    RaisePropertyChanged(nameof(SelectedKontext));
+                },
                 item => new ContextItemViewModel(item));
 
             ValidatePlace();
