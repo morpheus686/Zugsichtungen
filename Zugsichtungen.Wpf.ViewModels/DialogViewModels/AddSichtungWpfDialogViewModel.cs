@@ -26,6 +26,7 @@ namespace Zugsichtungen.Wpf.ViewModels.DialogViewModels
                 base.SelectedSeries = value;
                 VehicleView.Refresh();
                 this.SelectedVehicle = VehicleView.Cast<VehicleItemViewModel>().FirstOrDefault();
+                RaisePropertyChanged(nameof(SelectedVehicle));
             }
         }
 

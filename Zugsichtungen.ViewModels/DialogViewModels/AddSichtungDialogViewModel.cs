@@ -23,12 +23,10 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             this.DropImageCommand = new RelayCommand<string>(ExecuteDropImageCommand, CanExecuteDropImageCommand);
         }
 
-        private DateTime selectedDate;
         private string? imagePath = null;
         private string place = string.Empty;
         private SeriesItemViewModel? seriesItemViewModel = null;
         private VehicleItemViewModel? selectedVehicle = null!;
-        private ContextItemViewModel? selectedKontext = null!;
         private readonly ISightingService sightingService;
         private readonly IDialogService dialogService;
 
@@ -38,7 +36,6 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             set
             {
                 seriesItemViewModel = value;
-                RaisePropertyChanged(nameof(SelectedSeries));
             }
         }
 
@@ -48,31 +45,12 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             set
             {
                 selectedVehicle = value;
-                RaisePropertyChanged(nameof(SelectedVehicle));
                 ValidateVehicle();
                 RaisePropertyChanged(nameof(HasErrors));
             }
         }
-        public ContextItemViewModel? SelectedKontext
-        {
-            get => selectedKontext;
-            set
-            {
-                selectedKontext = value;
-                RaisePropertyChanged(nameof(SelectedKontext));
-            }
-        }
-
-        public DateTime SelectedDate
-        {
-            get { return selectedDate; }
-            set
-            {
-                selectedDate = value;
-                RaisePropertyChanged(nameof(selectedDate));
-            }
-        }
-
+        public ContextItemViewModel? SelectedKontext { get; set; } = null!;
+        public DateTime SelectedDate { get; set; }
         public ObservableCollection<SeriesItemViewModel> SeriesList { get; }
         public ObservableCollection<VehicleItemViewModel> VehicleList { get; }
         public ObservableCollection<ContextItemViewModel> ContextList { get; }

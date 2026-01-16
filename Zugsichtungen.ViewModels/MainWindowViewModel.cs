@@ -9,7 +9,6 @@ namespace Zugsichtungen.ViewModels
 {
     public class MainWindowViewModel : LoadableViewModel
     {
-        private TabViewModelBase selectedTab;
         private bool isDrawerOpen;
         private readonly IDialogService dialogService;
 
@@ -36,15 +35,7 @@ namespace Zugsichtungen.ViewModels
             }
         }
 
-        public TabViewModelBase SelectedTab
-        {
-            get => selectedTab;
-            private set
-            {
-                selectedTab = value;
-                RaisePropertyChanged(nameof(SelectedTab));
-            }
-        }
+        public TabViewModelBase SelectedTab { get; private set; }
 
         public MainWindowViewModel(SightingOverviewTabViewModel sightingOverviewTabViewModel, 
             GalleryTabViewModel galleryTabViewModel,
@@ -59,7 +50,7 @@ namespace Zugsichtungen.ViewModels
             this.dialogService = dialogService;
             SnackbarService = snackbarService;
             this.SightingOverviewTabViewModel = sightingOverviewTabViewModel;
-            this.selectedTab = SightingOverviewTabViewModel;
+            SelectedTab = SightingOverviewTabViewModel;
         }
 
         private async Task ExecuteOpenSettingsAsync()
@@ -72,6 +63,7 @@ namespace Zugsichtungen.ViewModels
             if (tabViewModel != null && this.SelectedTab != tabViewModel)
             {
                 this.SelectedTab = tabViewModel;
+                RaisePropertyChanged(nameof(SelectedTab));
                 RaisePropertyChanged(nameof(CurrentTabTitle));
             }
 
@@ -80,7 +72,7 @@ namespace Zugsichtungen.ViewModels
 
         protected override Task InitializeInternalAsync()
         {
-            return this.selectedTab.Initialize();
+            return SelectedTab.Initialize();
         }
     }
 }
