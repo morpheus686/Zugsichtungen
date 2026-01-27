@@ -6,12 +6,31 @@
         {
         }
 
-        public int Id { get; private set; }
-        public byte[] ImageData { get; private set; } = null!;
-
-        public static Picture Create(int id, byte[] imageData)
+        public int? Id { get; private set; } = null!;
+        public DateOnly? Date { get; private set; } = null!;
+        public string? VehicleDesignation { get; private set; } = null!;
+        public string? Location { get; private set; } = null!;
+        public string? Context { get; private set; } = null!;
+        public string? Comment { get; private set; } = null!;
+        public byte[]? ImageData { get; private set; } = null!;
+        public static Picture Create(
+            int? id, 
+            DateOnly? date,
+            string? vehicleDesignation,
+            string? location,
+            string? context,
+            string? comment,
+            byte[]? imageData)
         {
-            return new Picture() { Id = id, ImageData = imageData };
+            return new Picture() 
+            { 
+                Id = id,
+                Date = date,
+                VehicleDesignation = vehicleDesignation,
+                Location = location,
+                Context = context,
+                Comment = comment,
+                ImageData = imageData };
         }
     }
 }

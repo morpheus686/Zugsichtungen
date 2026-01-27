@@ -13,6 +13,8 @@ public partial class TrainspottingContext : DbContext
 
     public virtual DbSet<Context> Contexts { get; set; }
 
+    public virtual DbSet<Gallery> Galleries { get; set; }
+
     public virtual DbSet<Manufacturer> Manufacturers { get; set; }
 
     public virtual DbSet<Model> Models { get; set; }
@@ -36,6 +38,17 @@ public partial class TrainspottingContext : DbContext
             entity.ToTable("Context");
 
             entity.Property(e => e.Description).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<Gallery>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Gallery");
+
+            entity.Property(e => e.ContextDescription).HasMaxLength(100);
+            entity.Property(e => e.Location).HasMaxLength(100);
+            entity.Property(e => e.VehicleNumber).HasMaxLength(21);
         });
 
         modelBuilder.Entity<Manufacturer>(entity =>

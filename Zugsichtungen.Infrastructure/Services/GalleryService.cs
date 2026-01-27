@@ -1,17 +1,26 @@
-﻿using Zugsichtungen.Abstractions.Interfaces;
+﻿using AutoMapper;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
+using Zugsichtungen.Domain.Models.Gallery;
+using Zugsichtungen.Foundation.Mapping;
 
 namespace Zugsichtungen.Infrastructure.Services
 {
     public class GalleryService : IGalleryService
     {
-        private readonly ISightingDataService dataService;
-        private readonly IImageRepository imageRepository;
+        private readonly IGalleryDataService dataService;
+        private readonly IMapper mapper;
 
-        public GalleryService(ISightingDataService dataService, IImageRepository imageRepository)
+        public GalleryService(IGalleryDataService dataService, IMapper mapper)
         {
             this.dataService = dataService;
-            this.imageRepository = imageRepository;
+            this.mapper = mapper;
+        }
+
+        public async Task<List<PictureDto>> GetGalleryPicturesAsync()
+        {
+            var pictures = await dataService.GetPicturesAsync();
+            return mapper.MapList<Picture, PictureDto>(pictures);
         }
     }
 }

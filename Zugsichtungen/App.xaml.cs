@@ -76,7 +76,8 @@ namespace Zugsichtungen
                     throw new ApplicationException("Keine gültige Datenbank konfiguriert!");
             }
 
-            services.AddSingleton<ISightingService, SightingService>();            
+            services.AddSingleton<ISightingService, SightingService>();   
+            services.AddSingleton<IGalleryService, GalleryService>();
         }
     }
 }

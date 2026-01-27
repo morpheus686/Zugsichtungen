@@ -13,6 +13,8 @@ public partial class ZugbeobachtungenContext : DbContext
 
     public virtual DbSet<Baureihen> Baureihens { get; set; }
 
+    public virtual DbSet<Bild> Bilds { get; set; }
+
     public virtual DbSet<Fahrzeuge> Fahrzeuges { get; set; }
 
     public virtual DbSet<Fahrzeugliste> Fahrzeuglistes { get; set; }
@@ -41,6 +43,15 @@ public partial class ZugbeobachtungenContext : DbContext
             entity.Property(e => e.Nummer).HasColumnName("nummer");
 
             entity.HasOne(d => d.Modell).WithMany(p => p.Baureihens).HasForeignKey(d => d.ModellId);
+        });
+
+        modelBuilder.Entity<Bild>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Bild");
+
+            entity.Property(e => e.Bild1).HasColumnName("Bild");
         });
 
         modelBuilder.Entity<Fahrzeuge>(entity =>
