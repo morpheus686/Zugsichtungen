@@ -42,7 +42,7 @@ namespace Zugsichtungen.ViewModels
             IDialogService dialogService,
             ISnackbarService snackbarService)
         {
-            this.SelectTabCommand = new RelayCommand<TabViewModelBase>(ExecuteSelectTabCommand);
+            this.SelectTabCommand = new AsyncRelayCommand<TabViewModelBase>(ExecuteSelectTabCommand);
             this.ToggleDrawerCommand = new RelayCommand(() => IsDrawerOpen = !IsDrawerOpen);
             this.OpenSettingsCommand = new AsyncRelayCommand(ExecuteOpenSettingsAsync);
 
@@ -58,11 +58,12 @@ namespace Zugsichtungen.ViewModels
             await this.dialogService.ShowDialogAsync(new SettingsDialogViewModel());
         }
 
-        private void ExecuteSelectTabCommand(TabViewModelBase? tabViewModel)
+        private async Task ExecuteSelectTabCommand(TabViewModelBase? tabViewModel)
         {
             if (tabViewModel != null && this.SelectedTab != tabViewModel)
             {
                 this.SelectedTab = tabViewModel;
+                await this.SelectedTab.Initialize();
                 RaisePropertyChanged(nameof(SelectedTab));
                 RaisePropertyChanged(nameof(CurrentTabTitle));
             }

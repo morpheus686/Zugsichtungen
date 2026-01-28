@@ -60,7 +60,7 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
         public CheckedObservableCollection VehicleViewFilterList { get; }
 
         private bool FilterSightings(object obj)
-        {    
+        {
             if (obj is not SichtungItemViewModel itemViewModel)
             {
                 return false;
@@ -104,7 +104,7 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
         }
 
         protected override async Task InitializeInternalAsync()
-        {    
+        {
             await LoadFilterAsync(
                 this.SightingService.GetAllSeriesAsync,
                 this.SeriesFilterList,
@@ -127,13 +127,14 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
             EventHandler<EventArgs> onCheckedChanged)
             where TItemViewModel : CheckedItemViewModelBase<TDto>
         {
+            targetCollection.Clear();
             var items = await loadFunc();
 
             foreach (var dto in items)
             {
                 var item = createViewModel(dto);
                 item.CheckedChanged += onCheckedChanged;
-                targetCollection.Add(item);                
+                targetCollection.Add(item);
             }
         }
 

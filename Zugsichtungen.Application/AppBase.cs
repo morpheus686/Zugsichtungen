@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Windows;
-using System.Windows.Controls.Ribbon;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Services;
 using Zugsichtungen.UI.Views;

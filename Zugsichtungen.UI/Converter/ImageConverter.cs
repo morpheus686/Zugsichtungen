@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.IO;
-using System.Reflection.Metadata.Ecma335;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -57,8 +56,10 @@ namespace Zugsichtungen.UI.Converter
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.CacheOption = BitmapCacheOption.OnLoad; // Stream danach freigeben
+
                 if (PixelWidth.HasValue)
                     bitmap.DecodePixelWidth = PixelWidth.Value;
+
                 bitmap.StreamSource = ms;
                 bitmap.EndInit();
                 bitmap.Freeze(); // optional: Thread-Safe

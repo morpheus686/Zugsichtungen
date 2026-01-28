@@ -65,7 +65,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                 await this.dialogService.ShowDialogAsync(showDetailsViewModel);
             }
 
-
             IsBusy = false;
         }
 
@@ -75,7 +74,6 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             {
                 await ReloadAllSightings();
                 this.IsInitializing = false;
-                RaisePropertyChanged(nameof(this.IsInitializing));
             }
             catch (Exception e)
             {

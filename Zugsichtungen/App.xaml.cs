@@ -20,7 +20,6 @@ namespace Zugsichtungen
     /// </summary>
     public partial class App : AppBase
     {
-
         protected override void ConfigureSpecificServices(IServiceCollection services)
         {
             var configuration = new ConfigurationBuilder()
