@@ -18,4 +18,6 @@ public partial class Gallery
     public string? Comment { get; set; }
 
     public byte[] Image { get; set; } = null!;
+
+    public byte[]? Thumbnail { get; set; }
 }

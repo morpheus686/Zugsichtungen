@@ -13,6 +13,7 @@
         public string? Context { get; private set; } = null!;
         public string? Comment { get; private set; } = null!;
         public byte[]? ImageData { get; private set; } = null!;
+        public byte[]? ThumbnailData { get; private set; } = null!; 
         public static Picture Create(
             int? id, 
             DateOnly? date,
@@ -20,7 +21,8 @@
             string? location,
             string? context,
             string? comment,
-            byte[]? imageData)
+            byte[]? imageData,
+            byte[]? thumbnailData)
         {
             return new Picture() 
             { 
@@ -30,7 +32,9 @@
                 Location = location,
                 Context = context,
                 Comment = comment,
-                ImageData = imageData };
+                ImageData = imageData,
+                ThumbnailData = thumbnailData
+            };
         }
     }
 }

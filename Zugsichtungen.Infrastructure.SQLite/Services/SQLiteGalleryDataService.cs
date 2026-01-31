@@ -37,7 +37,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
         private static Picture MapFromEntity(Bild entity)
         {
             return Picture.Create(
-                entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, entity.Bild1);
+                entity.Id, entity.Datum, entity.Loknummer, entity.Ort, entity.Thema, entity.Bemerkung, entity.Bild1, entity.Thumbnail);
         }
     }
 }

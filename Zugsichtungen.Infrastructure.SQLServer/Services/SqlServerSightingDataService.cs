@@ -45,7 +45,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
                 Location = sighting.Location,
                 VehicleId = sighting.VehicleId,
                 ContextId = sighting.ContextId,
-                Comment = sighting.Note
+                Comment = sighting.Note                
             };
 
             var sightingPicture = sighting.SightingPicture;
@@ -55,7 +55,8 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
                 entity.SightingPictures.Add(new Models.SightingPicture
                 {
                     Image = sightingPicture.Image,
-                    Filename = sightingPicture.Filename
+                    Filename = sightingPicture.Filename,
+                    Thumbnail = sightingPicture.Thumbnail
                 });
             }
 

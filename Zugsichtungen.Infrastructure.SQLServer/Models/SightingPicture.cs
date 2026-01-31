@@ -13,5 +13,7 @@ public partial class SightingPicture
 
     public string Filename { get; set; } = null!;
 
+    public byte[]? Thumbnail { get; set; }
+
     public virtual Sighting Sighting { get; set; } = null!;
 }

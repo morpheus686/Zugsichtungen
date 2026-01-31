@@ -43,6 +43,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
                 FahrzeugId = sighting.VehicleId,
                 KontextId = sighting.ContextId,
                 Bemerkung = sighting.Note
+                
             };
 
             var sightingPicture = sighting.SightingPicture;

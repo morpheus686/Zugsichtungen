@@ -18,4 +18,6 @@ public partial class Bild
     public string? Bemerkung { get; set; }
 
     public byte[]? Bild1 { get; set; }
+
+    public byte[]? Thumbnail { get; set; }
 }

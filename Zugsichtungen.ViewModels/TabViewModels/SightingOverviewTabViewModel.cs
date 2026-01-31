@@ -142,7 +142,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
                                 -1,
                                 -1,
                                 picture,
-                                ImageHelper.CreateThumbnail(picture),
+                                ImageHelper.CreateThumbnail(picture, 600),
                                 new FileInfo(filePath).Name
                             );
                         }

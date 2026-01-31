@@ -39,7 +39,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         private static Picture MapFromEntity(Gallery entity)
         {
             return Picture.Create(
-                entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, entity.ContextDescription, entity.Comment, entity.Image);
+                entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, entity.ContextDescription, entity.Comment, entity.Image, entity.Thumbnail);
         }
     }
 }

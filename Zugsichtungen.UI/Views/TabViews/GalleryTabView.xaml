@@ -33,7 +33,7 @@
                            Grid.RowSpan="4"
                            Width="300"
                            Height="200"
-                           Source="{Binding ImageData, Mode=OneTime, Converter={StaticResource ImageConverter}}"/>
+                           Source="{Binding ThumbnailData, Mode=OneTime}"/>
 
                     <Button Grid.Column="0"
                             Grid.RowSpan="4"

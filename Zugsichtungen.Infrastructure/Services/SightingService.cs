@@ -62,7 +62,7 @@ namespace Zugsichtungen.Infrastructure.Services
                         sightingWithPicture.Picture.Id, 
                         newSighting.Id, 
                         sightingWithPicture.Picture.Image,
-                        null,
+                        sightingWithPicture.Picture.Thumbnail,
                         sightingWithPicture.Picture.Filename);
                     newSighting.AddPicture(newSightingPicture);
                 }

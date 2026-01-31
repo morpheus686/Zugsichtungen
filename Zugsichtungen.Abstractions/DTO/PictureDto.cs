@@ -6,7 +6,8 @@
             string? Location,
             string? Context,
             string? Comment,
-            byte[]? ImageData)
+            byte[]? ImageData,
+            byte[]? ThumbnailData)
     {
     }
 }

@@ -27,7 +27,6 @@ namespace Zugsichtungen.Webclients.SightingService
             (
                 sighting,
                 sightingPicture
-
             );
 
             return await AddSightingAsync(sightingWithPictureDto);
