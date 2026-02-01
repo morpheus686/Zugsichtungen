@@ -33,7 +33,7 @@
                            Grid.RowSpan="4"
                            Width="300"
                            Height="200"
-                           Source="{Binding ThumbnailData, Mode=OneTime}"/>
+                           Source="{Binding Thumbnail, Mode=OneWay}"/>
 
                     <Button Grid.Column="0"
                             Grid.RowSpan="4"

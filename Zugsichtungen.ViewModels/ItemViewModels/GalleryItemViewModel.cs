@@ -5,18 +5,20 @@ namespace Zugsichtungen.ViewModels.ItemViewModels
 {
     public abstract class GalleryItemViewModel : LoadableViewModel
     {
-        private readonly PictureDto picture;
-
         public GalleryItemViewModel(PictureDto picture)
         {
-            this.picture = picture;
+            this.Picture = picture;
         }
 
-        public int? Id => picture.Id;
-        public DateOnly? Date => picture.Date;
-        public string? VehicleDesignation => picture.VehicleDesignation;
-        public string? Location => picture.Location;
-        public byte[]? ImageData => picture.ImageData;
-        public byte[]? ThumbnailData => picture.ThumbnailData ?? picture.ImageData;
+        protected PictureDto Picture { get; }
+
+        public int? Id => Picture.Id;
+        public DateOnly? Date => Picture.Date;
+        public string? VehicleDesignation => Picture.VehicleDesignation;
+        public string? Location => Picture.Location;
+        public byte[]? ImageData => Picture.ImageData;
+        public byte[]? ThumbnailData => Picture.ThumbnailData;
+
+
     }
 }

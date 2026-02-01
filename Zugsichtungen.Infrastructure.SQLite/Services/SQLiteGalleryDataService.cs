@@ -23,7 +23,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
             {
                 var fetchedPictures = new List<Picture>();
 
-                foreach (var bild in await context.Bilds.ToListAsync())
+                foreach (var bild in await context.Bilds.AsNoTracking().ToListAsync())
                 {
                     fetchedPictures.Add(MapFromEntity(bild));
                 }

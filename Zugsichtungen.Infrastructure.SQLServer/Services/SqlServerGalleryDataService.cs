@@ -25,7 +25,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             {
                 var fetchedPictures = new List<Picture>();
 
-                foreach (var galleryItem in await context.Galleries.ToListAsync())
+                foreach (var galleryItem in await context.Galleries.AsNoTracking().ToListAsync())
                 {
                     fetchedPictures.Add(MapFromEntity(galleryItem));
                 }

@@ -8,28 +8,37 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 {
     public abstract class GalleryTabViewModel : TabViewModelBase
     {
-        public GalleryTabViewModel(IGalleryService galleryService)
+        public GalleryTabViewModel(IGalleryService galleryService, IDialogService dialogService)
         {
             this.Title = "Galerie";
             GalleryService = galleryService;
-
+            DialogService = dialogService;
             GalleryList = [];
         }
 
         protected IGalleryService GalleryService { get; }
+        protected IDialogService DialogService { get; }
         public ObservableCollection<GalleryItemViewModel> GalleryList { get; }
 
         protected async override Task InitializeInternalAsync()
         {
-            GalleryList.Clear();
-            var pictures = await GalleryService.GetGalleryPicturesAsync();
-
-            foreach (var picture in pictures)
+            await this.DialogService.ShowIndeterminateDialogAsync(async (setMessage, obj) =>
             {
-                GalleryItemViewModel newItem = CreateGalleryItemViewModel(picture);
-                await newItem.Initialize();
-                GalleryList.Add(newItem);
-            }
+                setMessage("Galerie wird geladen.", Enumerations.IndeterminateState.Working);
+                GalleryList.Clear();
+                var pictures = await GalleryService.GetGalleryPicturesAsync();
+
+                var tasks = new List<Task>();
+
+                foreach (var picture in pictures)
+                {
+                    GalleryItemViewModel newItem = CreateGalleryItemViewModel(picture);
+                    tasks.Add(newItem.Initialize());
+                    GalleryList.Add(newItem);
+                }
+
+                await Task.WhenAll(tasks);
+            });
         }
 
         protected abstract GalleryItemViewModel CreateGalleryItemViewModel(PictureDto picture);

@@ -8,7 +8,7 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModel
 {
     public class GalleryTabWpfViewModel : GalleryTabViewModel
     {
-        public GalleryTabWpfViewModel(IGalleryService galleryService) : base(galleryService)
+        public GalleryTabWpfViewModel(IGalleryService galleryService, IDialogService dialogService) : base(galleryService, dialogService)
         {
         }
 
