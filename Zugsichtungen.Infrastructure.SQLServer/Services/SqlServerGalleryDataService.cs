@@ -23,23 +23,21 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
         {
             var pictures = await GetAllWithLoggingAsync<Gallery, List<Picture>>(async () =>
             {
-                var fetchedPictures = new List<Picture>();
-
-                foreach (var galleryItem in await context.Galleries.AsNoTracking().ToListAsync())
-                {
-                    fetchedPictures.Add(MapFromEntity(galleryItem));
-                }
-
-                return fetchedPictures;
+                return await context.Galleries
+                    .AsNoTracking()
+                    .Select(g => Picture.Create(
+                        g.Id,
+                        g.SightingDate,
+                        g.VehicleNumber,
+                        g.Location,
+                        g.ContextDescription,
+                        g.Comment,
+                        g.Image,
+                        g.Thumbnail))
+                    .ToListAsync();
             });
 
             return pictures;
-        }
-
-        private static Picture MapFromEntity(Gallery entity)
-        {
-            return Picture.Create(
-                entity.Id, entity.SightingDate, entity.VehicleNumber, entity.Location, entity.ContextDescription, entity.Comment, entity.Image, entity.Thumbnail);
         }
     }
 }
