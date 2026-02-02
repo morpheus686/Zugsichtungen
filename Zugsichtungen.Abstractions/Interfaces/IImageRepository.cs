@@ -1,4 +1,5 @@
 ﻿
+using Zugsichtungen.Domain.Models.Gallery;
 using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Abstractions.Interfaces
@@ -7,5 +8,7 @@ namespace Zugsichtungen.Abstractions.Interfaces
     {
         Task<SightingPicture?> GetImageBySightingIdAsync(int sightingId);
         Task<bool> CheckIfImageExistsAsync(int sightingId);
+        Task<Picture?> GetGalleryPictureByIdAsync(int imageId);
+        Task<Picture?> GetThumbnailByIdAsync(int imageId);
     }
 }

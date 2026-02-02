@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Zugsichtungen.Abstractions.DTO;
-using Zugsichtungen.Domain.Models.Gallery;
 using Zugsichtungen.ViewModels.ItemViewModels;
 
 namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
@@ -19,7 +18,7 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
         {
             Thumbnail = await Task.Run(() =>
             {
-                if (Picture.ThumbnailData != null 
+                if (Picture.ThumbnailData != null
                     && Picture.ThumbnailData.Length == 0)
                 {
                     return null;
@@ -37,7 +36,18 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
                 return bmp;
             });
 
-            RaisePropertyChanged(nameof(Thumbnail));
+            this.IsThumbnailLoading = false;
+            RaisePropertyChanged(nameof(IsThumbnailLoading));
+
+            if (this.Thumbnail == null)
+            {
+                this.IsNoThumbnailAvailable = true;
+                RaisePropertyChanged(nameof(IsNoThumbnailAvailable));
+            }
+            else
+            {
+                RaisePropertyChanged(nameof(Thumbnail));
+            }
         }
     }
 }

@@ -11,12 +11,14 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
     public class SqlServerGalleryDataService : DataServiceBase, IGalleryDataService
     {
         private readonly TrainspottingContext context;
+        private readonly IImageRepository imageRepository;
 
         public SqlServerGalleryDataService(TrainspottingContext context,
             ILogger<SqlServerGalleryDataService> logger,
             IImageRepository imageRepository) : base(context, logger)
         {
             this.context = context;
+            this.imageRepository = imageRepository;
         }
 
         public async Task<List<Picture>> GetPicturesAsync()

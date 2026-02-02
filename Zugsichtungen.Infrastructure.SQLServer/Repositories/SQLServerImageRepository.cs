@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Data.Common;
+using Zugsichtungen.Domain.Models.Gallery;
 using Zugsichtungen.Domain.Models.Sighting;
 using Zugsichtungen.Infrastructure.Repositories;
 
@@ -17,12 +18,21 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Repositories
 
         protected override string GetImageQuery => "SELECT Id, SightingId, Image, FileName FROM SightingPicture WHERE SightingId = @Id";
 
+        protected override string GetPictureQuery => throw new NotImplementedException();
+
+        protected override string GetThumbnailQuery => throw new NotImplementedException();
+
         protected override DbConnection CreateConnection(string connectionstring)
         {
             return new SqlConnection(connectionstring);
         }
 
-        protected override SightingPicture MapReader(IDataReader reader)
+        protected override Picture MapPicture(IDataReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override SightingPicture MapSightingPicture(IDataReader reader)
         {
             return SightingPicture.Create(reader.GetInt32(0), reader.GetInt32(1), (byte[])reader["Image"], null, reader.GetString(3));
         }

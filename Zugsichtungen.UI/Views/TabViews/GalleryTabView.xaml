@@ -28,12 +28,27 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-
+                    
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                 Grid.RowSpan="4"
+                                 Grid.Column="0"
+                                 Width="100"
+                                 Height="100" 
+                                 IsIndeterminate="True"
+                                 Visibility="{Binding IsThumbnailLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    
+                     <materialDesign:PackIcon Kind="ImageOff" 
+                                             Grid.RowSpan="4"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Height="75"
+                                              Width="75"/>                   
                     <Image Grid.Column="0"
                            Grid.RowSpan="4"
                            Width="300"
                            Height="200"
-                           Source="{Binding Thumbnail, Mode=OneWay}"/>
+                           Source="{Binding Thumbnail, Mode=OneWay}"
+                           Visibility="{Binding IsNoThumbnailAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <Button Grid.Column="0"
                             Grid.RowSpan="4"
@@ -61,7 +76,9 @@
         </Grid.ColumnDefinitions>
         <ListBox Grid.Column="0" ItemTemplate="{StaticResource GalleryItemTemplate}"
                  ItemsSource="{Binding GalleryList, Mode=OneTime}"
-                 materialDesign:ListBoxItemAssist.ShowSelection="False">
+                 materialDesign:ListBoxItemAssist.ShowSelection="False"
+                 materialDesign:ListBoxAssist.CanUserToggleSelectedItem="False"
+                 materialDesign:ListBoxItemAssist.Cursor="Arrow">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel IsItemsHost="True"

@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
 using Zugsichtungen.Abstractions.Interfaces;
+using Zugsichtungen.Domain.Models.Gallery;
 using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Infrastructure.Repositories
@@ -16,7 +17,10 @@ namespace Zugsichtungen.Infrastructure.Repositories
 
         protected abstract string ExistsQuery { get; }
         protected abstract string GetImageQuery { get; }
-        protected abstract SightingPicture MapReader(IDataReader reader);
+        protected abstract string GetPictureQuery { get; }
+        protected abstract string GetThumbnailQuery { get; }
+        protected abstract SightingPicture MapSightingPicture(IDataReader reader);
+        protected abstract Picture MapPicture(IDataReader reader);
         protected abstract DbConnection CreateConnection(string connectionstring);
 
         public async Task<SightingPicture?> GetImageBySightingIdAsync(int sightingId)
@@ -34,7 +38,7 @@ namespace Zugsichtungen.Infrastructure.Repositories
                 {
                     if (await reader.ReadAsync())
                     {
-                        return MapReader(reader);
+                        return MapSightingPicture(reader);
                     }
                 }
             }
@@ -57,11 +61,21 @@ namespace Zugsichtungen.Infrastructure.Repositories
             return value != null && Convert.ToInt32(value) != 0;
         }
 
+        public Task<Picture?> GetGalleryPictureByIdAsync(int imageId)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<DbConnection> GetOpenedConnectionAsync()
         {
             var connection = CreateConnection(this.connectionstring);
             await connection.OpenAsync();
             return connection;
+        }
+
+        public Task<Picture?> GetThumbnailByIdAsync(int imageId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

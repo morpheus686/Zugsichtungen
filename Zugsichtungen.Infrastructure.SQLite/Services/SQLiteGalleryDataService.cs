@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Zugsichtungen.Abstractions.Interfaces;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models.Gallery;
 using Zugsichtungen.Infrastructure.Services;
@@ -10,11 +11,15 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
     public class SQLiteGalleryDataService : DataServiceBase, IGalleryDataService
     {
         private readonly ZugbeobachtungenContext context;
+        private readonly IImageRepository imageRepository;
 
-        public SQLiteGalleryDataService(ZugbeobachtungenContext context, ILogger<SQLiteGalleryDataService> logger)
+        public SQLiteGalleryDataService(ZugbeobachtungenContext context,
+            ILogger<SQLiteGalleryDataService> logger,
+            IImageRepository imageRepository)
             : base(context, logger)
         {
             this.context = context;
+            this.imageRepository = imageRepository;
         }
 
         public async Task<List<Picture>> GetPicturesAsync()
