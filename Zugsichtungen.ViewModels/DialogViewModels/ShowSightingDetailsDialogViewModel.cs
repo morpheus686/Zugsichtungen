@@ -10,16 +10,31 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
         private readonly SightingViewEntryDto sighting;
         private readonly IDialogService dialogService;
         private byte[]? image;
+        private bool pictureIsNotAvailable;
 
         public byte[]? Image
         {
             get => image;
-            private set 
-            { 
+            private set
+            {
                 image = value;
                 RaisePropertyChanged(nameof(Image));
             }
         }
+
+        public bool PictureIsNotAvailable
+        {
+            get { return pictureIsNotAvailable; }
+            protected set
+            {
+                if (value != pictureIsNotAvailable)
+                {
+                    pictureIsNotAvailable = value;
+                    RaisePropertyChanged(nameof(PictureIsNotAvailable));
+                }
+            }
+        }
+
 
         public ShowSightingDetailsDialogViewModel(ISightingService sightingService, SightingViewEntryDto sichtung, IDialogService dialogService)
         {
@@ -28,6 +43,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
             this.dialogService = dialogService;
 
             this.Title = "Sichtungsdetails";
+            this.pictureIsNotAvailable = false;
         }
 
         protected override async Task InitializeInternalAsync()
@@ -44,6 +60,7 @@ namespace Zugsichtungen.ViewModels.DialogViewModels
                 else
                 {
                     this.Image = null;
+                    this.PictureIsNotAvailable = true;
                 }
             });
         }

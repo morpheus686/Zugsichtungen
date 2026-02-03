@@ -28,13 +28,23 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        
+
+        <materialDesign:PackIcon Kind="ImageOff" 
+                                 Grid.Row="0"
+                                 Grid.Column="0"
+                                 Grid.RowSpan="5"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"
+                                 Height="75"
+                                 Width="75"                                             
+                                 Visibility="{Binding PictureIsNotAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
         <Image Grid.Row="0"
                Grid.Column="0"
                Grid.RowSpan="5"
                Width="600"
                Height="400" 
-                Source="{Binding Image, Converter={StaticResource ImageConverter}}"/>
+               Source="{Binding Image, Converter={StaticResource ImageConverter}}"/>
         
         <TextBlock Text="Triebfahrzeug"
                    Grid.Column="1" />

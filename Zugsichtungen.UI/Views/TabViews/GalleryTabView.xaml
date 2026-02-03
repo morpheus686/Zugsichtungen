@@ -43,8 +43,8 @@
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
                                              Height="75"
-                                              Width="75"
-                                              Visibility="{Binding IsNoThumbnailAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                             Width="75"                                             
+                                             Visibility="{Binding IsNoThumbnailAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     
                     <Image Grid.Column="0"
                            Grid.RowSpan="4"
