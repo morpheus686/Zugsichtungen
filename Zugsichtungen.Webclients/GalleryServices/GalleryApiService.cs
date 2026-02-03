@@ -9,5 +9,10 @@ namespace Zugsichtungen.Webclients.GalleryServices
         {
             throw new NotImplementedException();
         }
+
+        public Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

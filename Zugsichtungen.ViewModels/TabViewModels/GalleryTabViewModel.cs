@@ -22,25 +22,25 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
         protected async override Task InitializeInternalAsync()
         {
+            var tasks = new List<Task>();
+
             await this.DialogService.ShowIndeterminateDialogAsync(async (setMessage, obj) =>
             {
                 setMessage("Galerie wird geladen.", Enumerations.IndeterminateState.Working);
                 GalleryList.Clear();
                 var pictures = await GalleryService.GetGalleryPicturesAsync();
 
-                var tasks = new List<Task>();
-
                 foreach (var picture in pictures)
                 {
-                    GalleryItemViewModel newItem = CreateGalleryItemViewModel(picture);
-                    tasks.Add(newItem.Initialize());
+                    GalleryItemViewModel newItem = CreateGalleryItemViewModel(picture, this.GalleryService);                    
                     GalleryList.Add(newItem);
+                    tasks.Add(newItem.LoadThumbnailAsync());
                 }
-
-                await Task.WhenAll(tasks);
             });
+
+            await Task.WhenAll(tasks);
         }
 
-        protected abstract GalleryItemViewModel CreateGalleryItemViewModel(PictureDto picture);
+        protected abstract GalleryItemViewModel CreateGalleryItemViewModel(PictureDto picture, IGalleryService galleryService);
     }
 }

@@ -1,13 +1,12 @@
 ﻿namespace Zugsichtungen.Abstractions.DTO
 {
-    public record PictureDto(int? Id,
+    public record PictureDto(int? SightingId,
+            int? PictureId,
             DateOnly? Date,
             string? VehicleDesignation,
             string? Location,
             string? Context,
-            string? Comment,
-            byte[]? ImageData,
-            byte[]? ThumbnailData)
+            string? Comment)
     {
     }
 }

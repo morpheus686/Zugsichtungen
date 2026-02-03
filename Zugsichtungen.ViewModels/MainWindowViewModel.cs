@@ -59,16 +59,17 @@ namespace Zugsichtungen.ViewModels
         }
 
         private async Task ExecuteSelectTabCommand(TabViewModelBase? tabViewModel)
-        {
+        {   
+            this.IsDrawerOpen = false;
+
             if (tabViewModel != null && this.SelectedTab != tabViewModel)
             {
                 this.SelectedTab = tabViewModel;
-                await this.SelectedTab.Initialize();
+                
                 RaisePropertyChanged(nameof(SelectedTab));
                 RaisePropertyChanged(nameof(CurrentTabTitle));
+                await this.SelectedTab.Initialize();
             }
-
-            this.IsDrawerOpen = false;
         }
 
         protected override Task InitializeInternalAsync()

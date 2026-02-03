@@ -4,6 +4,7 @@ using System.Windows.Data;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ViewModels;
 using Zugsichtungen.ViewModels.DialogViewModels;
+using Zugsichtungen.ViewModels.Enumerations;
 using Zugsichtungen.ViewModels.ListBoxViewModels.ItemViewModels;
 using Zugsichtungen.ViewModels.TabViewModels;
 using Zugsichtungen.Wpf.ViewModels.Collections;
@@ -105,19 +106,24 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModels
 
         protected override async Task InitializeInternalAsync()
         {
-            await LoadFilterAsync(
-                this.SightingService.GetAllSeriesAsync,
-                this.SeriesFilterList,
-                dto => new SeriesCheckedItemViewModel(dto),
-                OnSeriesCheckedChanged);
+            //await DialogService.ShowIndeterminateDialogAsync(async (setMessage, obj) =>
+            //{
+            //    setMessage("Sichtungen werden geladen...", IndeterminateState.Working);
 
-            await LoadFilterAsync(
-                this.SightingService.GetVehicleViewEntriesAsync,
-                this.VehicleViewFilterList,
-                dto => new VehicleViewCheckedItemViewModel(dto),
-                OnVehicleCheckedChanged);
+                await LoadFilterAsync(
+                    this.SightingService.GetAllSeriesAsync,
+                    this.SeriesFilterList,
+                    dto => new SeriesCheckedItemViewModel(dto),
+                    OnSeriesCheckedChanged);
 
-            await base.InitializeInternalAsync();
+                await LoadFilterAsync(
+                    this.SightingService.GetVehicleViewEntriesAsync,
+                    this.VehicleViewFilterList,
+                    dto => new VehicleViewCheckedItemViewModel(dto),
+                    OnVehicleCheckedChanged);
+
+                await base.InitializeInternalAsync();
+            //});
         }
 
         private async Task LoadFilterAsync<TDto, TItemViewModel>(

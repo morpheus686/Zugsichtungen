@@ -28,18 +28,22 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
                 return await context.Galleries
                     .AsNoTracking()
                     .Select(g => Picture.Create(
-                        g.Id,
+                        g.SightingId,
+                        g.PictureId,
                         g.SightingDate,
                         g.VehicleNumber,
                         g.Location,
                         g.ContextDescription,
-                        g.Comment,
-                        g.Image,
-                        g.Thumbnail))
+                        g.Comment))
                     .ToListAsync();
             });
 
             return pictures;
+        }
+
+        public Task<ThumbnailData?> GetThumbnailByIdAsync(int id)
+        {
+            return this.imageRepository.GetThumbnailByIdAsync(id);
         }
     }
 }

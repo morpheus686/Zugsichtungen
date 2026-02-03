@@ -17,23 +17,23 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
 
         protected override string GetImageQuery => "SELECT Id, SichtungId, Bild, Dateiname FROM SichtungBild WHERE SichtungId = @Id";
 
-        protected override string GetPictureQuery => throw new NotImplementedException();
+        protected override string GetPictureDataQuery => throw new NotImplementedException();
 
-        protected override string GetThumbnailQuery => throw new NotImplementedException();
+        protected override string GetThumbnailDataQuery => throw new NotImplementedException();
 
         protected override DbConnection CreateConnection(string connectionstring)
         {
             return new SqliteConnection(connectionstring);
         }
 
-        protected override Picture MapPicture(IDataReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
         protected override SightingPicture MapSightingPicture(IDataReader reader)
         {
             return SightingPicture.Create(reader.GetInt32(0), reader.GetInt32(1), (byte[])reader["Bild"], null, reader.GetString(3));
+        }
+
+        protected override ThumbnailData MapThumbnailData(IDataReader reader)
+        {
+            throw new NotImplementedException();
         }
     }
 }

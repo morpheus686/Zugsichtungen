@@ -30,17 +30,21 @@ namespace Zugsichtungen.Infrastructure.SQLite.Services
                     .AsNoTracking()
                     .Select(b => Picture.Create(
                         b.Id,
+                        null,
                         b.Datum,
                         b.Loknummer,
                         b.Ort,
                         b.Thema,
-                        b.Bemerkung,
-                        b.Bild1,
-                        b.Thumbnail))
+                        b.Bemerkung))
                     .ToListAsync();
             });
 
             return pictures;
+        }
+
+        public Task<ThumbnailData?> GetThumbnailByIdAsync(int id)
+        {
+            return imageRepository.GetThumbnailByIdAsync(id);
         }
     }
 }

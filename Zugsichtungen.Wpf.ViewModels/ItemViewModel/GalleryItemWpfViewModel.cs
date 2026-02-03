@@ -2,39 +2,47 @@
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Zugsichtungen.Abstractions.DTO;
+using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.ViewModels.ItemViewModels;
 
 namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
 {
     public class GalleryItemWpfViewModel : GalleryItemViewModel
     {
-        public GalleryItemWpfViewModel(PictureDto picture) : base(picture)
+        public GalleryItemWpfViewModel(PictureDto picture, IGalleryService galleryService) : base(picture, galleryService)
         {
         }
 
         public ImageSource? Thumbnail { get; private set; } = null!;
 
-        protected async override Task InitializeInternalAsync()
+        public override async Task LoadThumbnailAsync()
         {
-            Thumbnail = await Task.Run(() =>
+            var thumbnailDataDto = await this.GalleryService.GetThumbnailDataAsync(this.PictureId.Value);
+
+            await Task.Delay(2000); // Simuliere Ladezeit
+
+            if (thumbnailDataDto != null)
             {
-                if (Picture.ThumbnailData != null
-                    && Picture.ThumbnailData.Length == 0)
+                Thumbnail = await Task.Run(() =>
                 {
-                    return null;
-                }
+                    if (thumbnailDataDto.Data != null
+                        && thumbnailDataDto.Data.Length == 0)
+                    {
+                        return null;
+                    }
 
-                using var ms = new MemoryStream(Picture.ThumbnailData);
+                    using var ms = new MemoryStream(thumbnailDataDto.Data);
 
-                var bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.CacheOption = BitmapCacheOption.OnLoad;
-                bmp.StreamSource = ms;
-                bmp.EndInit();
-                bmp.Freeze(); // 🔥 EXTREM wichtig
+                    var bmp = new BitmapImage();
+                    bmp.BeginInit();
+                    bmp.CacheOption = BitmapCacheOption.OnLoad;
+                    bmp.StreamSource = ms;
+                    bmp.EndInit();
+                    bmp.Freeze(); // 🔥 EXTREM wichtig
 
-                return bmp;
-            });
+                    return bmp;
+                });
+            }
 
             this.IsThumbnailLoading = false;
             RaisePropertyChanged(nameof(IsThumbnailLoading));
@@ -42,7 +50,6 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
             if (this.Thumbnail == null)
             {
                 this.IsNoThumbnailAvailable = true;
-                RaisePropertyChanged(nameof(IsNoThumbnailAvailable));
             }
             else
             {

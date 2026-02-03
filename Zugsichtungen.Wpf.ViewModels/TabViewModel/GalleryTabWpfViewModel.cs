@@ -12,9 +12,9 @@ namespace Zugsichtungen.Wpf.ViewModels.TabViewModel
         {
         }
 
-        protected override GalleryItemViewModel CreateGalleryItemViewModel(PictureDto picture)
+        protected override GalleryItemViewModel CreateGalleryItemViewModel(PictureDto picture, IGalleryService galleryService)
         {
-            return new GalleryItemWpfViewModel(picture);
+            return new GalleryItemWpfViewModel(picture, galleryService);
         }
     }
 }

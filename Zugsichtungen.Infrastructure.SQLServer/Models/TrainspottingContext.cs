@@ -109,7 +109,7 @@ public partial class TrainspottingContext : DbContext
 
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.Location).HasMaxLength(100);
-            entity.Property(e => e.VehicleNumber).HasMaxLength(32);
+            entity.Property(e => e.VehicleNumber).HasMaxLength(21);
         });
 
         modelBuilder.Entity<SightingPicture>(entity =>

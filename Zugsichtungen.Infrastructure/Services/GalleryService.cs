@@ -22,5 +22,17 @@ namespace Zugsichtungen.Infrastructure.Services
             var pictures = await dataService.GetPicturesAsync();
             return mapper.MapList<Picture, PictureDto>(pictures);
         }
+
+        public async Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId)
+        {
+            var thumbnailData = await dataService.GetThumbnailByIdAsync(pictureId);
+
+            if (thumbnailData is null)
+            {
+                return null;
+            }
+
+            return mapper.Map<ThumbnailData, ThumbnailDataDto>(thumbnailData);
+        }
     }
 }

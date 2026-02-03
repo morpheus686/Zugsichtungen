@@ -12,12 +12,13 @@
     <customControls:TabView.Resources>
         <converter:ImageConverter x:Key="ImageConverter"
                                   PixelWidth="600" />
+        <converter:DateOnlyToGermanDateConverter x:Key="DateOnlyToGermanDateConverter"/>
 
         <DataTemplate x:Key="GalleryItemTemplate">
             <materialDesign:Card Margin="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="400" />
                     </Grid.ColumnDefinitions>
 
@@ -36,19 +37,21 @@
                                  Height="100" 
                                  IsIndeterminate="True"
                                  Visibility="{Binding IsThumbnailLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                    
-                     <materialDesign:PackIcon Kind="ImageOff" 
+
+                    <materialDesign:PackIcon Kind="ImageOff" 
                                              Grid.RowSpan="4"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
                                              Height="75"
-                                              Width="75"/>                   
+                                              Width="75"
+                                              Visibility="{Binding IsNoThumbnailAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    
                     <Image Grid.Column="0"
                            Grid.RowSpan="4"
                            Width="300"
                            Height="200"
                            Source="{Binding Thumbnail, Mode=OneWay}"
-                           Visibility="{Binding IsNoThumbnailAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                           />
 
                     <Button Grid.Column="0"
                             Grid.RowSpan="4"
@@ -57,7 +60,7 @@
                             Content="{materialDesign:PackIcon Kind=ArrowExpand}"
                             Style="{StaticResource MaterialDesignIconButton}"/>
 
-                    <TextBlock Text="{Binding Date, Mode=OneTime}" Grid.Column="1" 
+                    <TextBlock Text="{Binding Date, Mode=OneTime, Converter={StaticResource DateOnlyToGermanDateConverter}}" Grid.Column="1" 
                                FontSize="30"/>
                     <TextBlock Text="{Binding VehicleDesignation, Mode=OneTime}" Grid.Column="1" Grid.Row="1"
                                FontSize="30"/>

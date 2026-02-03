@@ -5,7 +5,9 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Models;
 
 public partial class Gallery
 {
-    public int Id { get; set; }
+    public int SightingId { get; set; }
+
+    public int PictureId { get; set; }
 
     public DateOnly SightingDate { get; set; }
 
@@ -16,8 +18,4 @@ public partial class Gallery
     public string? ContextDescription { get; set; }
 
     public string? Comment { get; set; }
-
-    public byte[] Image { get; set; } = null!;
-
-    public byte[]? Thumbnail { get; set; }
 }

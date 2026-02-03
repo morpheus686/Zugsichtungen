@@ -9,7 +9,7 @@ public partial class SightingList
 
     public DateOnly SightingDate { get; set; }
 
-    public string? VehicleNumber { get; set; }
+    public string VehicleNumber { get; set; } = null!;
 
     public string Location { get; set; } = null!;
 
