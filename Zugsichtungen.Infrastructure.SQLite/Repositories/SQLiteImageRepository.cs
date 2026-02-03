@@ -19,7 +19,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
 
         protected override string GetPictureDataQuery => throw new NotImplementedException();
 
-        protected override string GetThumbnailDataQuery => throw new NotImplementedException();
+        protected override string GetThumbnailDataQuery =>"SELECT Id, Thumbnail FROM SichtungBild WHERE SichtungBild.Id = @Id"; 
 
         protected override DbConnection CreateConnection(string connectionstring)
         {
@@ -33,7 +33,14 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
 
         protected override ThumbnailData MapThumbnailData(IDataReader reader)
         {
-            throw new NotImplementedException();
+            var thumbnailData = reader["Thumbnail"];
+
+            if (thumbnailData == DBNull.Value)
+            {
+                return ThumbnailData.Create(reader.GetInt32(0), null);
+            }
+
+            return ThumbnailData.Create(reader.GetInt32(0), (byte[]?)reader["Thumbnail"]);
         }
     }
 }
