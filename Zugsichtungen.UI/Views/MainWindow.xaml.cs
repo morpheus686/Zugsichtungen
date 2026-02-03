@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using Zugsichtungen.ViewModels;
 
@@ -14,6 +15,12 @@ namespace Zugsichtungen.UI.Views
             InitializeComponent();
             DataContext = viewModel;
             this.Loaded += MainWindow_Loaded;
+            this.ContentRendered += MainWindow_ContentRendered;
+        }
+
+        private void MainWindow_ContentRendered(object? sender, EventArgs e)
+        {
+            Debug.WriteLine("MainWindow rendered");
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -24,7 +31,7 @@ namespace Zugsichtungen.UI.Views
             }
         }
 
-        private void ColorZone_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ColorZone_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {

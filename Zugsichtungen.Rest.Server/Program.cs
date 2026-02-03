@@ -30,6 +30,7 @@ UseSqlite(builder);
 //UseSqlServer(builder);
 
 builder.Services.AddScoped<ISightingService, SightingService>();
+builder.Services.AddScoped<IGalleryService, GalleryService>();
 builder.Services.AddAutoMapper(config => config.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
 AddSignalR(builder);
 
@@ -95,13 +96,6 @@ static void MapMinimalApi(WebApplication app)
         return Results.Ok(entries);
     });
 
-    app.MapPost("api/addsighting", async (Tuple<SightingDto, SightingPictureDto> sighting, ISightingService service, IHubContext<SightingHub> hub) =>
-    {
-        var newSightingId = await service.AddSightingAsync(sighting.Item1, sighting.Item2);
-        var savedDto = await service.GetSightingViewEntryBySightingIdAsync(newSightingId);
-        await hub.Clients.All.SendAsync("SightingAdded", savedDto);
-    });
-
     app.MapPost("api/addsightingwithpicture", async (SightingWithPictureDto sightingWithPicture, ISightingService service, IHubContext<SightingHub> hub) =>
     {
         var newSightingId = await service.AddSightingAsync(sightingWithPicture);
@@ -138,6 +132,18 @@ static void MapMinimalApi(WebApplication app)
         var entries = await service.GetAllVehiclesAsync();
         return Results.Ok(entries);
     });
+
+    app.MapGet("api/pictures", async (IGalleryService service) =>
+    {
+        var entries = await service.GetGalleryPicturesAsync();
+        return Results.Ok(entries);
+    });
+
+    app.MapGet("api/thumbnail", async (int pictureId, IGalleryService service) =>
+    {
+        var thumbnailData = await service.GetThumbnailDataAsync(pictureId);
+        return thumbnailData is not null ? Results.Ok(thumbnailData) : Results.NotFound();
+    });
 }
 
 static void UseSqlite(WebApplicationBuilder builder)
@@ -155,6 +161,7 @@ static void UseSqlite(WebApplicationBuilder builder)
     });
 
     builder.Services.AddScoped<ISightingDataService, SQLiteSightingDataService>();
+    builder.Services.AddScoped<IGalleryDataService, SQLiteGalleryDataService>();
 }
 
 //static void UseSqlServer(WebApplicationBuilder builder)
@@ -171,5 +178,6 @@ static void UseSqlite(WebApplicationBuilder builder)
 //        return new SQLServerImageRepository(sqlserverConnectionstring);
 //    });
 
-//    builder.Services.AddScoped<IDataService, SqlServerDataService>();
+//    builder.Services.AddScoped<ISightingDataService, SqlServerSightingDataService>();
+//    builder.Services.AddScoped<IGalleryDataService, SqlServerGalleryDataService>();
 //}

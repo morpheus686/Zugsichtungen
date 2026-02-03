@@ -1,18 +1,27 @@
-﻿using Zugsichtungen.Abstractions.DTO;
+﻿using System.Net.Http.Json;
+using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 
 namespace Zugsichtungen.Webclients.GalleryServices
 {
     public class GalleryApiService : IGalleryService
     {
-        public Task<List<PictureDto>> GetGalleryPicturesAsync()
+        private readonly HttpClient httpClient;
+
+        public GalleryApiService(HttpClient httpClient)
         {
-            throw new NotImplementedException();
+            this.httpClient = httpClient;
         }
 
-        public Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId)
+        public async Task<List<PictureDto>> GetGalleryPicturesAsync()
         {
-            throw new NotImplementedException();
+            var result = await this.httpClient.GetFromJsonAsync<List<PictureDto>>("api/pictures");
+            return result ?? new List<PictureDto>();
+        }
+
+        public async Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId)
+        {
+            return await this.httpClient.GetFromJsonAsync<ThumbnailDataDto>($"api/thumbnail?pictureId={pictureId}");
         }
     }
 }
