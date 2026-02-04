@@ -4,7 +4,7 @@ using Zugsichtungen.ApplicationBase;
 using Zugsichtungen.Webclients.GalleryServices;
 using Zugsichtungen.Webclients.SightingService;
 
-namespace Zugsichtungen.Rest
+namespace Zugsichtungen.OData
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -15,12 +15,12 @@ namespace Zugsichtungen.Rest
 
         protected override void ConfigureSpecificServices(IServiceCollection services)
         {
-            services.AddHttpClient<ISightingService, SightingApiService>(client =>
+            services.AddHttpClient<ISightingService, SightingODataService>(client =>
             {
                 client.BaseAddress = new Uri(UriString);
             });
 
-            services.AddHttpClient<IGalleryService, GalleryApiService>(client =>
+            services.AddHttpClient<IGalleryService, GalleryODataService>(client =>
             {
                 client.BaseAddress = new Uri(UriString);
             });

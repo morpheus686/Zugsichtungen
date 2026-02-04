@@ -1,17 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Net.Http.Json;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 
 namespace Zugsichtungen.Webclients.GalleryServices
 {
-    public class GalleryODataService : IGalleryService
+    public class GalleryODataService : ODataServiceBase, IGalleryService
     {
-        private class ODataResponse<T>
-        {
-            [JsonPropertyName("value")]
-            public List<T> Value { get; set; } = new();
-        }
-
         private readonly HttpClient httpClient;
 
         public GalleryODataService(HttpClient httpClient)
@@ -19,14 +13,15 @@ namespace Zugsichtungen.Webclients.GalleryServices
             this.httpClient = httpClient;
         }
 
-        public Task<List<PictureDto>> GetGalleryPicturesAsync()
+        public async Task<List<PictureDto>> GetGalleryPicturesAsync()
         {
-            throw new NotImplementedException();
+            var response = await this.httpClient.GetFromJsonAsync<ODataResponse<PictureDto>>("odata/Picture");
+            return response?.Value ?? [];
         }
 
-        public Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId)
+        public async Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId)
         {
-            throw new NotImplementedException();
+            return await this.httpClient.GetFromJsonAsync<ThumbnailDataDto>($"odata/ThumbnailData({pictureId})");
         }
     }
 }

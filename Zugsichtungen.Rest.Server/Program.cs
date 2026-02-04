@@ -75,12 +75,16 @@ static void AddOData(WebApplicationBuilder builder)
 {
     builder.Services.AddOData();
     var modelBuilder = new ODataConventionModelBuilder();
-    modelBuilder.EntitySet<SightingViewEntryDto>("Sighting");
+    modelBuilder.EntitySet<SightingViewEntryDto>("Sighting");   
     modelBuilder.EntitySet<SightingPictureDto>("SightingPicture");
     modelBuilder.EntitySet<ContextDto>("Context");
     modelBuilder.EntitySet<VehicleViewEntryDto>("VehicleView");
     modelBuilder.EntitySet<VehicleDto>("Vehicle");
-    modelBuilder.EntitySet<SeriesDto>("Series");
+    modelBuilder.EntitySet<SeriesDto>("Series");  
+    modelBuilder.EntitySet<ThumbnailDataDto>("ThumbnailData");
+    // PictureDto comes from a view and ODataConventionModelBuilder may not detect a key.
+    // Define the key explicitly so the EDM model can be built.
+    modelBuilder.EntitySet<PictureDto>("Picture").EntityType.HasKey(p => new { p.PictureId, p.SightingId});
 
     builder.Services.AddControllers().AddOData(
         options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(

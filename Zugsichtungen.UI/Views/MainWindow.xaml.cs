@@ -14,17 +14,13 @@ namespace Zugsichtungen.UI.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-            this.Loaded += MainWindow_Loaded;
             this.ContentRendered += MainWindow_ContentRendered;
         }
 
-        private void MainWindow_ContentRendered(object? sender, EventArgs e)
+        private async void MainWindow_ContentRendered(object? sender, EventArgs e)
         {
             Debug.WriteLine("MainWindow rendered");
-        }
 
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
             if (this.DataContext is MainWindowViewModel mwvm)
             {
                 await mwvm.Initialize();                

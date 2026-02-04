@@ -1,19 +1,12 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 using Zugsichtungen.Abstractions.DTO;
 using Zugsichtungen.Abstractions.Services;
 using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Webclients.SightingService
 {
-    public class SightingODataService : ISightingService
+    public class SightingODataService : ODataServiceBase, ISightingService
     {
-        private class ODataResponse<T>
-        {
-            [JsonPropertyName("value")]
-            public List<T> Value { get; set; } = new();
-        }
-
         private readonly HttpClient httpClient;
 
         public SightingODataService(HttpClient httpClient)
