@@ -17,6 +17,18 @@ namespace Zugsichtungen.Infrastructure.Services
             this.mapper = mapper;
         }
 
+        public async Task<GalleryPictureDataDto?> GetGalleryPictureDataDtoAsync(int pictureId)
+        {
+            var pictureData = await dataService.GetPictureByIdAsync(pictureId);
+
+            if (pictureData is null)
+            {
+                return null;
+            }
+
+            return mapper.Map<PictureData, GalleryPictureDataDto>(pictureData);
+        }
+
         public async Task<List<PictureDto>> GetGalleryPicturesAsync()
         {
             var pictures = await dataService.GetPicturesAsync();

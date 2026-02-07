@@ -58,7 +58,8 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Content="{materialDesign:PackIcon Kind=ArrowExpand}"
-                            Style="{StaticResource MaterialDesignIconButton}"/>
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            Command="{Binding ShowPictureCommand, Mode=OneTime}"/>
 
                     <TextBlock Text="{Binding Date, Mode=OneTime, Converter={StaticResource DateOnlyToGermanDateConverter}}" Grid.Column="1" 
                                FontSize="30"/>

@@ -21,6 +21,11 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
             this.imageRepository = imageRepository;
         }
 
+        public Task<PictureData?> GetPictureByIdAsync(int id)
+        {
+            return this.imageRepository.GetPictureDataByIdAsync(id);
+        }
+
         public async Task<List<Picture>> GetPicturesAsync()
         {
             var pictures = await GetAllWithLoggingAsync<Gallery, List<Picture>>(async () =>
@@ -43,7 +48,7 @@ namespace Zugsichtungen.Infrastructure.SQLServer.Services
 
         public Task<ThumbnailData?> GetThumbnailByIdAsync(int id)
         {
-            return this.imageRepository.GetThumbnailByIdAsync(id);
+            return this.imageRepository.GetThumbnailDataByIdAsync(id);
         }
     }
 }

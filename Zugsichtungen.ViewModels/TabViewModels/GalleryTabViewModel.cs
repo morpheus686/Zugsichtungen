@@ -32,7 +32,7 @@ namespace Zugsichtungen.ViewModels.TabViewModels
 
                 foreach (var picture in pictures)
                 {
-                    GalleryItemViewModel newItem = CreateGalleryItemViewModel(picture, this.GalleryService);                    
+                    GalleryItemViewModel newItem = CreateGalleryItemViewModel(picture, this.GalleryService, this.DialogService);                    
                     GalleryList.Add(newItem);
                     tasks.Add(newItem.LoadThumbnailAsync());
                 }
@@ -41,6 +41,9 @@ namespace Zugsichtungen.ViewModels.TabViewModels
             await Task.WhenAll(tasks);
         }
 
-        protected abstract GalleryItemViewModel CreateGalleryItemViewModel(PictureDto picture, IGalleryService galleryService);
+        protected abstract GalleryItemViewModel CreateGalleryItemViewModel(
+            PictureDto picture, 
+            IGalleryService galleryService,
+            IDialogService dialogService);
     }
 }

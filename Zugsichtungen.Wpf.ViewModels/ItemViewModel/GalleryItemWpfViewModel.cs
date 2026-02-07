@@ -9,14 +9,60 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
 {
     public class GalleryItemWpfViewModel : GalleryItemViewModel
     {
-        public GalleryItemWpfViewModel(PictureDto picture, IGalleryService galleryService) : base(picture, galleryService)
+        public GalleryItemWpfViewModel(
+            PictureDto picture,
+            IGalleryService galleryService,
+            IDialogService dialogService) : base(picture, galleryService, dialogService)
         {
         }
 
         public ImageSource? Thumbnail { get; private set; } = null!;
+        public ImageSource? Picture { get; private set; } = null!;
+
+        public override async Task LoadPictureAsync()
+        {
+            if (this.Picture != null)
+            {
+                return;
+            }
+
+            var pictureDataDto = await this.GalleryService.GetGalleryPictureDataDtoAsync(this.PictureId.Value);
+            await Task.Delay(1500); // Simuliere Ladezeit
+
+            if (pictureDataDto != null)
+            {
+                Picture = await Task.Run(() =>
+                {
+                    if (pictureDataDto.Data != null
+                        && pictureDataDto.Data.Length == 0)
+                    {
+                        return null;
+                    }
+
+                    return CreateBitmapImage(pictureDataDto.Data);
+                });
+            }
+
+            this.IsPictureLoading = false;
+            RaisePropertyChanged(nameof(IsPictureLoading));
+
+            if (this.Picture == null)
+            {
+                this.IsNoPictureAvailable = true;
+            }
+            else
+            {
+                RaisePropertyChanged(nameof(Picture));
+            }
+        }
 
         public override async Task LoadThumbnailAsync()
         {
+            if (this.Thumbnail != null)
+            {
+                return;
+            }
+
             var thumbnailDataDto = await this.GalleryService.GetThumbnailDataAsync(this.PictureId.Value);
 
             await Task.Delay(2000); // Simuliere Ladezeit
@@ -31,16 +77,7 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
                         return null;
                     }
 
-                    using var ms = new MemoryStream(thumbnailDataDto.Data);
-
-                    var bmp = new BitmapImage();
-                    bmp.BeginInit();
-                    bmp.CacheOption = BitmapCacheOption.OnLoad;
-                    bmp.StreamSource = ms;
-                    bmp.EndInit();
-                    bmp.Freeze(); // 🔥 EXTREM wichtig
-
-                    return bmp;
+                    return CreateBitmapImage(thumbnailDataDto.Data);
                 });
             }
 
@@ -55,6 +92,20 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
             {
                 RaisePropertyChanged(nameof(Thumbnail));
             }
+        }
+
+        private static BitmapImage CreateBitmapImage(byte[] data)
+        {
+            using var ms = new MemoryStream(data);
+
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.StreamSource = ms;
+            bmp.EndInit();
+            bmp.Freeze(); // 🔥 EXTREM wichtig
+
+            return bmp;
         }
     }
 }

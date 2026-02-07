@@ -4,7 +4,7 @@ using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Infrastructure.Mapping
 {
-    internal class ContextProfile : Profile
+    public class ContextProfile : Profile
     {
         public ContextProfile()
         {

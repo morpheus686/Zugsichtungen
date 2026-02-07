@@ -4,7 +4,7 @@ using Zugsichtungen.Domain.Models.Sighting;
 
 namespace Zugsichtungen.Infrastructure.Mapping
 {
-    internal class VehicleViewEntryProfile : Profile
+    public class VehicleViewEntryProfile : Profile
     {
         public VehicleViewEntryProfile()
         {

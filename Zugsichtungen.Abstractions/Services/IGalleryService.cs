@@ -6,5 +6,6 @@ namespace Zugsichtungen.Abstractions.Services
     {
         Task<List<PictureDto>> GetGalleryPicturesAsync();
         Task<ThumbnailDataDto?> GetThumbnailDataAsync(int pictureId);
+        Task<GalleryPictureDataDto?> GetGalleryPictureDataDtoAsync(int pictureId);
     }
 }

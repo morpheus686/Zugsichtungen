@@ -17,13 +17,25 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
 
         protected override string GetImageQuery => "SELECT Id, SichtungId, Bild, Dateiname FROM SichtungBild WHERE SichtungId = @Id";
 
-        protected override string GetPictureDataQuery => throw new NotImplementedException();
+        protected override string GetPictureDataQuery => "SELECT Id, Bild FROM SichtungBild WHERE SichtungBild.Id = @Id";
 
         protected override string GetThumbnailDataQuery =>"SELECT Id, Thumbnail FROM SichtungBild WHERE SichtungBild.Id = @Id"; 
 
         protected override DbConnection CreateConnection(string connectionstring)
         {
             return new SqliteConnection(connectionstring);
+        }
+
+        protected override PictureData MapPictureData(IDataReader reader)
+        {
+            var pictureData = reader["Bild"];
+
+            if (pictureData == DBNull.Value)
+            {
+                return PictureData.Create(reader.GetInt32(0), null);
+            }
+
+            return PictureData.Create(reader.GetInt32(0), (byte[]?)pictureData);
         }
 
         protected override SightingPicture MapSightingPicture(IDataReader reader)
@@ -40,7 +52,7 @@ namespace Zugsichtungen.Infrastructure.SQLite.Repositories
                 return ThumbnailData.Create(reader.GetInt32(0), null);
             }
 
-            return ThumbnailData.Create(reader.GetInt32(0), (byte[]?)reader["Thumbnail"]);
+            return ThumbnailData.Create(reader.GetInt32(0), (byte[]?)thumbnailData);
         }
     }
 }

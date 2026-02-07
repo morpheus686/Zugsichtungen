@@ -21,6 +21,7 @@ namespace Zugsichtungen.Infrastructure.Repositories
         protected abstract string GetThumbnailDataQuery { get; }
         protected abstract SightingPicture MapSightingPicture(IDataReader reader);
         protected abstract ThumbnailData MapThumbnailData(IDataReader reader);
+        protected abstract PictureData MapPictureData(IDataReader reader);
         protected abstract DbConnection CreateConnection(string connectionstring);
 
         public async Task<SightingPicture?> GetImageBySightingIdAsync(int sightingId)
@@ -73,7 +74,7 @@ namespace Zugsichtungen.Infrastructure.Repositories
             return connection;
         }
 
-        public async Task<ThumbnailData?> GetThumbnailByIdAsync(int imageId)
+        public async Task<ThumbnailData?> GetThumbnailDataByIdAsync(int imageId)
         {
             using var connection = await GetOpenedConnectionAsync();
             using var command = connection.CreateCommand();
@@ -89,6 +90,28 @@ namespace Zugsichtungen.Infrastructure.Repositories
                 if (await reader.ReadAsync())
                 {
                     return MapThumbnailData(reader);
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<PictureData?> GetPictureDataByIdAsync(int imageId)
+        {
+            using var connection = await GetOpenedConnectionAsync();
+            using var command = connection.CreateCommand();
+
+            command.CommandText = GetPictureDataQuery;
+            var param = command.CreateParameter();
+            param.ParameterName = "@Id";
+            param.Value = imageId;
+            command.Parameters.Add(param);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                if (await reader.ReadAsync())
+                {
+                    return MapPictureData(reader);
                 }
             }
 

@@ -13,6 +13,11 @@ namespace Zugsichtungen.Webclients.GalleryServices
             this.httpClient = httpClient;
         }
 
+        public Task<GalleryPictureDataDto?> GetGalleryPictureDataDtoAsync(int pictureId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<PictureDto>> GetGalleryPicturesAsync()
         {
             var result = await this.httpClient.GetFromJsonAsync<List<PictureDto>>("api/pictures");

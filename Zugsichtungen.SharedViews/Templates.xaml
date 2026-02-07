@@ -4,7 +4,8 @@
              xmlns:dialogView="clr-namespace:Zugsichtungen.UI.Views.DialogViews;assembly=Zugsichtungen.UI"
              xmlns:tabViewModel="clr-namespace:Zugsichtungen.ViewModels.TabViewModels;assembly=Zugsichtungen.ViewModels"
              xmlns:tabView="clr-namespace:Zugsichtungen.UI.Views.TabViews;assembly=Zugsichtungen.UI"
-             xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls">    
+             xmlns:controls="clr-namespace:Zugsichtungen.UI.Controls.CustomControls;assembly=Zugsichtungen.UI.Controls"
+                    xmlns:itemViewModel="clr-namespace:Zugsichtungen.ViewModels.ItemViewModels;assembly=Zugsichtungen.ViewModels">    
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Zugsichtungen.Styles;component/Themes/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -31,5 +32,9 @@
 
     <DataTemplate DataType="{x:Type dialogViewModel:SettingsDialogViewModel}">
         <dialogView:SettingsDialogView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type itemViewModel:GalleryItemViewModel}">
+        <dialogView:ShowPictureDialogView />
     </DataTemplate>
 </ResourceDictionary>

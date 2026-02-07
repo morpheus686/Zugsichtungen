@@ -9,6 +9,7 @@ namespace Zugsichtungen.Abstractions.Interfaces
         Task<SightingPicture?> GetImageBySightingIdAsync(int sightingId);
         Task<bool> CheckIfImageExistsAsync(int sightingId);
         Task<Picture?> GetGalleryPictureByIdAsync(int imageId);
-        Task<ThumbnailData?> GetThumbnailByIdAsync(int imageId);
+        Task<ThumbnailData?> GetThumbnailDataByIdAsync(int imageId);
+        Task<PictureData?> GetPictureDataByIdAsync(int imageId);
     }
 }
