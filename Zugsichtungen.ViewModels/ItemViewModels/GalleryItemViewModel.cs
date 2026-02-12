@@ -29,6 +29,7 @@ namespace Zugsichtungen.ViewModels.ItemViewModels
             this.IsNoPictureAvailable = false;
 
             this.ShowPictureCommand = new AsyncRelayCommand(ExecuteShowPictureCommand);
+            
         }
 
         protected PictureDto PictureDto { get; }
@@ -99,11 +100,6 @@ namespace Zugsichtungen.ViewModels.ItemViewModels
         private async Task ExecuteShowPictureCommand()
         {
             await this.dialogService.ShowDialogAsync(this);
-        }
-
-        protected override async Task InitializeInternalAsync()
-        {
-            await this.LoadPictureAsync();
         }
     }
 }

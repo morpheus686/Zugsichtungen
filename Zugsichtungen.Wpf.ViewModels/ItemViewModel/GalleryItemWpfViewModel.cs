@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.IO;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Zugsichtungen.Abstractions.DTO;
@@ -9,15 +11,37 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
 {
     public class GalleryItemWpfViewModel : GalleryItemViewModel
     {
+        private const double MinimumScale = 1.0;
+        private const double MaximumScale = 5.0;
+        private const double ScaleStep = 0.1;
+        private double scale;
+
         public GalleryItemWpfViewModel(
             PictureDto picture,
             IGalleryService galleryService,
             IDialogService dialogService) : base(picture, galleryService, dialogService)
         {
+            this.ZoomCommand = new RelayCommand<int>(ExecuteZoom);
+            this.ResetZoomCommand = new RelayCommand(ExecuteResetZoom);
         }
 
+        public double Scale
+        {
+            get => scale;
+            private set
+            {
+                if (value >= MinimumScale && value <= MaximumScale)
+                {
+                    scale = value;
+                    RaisePropertyChanged(nameof(Scale));
+                }
+            }
+        }
         public ImageSource? Thumbnail { get; private set; } = null!;
         public ImageSource? Picture { get; private set; } = null!;
+
+        public ICommand ZoomCommand { get; }
+        public ICommand ResetZoomCommand { get; }
 
         public override async Task LoadPictureAsync()
         {
@@ -106,6 +130,29 @@ namespace Zugsichtungen.Wpf.ViewModels.ItemViewModel
             bmp.Freeze(); // 🔥 EXTREM wichtig
 
             return bmp;
+        }
+
+        protected override async Task InitializeInternalAsync()
+        {
+            this.Scale = MinimumScale;
+            await this.LoadPictureAsync();
+        }
+
+        private void ExecuteZoom(int delta)
+        {
+            if (delta > 0)
+            {
+                this.Scale += ScaleStep;
+            }
+            else if (delta < 0)
+            {
+                this.Scale -= ScaleStep;
+            }
+        }
+
+        private void ExecuteResetZoom()
+        {
+            this.Scale = MinimumScale;
         }
     }
 }
